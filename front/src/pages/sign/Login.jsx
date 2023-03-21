@@ -16,6 +16,7 @@ export const Login = () => {
   const [isOpen, setIsOpen] = useState(false)
   const dispatch = useDispatch();
   const { isLoading, isError, isLogin, user, auth } = useSelector((state) => state.user);
+  console.log(`auth:::`, auth)
   const email = useInput(auth.email);
   const userpw = useInput(auth.userpw);
   const navigate = useNavigate();

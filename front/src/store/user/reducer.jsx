@@ -5,11 +5,11 @@ const initialState = {
   isError: null,
   isLogin: false,
   user: {
-    userid: "",
+    email: "",
     username: "",
   },
   auth: {
-    userid: "",
+    email: "",
     userpw: "",
   },
 };
@@ -28,7 +28,7 @@ export const user = (state = initialState, action) => {
         ...state,
         isLoading: false,
         isLogin: false,
-        user: { userid: "", username: "" },
+        user: { email: "", username: "" },
       };
     case USER_REQUEST_ERROR:
       return { ...state, isLoading: false, isError: action.payload.message };
@@ -40,7 +40,7 @@ export const user = (state = initialState, action) => {
       case USER_INFO_REMOVE:
         return {
           ...state,
-          auth: { userid: "", userpw: "" },
+          auth: { email: "", userpw: "" },
         };
     default:
       return state;
