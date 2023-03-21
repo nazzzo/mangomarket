@@ -7,13 +7,13 @@ class AuthService {
     this.BadRequest = config.exception.BadRequest
   }
   
-  async token({ userid, userpw }) {
-    console.log(userid, userpw)
+  async token({ email, userpw }) {
+    console.log(email, userpw)
     try {
-      if (!userid || !userpw) throw "사용자가 없습니다";
+      if (!email || !userpw) throw "사용자가 없습니다";
       const hash = this.crypto.createHmac("sha256", this.salt).update(userpw).digest("hex");
       const user = await this.authRepository.getUserByInfo({
-        userid,
+        email,
         userpw: hash,
       });
       if (!user) throw "아이디와 패스워드가 일치하지 않습니다";

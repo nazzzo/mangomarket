@@ -16,12 +16,12 @@ export const Login = () => {
   const [isOpen, setIsOpen] = useState(false)
   const dispatch = useDispatch();
   const { isLoading, isError, isLogin, user, auth } = useSelector((state) => state.user);
-  const userid = useInput(auth.userid);
+  const email = useInput(auth.email);
   const userpw = useInput(auth.userpw);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (auth.userid && auth.userpw) setRememberMe(true);
+    if (auth.email && auth.userpw) setRememberMe(true);
   }, []);
 
   const handleCheck = (e) => {
@@ -32,20 +32,20 @@ export const Login = () => {
     e.preventDefault();
 
     const response = await request.post("/auths", {
-      userid: userid.value,
+      email: email.value,
       userpw: userpw.value,
     });
     if (response.status >= 400 || response.data.isError) {
       alert(response.data.message);
-    } else if (response.status === 200 && response.data.userid) {
+    } else if (response.status === 200 && response.data.email) {
       dispatch(
         userLogin(true, {
-          userid: response.data.userid,
+          email: response.data.email,
           username: response.data.username,
         })
       );
       rememberMe
-      ? dispatch(saveUserInfo(userid.value, userpw.value))
+      ? dispatch(saveUserInfo(email.value, userpw.value))
       : dispatch(removeUserInfo())
       navigate("/");
     }
@@ -58,8 +58,8 @@ export const Login = () => {
         <Input
           height="3rem"
           type="text"
-          value={userid.value}
-          onChange={userid.onChange}
+          value={email.value}
+          onChange={email.onChange}
           id="email"
           name="email"
           icon="ic:round-email"

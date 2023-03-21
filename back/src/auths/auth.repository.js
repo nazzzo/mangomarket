@@ -2,13 +2,13 @@ class AuthRepository {
   constructor({ User }) {
     this.User = User;
   }
-  async getUserByInfo({ userid, userpw }) {
+  async getUserByInfo({ email, userpw }) {
     try {
         const user = await this.User.findOne({
             raw: true,
             attributes: { exclude: ["userpw"]},
             where: {
-                userid,
+                email,
                 userpw
             }
         })
