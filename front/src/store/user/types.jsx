@@ -1,0 +1,5 @@
+export const USER_LOGIN = "USER/LOGIN";
+export const USER_LOGOUT = "USER/LOGOUT";
+export const USER_REQUEST_ERROR = "USER/ERROR"
+export const USER_INFO_SAVE = "USER/SAVE_INFO"
+export const USER_INFO_REMOVE = "USER/REMOVE_INFO"
