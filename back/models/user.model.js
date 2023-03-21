@@ -21,11 +21,6 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING(64),
             allowNull: false,
           },
-          gender: {
-            type: Sequelize.ENUM("male", "female"),
-            defaultValue: "male",
-            allowNull: false,
-          },
           birth: {
             type: Sequelize.DATEONLY,
             validate: {

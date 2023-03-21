@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { userLogin, saveUserInfo, removeUserInfo } from "../../store/user";
+import { userLogin } from "../../store/user";
 import { useNavigate } from "react-router-dom";
 import { useInput } from "../../hooks/useInput";
 import { useModal } from "../../hooks/useModal";
@@ -30,16 +30,20 @@ export const Signup = () => {
       userpw: userpw.value,
       phoneNumber: phoneNumber.value
     });
-    console.log(response.data);
     if (response.status >= 400 || response.data.isError) {
       alert(response.data.message);
-    } else if (response.status === 200 && response.data.username) {
-      // dispatch(
-      //   userLogin(true, {
-      //     userid: response.data.userid,
-      //     username: response.data.username,
-      //   })
-      // );
+    } else if (response.status === 201 && response.data === 'OK') {
+      const response = await request.post("/auths", {
+        email: email.value,
+        userpw: userpw.value,
+      });
+      dispatch(
+        userLogin(true, {
+          email: response.data.email,
+          username: response.data.username,
+        })
+      );
+      navigate("/");
     }
   };
 
