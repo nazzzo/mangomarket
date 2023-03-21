@@ -1,10 +1,10 @@
-class CommentRepository {
-    constructor({ Comment }) {
-      this.Comment = Comment;
+class CommunityRepository {
+    constructor({ Community }) {
+      this.Community = Community;
     }
     async findAll() {
       try {
-        const findAll = await this.Comment.findAll({
+        const findAll = await this.Community.findAll({
           order: [["id", "DESC"]],
         });
         return findAll;
@@ -14,7 +14,7 @@ class CommentRepository {
     }
     async create(commentData) {
       try {
-        const create = await this.Comment.create(commentData);
+        const create = await this.Community.create(commentData);
         console.log(create);
         return create;
       } catch (e) {
@@ -23,7 +23,7 @@ class CommentRepository {
     }
     async update({ id, content }) {
       try {
-        const update = await this.Comment.update(
+        const update = await this.Community.update(
           { content: content },
           { where: { id: id } }
         );
@@ -35,7 +35,7 @@ class CommentRepository {
     async destroy(id) {
       console.log("repo :", id);
       try {
-        const destroy = await this.Comment.destroy({
+        const destroy = await this.Community.destroy({
           where: { id: id },
         });
         return destroy;
@@ -45,4 +45,4 @@ class CommentRepository {
     }
   }
   
-  module.exports = CommentRepository;
+  module.exports = CommunityRepository;

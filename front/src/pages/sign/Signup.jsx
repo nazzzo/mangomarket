@@ -15,6 +15,7 @@ export const Signup = () => {
   const { isLoading, isError, isLogin, user, auth } = useSelector((state) => state.user);
   const username = useInput("");
   const userpw = useInput("");
+  const pwcheck = useInput("");
   const email = useInput("");
   const phoneNumber = useInput("");
   const navigate = useNavigate();
@@ -23,20 +24,23 @@ export const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // const response = await request.post("/auths", {
-    //   user: userid.value,
-    //   userpw: userpw.value,
-    // });
-    // if (response.status >= 400 || response.data.isError) {
-    //   alert(response.data.message);
-    // } else if (response.status === 200 && response.data.userid) {
-    //   dispatch(
-    //     userLogin(true, {
-    //       userid: response.data.userid,
-    //       username: response.data.username,
-    //     })
-    //   );
-    // }
+    const response = await request.post("/users", {
+      email: email.value,
+      username: username.value,
+      userpw: userpw.value,
+      phoneNumber: phoneNumber.value
+    });
+    console.log(response.data);
+    if (response.status >= 400 || response.data.isError) {
+      alert(response.data.message);
+    } else if (response.status === 200 && response.data.username) {
+      // dispatch(
+      //   userLogin(true, {
+      //     userid: response.data.userid,
+      //     username: response.data.username,
+      //   })
+      // );
+    }
   };
 
   return (
@@ -69,10 +73,9 @@ export const Signup = () => {
         <Input
           height="3rem"
           type="password"
-          value={userpw.value}
-          onChange={userpw.onChange}
-          id="userpw"
-          name="userpw"
+          value={pwcheck.value}
+          onChange={pwcheck.onChange}
+          id="pwcheck"
           icon="mdi:eye-off"
           placeholder="비밀번호를 다시 한 번 입력해주세요"
         ></Input>
