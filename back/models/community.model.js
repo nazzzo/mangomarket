@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  class Comment extends Sequelize.Model {
+  class Community extends Sequelize.Model {
     static createTable() {
       return this.init(
         {
@@ -16,9 +16,9 @@ module.exports = (sequelize, Sequelize) => {
     }
     static associate(models) {
         this.belongsTo(models.User, {
-            foreignKey: "userid"
+            foreignKey: "email"
         })
     }
   }
-  Comment.createTable();
+  Community.createTable();
 };

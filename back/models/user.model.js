@@ -3,11 +3,11 @@ module.exports = (sequelize, Sequelize) => {
     static createTable() {
       return this.init(
         {
-          userid: {
-            type: Sequelize.STRING(16),
+          email: {
             primaryKey: true,
+            type: Sequelize.STRING(30),
             validate: {
-              is: /^[A-Za-z0-9]{6,16}$/,
+              isEmail: true,
             },
           },
           username: {
@@ -39,12 +39,6 @@ module.exports = (sequelize, Sequelize) => {
               is: /^010[0-9]{8}$/,
             },
           },
-          email: {
-            type: Sequelize.STRING(30),
-            validate: {
-              isEmail: true,
-            },
-          },
           image: {
             type: Sequelize.STRING(200),
             allowNull: false,
@@ -66,8 +60,8 @@ module.exports = (sequelize, Sequelize) => {
       );
     }
     static associate(models) {
-      this.hasMany(models.Comment, {
-        foreignKey: "userid",
+      this.hasMany(models.Community, {
+        foreignKey: "email",
       });
     }
   }

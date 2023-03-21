@@ -1,10 +1,10 @@
-class CommentController {
-    constructor({ commentService }) {
-      this.commentService = commentService;
+class CommunityController {
+    constructor({ communityService }) {
+      this.communityService = communityService;
     }
     async getList(req, res, next) {
       try {
-        const response = await this.commentService.getList();
+        const response = await this.communityService.getList();
         console.log(response.data)
         res.json(response);
       } catch (e) {
@@ -16,7 +16,7 @@ class CommentController {
         if (!req.body.content) throw new Error("내용이 없습니다");
         const { userid, content } = req.body;
         console.log(`req.body :`, { userid, content });
-        const response = await this.commentService.postComment({
+        const response = await this.communityService.postComment({
           userid,
           content,
         });
@@ -30,7 +30,7 @@ class CommentController {
       try {
         if (!req.body.content) throw new Error("수정할 내용을 입력해주세요");
         // console.log(`putController:`, req.params.id, req.body.content);
-        const response = await this.commentService.putComment(
+        const response = await this.communityService.putComment(
           req.params.id,
           req.body.content
         );
@@ -42,7 +42,7 @@ class CommentController {
     async deleteComment(req, res, next) {
       try {
         // if (!req.params.id) throw new Error("삭제할 댓글이 없습니다");
-        const response = await this.commentService.deleteComment(req.params.id);
+        const response = await this.communityService.deleteComment(req.params.id);
         res.status(201).json(response);
       } catch (e) {
         next(e);
@@ -50,6 +50,6 @@ class CommentController {
     }
   }
   
-  module.exports = CommentController;
+  module.exports = CommunityController;
   
     

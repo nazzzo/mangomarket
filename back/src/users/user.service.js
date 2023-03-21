@@ -12,11 +12,11 @@ class UserService {
       try {
           userData.address = `${userData.address} ${userData.detailAddress}`;
           userData.userImg = userData.userImg ? `http://${this.config.host}:${this.config.imgport}/${userData.userImg}` : undefined;
-          const { userid, username, userpw, ...rest } = userData;
-          if (!userid || !userpw || !username) throw "내용이 없습니다";
+          const { email, username, userpw, ...rest } = userData;
+          if (!email || !userpw || !username) throw "내용이 없습니다";
           const hash = this.crypto.createHmac("sha256", this.salt).update(userpw).digest("hex");
           const user = await this.userRepository.addUser({
-              userid,
+              email,
               username,
               userpw: hash,
               ...rest,
