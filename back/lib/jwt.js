@@ -16,6 +16,7 @@ class JWT {
     }
 
     decode(encodedValue) {
+        console.log(`encoded::::`, encodedValue)
         return JSON.parse(Buffer.from(encodedValue, "base64Url").toString("utf-8"))
     }
 

@@ -75,15 +75,6 @@ export const SigninForm = styled.form`
   }
 `;
 
-export const KakaoBtn = () => {
-  return (
-    <a href="/kakao/login" id="kakaoLogin">
-      <img src="https://i.ibb.co/bQJJ1jH/kakao-login-medium-wide.png" alt="" />
-    </a>
-  );
-};
-
-
 export const SigninOption = styled.div`
   font-size: ${({ fontSize }) => fontSize};
   width: ${({ width }) => width};

@@ -4,11 +4,11 @@ import { userLogin, saveUserInfo, removeUserInfo } from "../../store/user";
 import { useNavigate } from "react-router-dom";
 import { useInput } from "../../hooks/useInput";
 import { Input } from "../../common/input";
-import { Button } from "../../common/button";
+import { Button, KakaoBtn } from "../../common/button";
 import { CheckBox } from "../../common/checkbox";
 import { Modal } from "../../common/modal"
 import { FindUser } from "./FindUser"
-import { SigninWrap, SigninForm, KakaoBtn, SigninOption } from "./styled";
+import { SigninWrap, SigninForm, SigninOption } from "./styled";
 import request from "../../utils/request";
 
 export const Login = () => {
@@ -36,6 +36,7 @@ export const Login = () => {
       email: email.value,
       userpw: userpw.value,
     });
+    console.log(response.data);
     if (response.status >= 400 || response.data.isError) {
       alert(response.data.message);
     } else if (response.status === 200 && response.data.email) {
@@ -43,6 +44,7 @@ export const Login = () => {
         userLogin(true, {
           email: response.data.email,
           username: response.data.username,
+          userImg: response.data.userI
         })
       );
       rememberMe
