@@ -8,6 +8,10 @@ const config = {
   salt: process.env.SALT,
   env: process.env.NODE_ENV || "development",
   port: process.env.PORT || "",
+  host: process.env.HOST || "127.0.0.1",
+  redirect_host: process.env.REDIRECT_HOST || "localhost",
+  redirect_port: process.env.REDIRECT_PORT || "3000",
+  imgport: process.env.IMGPORT,
   db: {
     development: {
       username: process.env.DB_USER || "",
@@ -15,7 +19,13 @@ const config = {
       database: process.env.DB_DATABASE || "",
       port: process.env.DB_PORT || "",
       host: process.env.DB_HOST || "",
+      imgport: process.env.IMGPORT,
       dialect: "mysql",
+      timezone: "Asia/Seoul",
+      dialectOptions: {
+          dataStrings: true,
+          typeCast: true,
+      },
       define: { freezeTableName: true, timestamp: false },
     },
     test: {

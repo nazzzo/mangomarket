@@ -34,7 +34,7 @@ module.exports = (sequelize, Sequelize) => {
               is: /^010[0-9]{8}$/,
             },
           },
-          image: {
+          userImg: {
             type: Sequelize.STRING(200),
             allowNull: false,
             defaultValue: "",
@@ -48,6 +48,11 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING(30),
             allowNull: true,
           },
+          level: {
+            type: Sequelize.ENUM("user", "admin"),
+            allowNull: false,
+            defaultValue: "user",
+        },
         },
         {
           sequelize,

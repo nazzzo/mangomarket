@@ -2,13 +2,34 @@ import { useEffect } from "react";
 import { AppRouter } from "./routes";
 import { Header } from "./common";
 import { useDispatch, useSelector } from "react-redux";
+import { userLogin } from "./store/user"
 import { CategoryRequest } from "./store";
+import request from "./utils/request"
 
 const App = () => {
   const dispatch = useDispatch();
   const { loading, error, data } = useSelector((state) => state.category);
   const { isLogin, user } = useSelector((state) => state.user);
-  // console.log(`user:::`, user, isLogin)
+
+  useEffect(() => {
+    if (document.cookie.split('=')[0] === 'token') {
+      const token = document.cookie.split('=')[1]
+  
+      ;(async () => {
+        const response = await request.post('/auths/sns', { token })
+        console.log(response.data)
+        if (response.status === 200 && response.data.email) {
+          dispatch(
+            userLogin(true, {
+              email: response.data.email,
+              username: response.data.username,
+              userImg: response.data.userImg
+            })
+          )
+        }
+      })()
+    }
+  }, [])
 
   useEffect(() => {
     dispatch(CategoryRequest());

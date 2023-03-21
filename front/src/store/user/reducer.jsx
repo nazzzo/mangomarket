@@ -28,7 +28,7 @@ export const user = (state = initialState, action) => {
         ...state,
         isLoading: false,
         isLogin: false,
-        user: { email: "", username: "" },
+        user: { email: "", username: "", userImg: "" },
       };
     case USER_REQUEST_ERROR:
       return { ...state, isLoading: false, isError: action.payload.message };
@@ -40,7 +40,7 @@ export const user = (state = initialState, action) => {
       case USER_INFO_REMOVE:
         return {
           ...state,
-          auth: { email: "", userpw: "" },
+          auth: { email: "", userpw: "", userImg: "" },
         };
     default:
       return state;

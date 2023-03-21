@@ -25,6 +25,17 @@ class AuthService {
       throw new this.BadRequest(e);
     }
   }
+  async tokenDecode({token}) {
+    try {
+      const [header, payload, signature] = token.split(".")
+      const userInfo = this.jwt.decode(payload)
+      console.log(`userInfo:::`, userInfo)
+      return userInfo
+    } catch (e) {
+      console.log(e)
+    }
+    
+  }
 }
 
 module.exports = AuthService;

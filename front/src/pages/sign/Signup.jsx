@@ -12,7 +12,7 @@ import request from "../../utils/request";
 
 export const Signup = () => {
   const dispatch = useDispatch();
-  const { isLoading, isError, isLogin, user, auth } = useSelector((state) => state.user);
+  const { isLoading, isError, isLogin, user } = useSelector((state) => state.user);
   const username = useInput("");
   const userpw = useInput("");
   const pwcheck = useInput("");
