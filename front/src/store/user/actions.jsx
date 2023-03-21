@@ -17,10 +17,10 @@ export const userRequestError = (payload) => ({
   payload,
 });
 
-export const saveUserInfo = (userid, userpw) => ({
+export const saveUserInfo = (email, userpw) => ({
   type: USER_INFO_SAVE,
   payload: {
-    userid,
+    email,
     userpw
   }
 })
