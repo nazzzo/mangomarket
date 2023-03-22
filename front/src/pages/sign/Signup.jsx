@@ -2,15 +2,17 @@ import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from "../../store/user";
 import { useNavigate } from "react-router-dom";
-import { useInput } from "../../hooks/useInput";
-import { useModal } from "../../hooks/useModal";
+import { useInput, useDuplicateCheck } from "../../hooks";
 import { Input } from "../../common/input";
 import { Button } from "../../common/button";
+import { ProfileImg } from "../../common/upload";
 import { CheckBox } from "../../common/checkbox";
-import { SignupWrap, SignupForm, Label } from "./styled";
+import { SignupWrap, ImageBox, FormWrap, SignupForm, Label } from "./styled";
 import request from "../../utils/request";
 
 export const Signup = () => {
+  const [profileImage, setProfileImage] = useState("http://localhost:3005/default-image.png")
+
   const dispatch = useDispatch();
   const { isLoading, isError, isLogin, user } = useSelector((state) => state.user);
   const username = useInput("");
@@ -21,14 +23,24 @@ export const Signup = () => {
   const navigate = useNavigate();
 
 
+  const duplicateCheck = async () => {
+    const response = await request.post("/users/usercheck", {
+      username: username.value,
+    });
+    console.log(response.data)
+  }
+  duplicateCheck()
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
 
     const response = await request.post("/users", {
       email: email.value,
       username: username.value,
       userpw: userpw.value,
-      phoneNumber: phoneNumber.value
+      phoneNumber: phoneNumber.value,
+      userImg: profileImage,
     });
     if (response.status >= 400 || response.data.isError) {
       alert(response.data.message);
@@ -50,6 +62,10 @@ export const Signup = () => {
   return (
     <>
     <SignupWrap width="23rem" height="42rem">
+      <ImageBox>
+        <ProfileImg width="7rem" height="7rem" src={profileImage} setState={setProfileImage} />
+      </ImageBox>
+      <FormWrap>
       <SignupForm onSubmit={handleSubmit}>
         <Label>닉네임</Label>
         <Input
@@ -113,6 +129,7 @@ export const Signup = () => {
         >Sign Up
         </Button>
       </SignupForm>
+      </FormWrap>
     </SignupWrap>
 </>
   );
