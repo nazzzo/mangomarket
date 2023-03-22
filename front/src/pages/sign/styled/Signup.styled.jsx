@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { ProfileImg } from "../../../common/upload"
 
 const SignupWrapStyled = styled.div`
   width: ${({ width }) => width};
@@ -10,32 +11,29 @@ const SignupWrapStyled = styled.div`
   overflow-y: hidden;
 `;
 
-const ImageBox = styled.div`
-  width: 100%;
-  height: 30%;
-  border-radius: 6px 6px 0 0;
-  background: url(https://i.ibb.co/JR82YJf/mango-logo3.png)
-    no-repeat;
-  background-color: #f3ad22;
-  background-size: 70%;
-  background-position: center 40%;
-`;
-
-const FormWrapper = styled.div`
-  height: 70%;
-  width: 100%;
-  overflow-y: scroll;
-`;
-
-
 export const SignupWrap = ({ width, height, children }) => {
   return (
     <SignupWrapStyled width={width} height={height}>
-      <ImageBox />
-      <FormWrapper>{children}</FormWrapper>
+      {children}
     </SignupWrapStyled>
   );
 };
+
+export const ImageBox = styled.div`
+  width: 100%;
+  height: 25%;
+  border-radius: 6px 6px 0 0;
+  background-color: #f3ad22;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const FormWrap = styled.div`
+  height: 75%;
+  width: 100%;
+  overflow-y: scroll;
+`;
 
 export const SignupForm = styled.form`
   width: 80%;

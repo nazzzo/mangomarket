@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { userLogin, saveUserInfo, removeUserInfo } from "../../store/user";
+import { saveUserInfo, removeUserInfo } from "../../store/user";
 import { useNavigate } from "react-router-dom";
 import { useInput } from "../../hooks/useInput";
 import { Input } from "../../common/input";
@@ -16,7 +16,6 @@ export const Login = () => {
   const [isOpen, setIsOpen] = useState(false)
   const dispatch = useDispatch();
   const { isLoading, isError, isLogin, user, auth } = useSelector((state) => state.user);
-  console.log(`auth:::`, auth)
   const email = useInput(auth.email);
   const userpw = useInput(auth.userpw);
   const navigate = useNavigate();
@@ -40,13 +39,6 @@ export const Login = () => {
     if (response.status >= 400 || response.data.isError) {
       alert(response.data.message);
     } else if (response.status === 200 && response.data.email) {
-      dispatch(
-        userLogin(true, {
-          email: response.data.email,
-          username: response.data.username,
-          userImg: response.data.userI
-        })
-      );
       rememberMe
       ? dispatch(saveUserInfo(email.value, userpw.value))
       : dispatch(removeUserInfo())

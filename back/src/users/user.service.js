@@ -11,7 +11,7 @@ class UserService {
   async signup(userData) {
       try {
           userData.address = `${userData.address} ${userData.detailAddress}`;
-          userData.userImg = userData.userImg ? `http://${this.config.host}:${this.config.imgport}/${userData.userImg}` : undefined;
+        //   userData.userImg = userData.userImg ? `http://${this.config.host}:${this.config.imgport}/${userData.userImg}` : undefined;
           const { email, username, userpw, ...rest } = userData;
           if (!email || !userpw || !username) throw "내용이 없습니다";
           const hash = this.crypto.createHmac("sha256", this.salt).update(userpw).digest("hex");
