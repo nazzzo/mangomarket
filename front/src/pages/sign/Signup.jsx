@@ -11,7 +11,7 @@ import { SignupWrap, ImageBox, FormWrap, SignupForm, Label } from "./styled";
 import request from "../../utils/request";
 
 export const Signup = () => {
-  const [profileImage, setProfileImage] = useState("http://localhost:3005/default-image.png")
+  const [profileImage, setProfileImage] = useState()
 
   const dispatch = useDispatch();
   const { isLoading, isError, isLogin, user } = useSelector((state) => state.user);

@@ -1,4 +1,11 @@
-import { USER_LOGIN, USER_LOGOUT, USER_REQUEST_ERROR, USER_INFO_SAVE, USER_INFO_REMOVE } from "./types";
+import {
+  USER_LOGIN,
+  USER_LOGOUT,
+  USER_REQUEST_ERROR,
+  USER_IMAGE_UPLOAD,
+  USER_INFO_SAVE,
+  USER_INFO_REMOVE,
+} from "./types";
 
 const initialState = {
   isLoading: true,
@@ -7,6 +14,7 @@ const initialState = {
   user: {
     email: "",
     username: "",
+    userImg: "",
   },
   auth: {
     email: "",
@@ -28,20 +36,30 @@ export const user = (state = initialState, action) => {
         ...state,
         isLoading: false,
         isLogin: false,
-        user: { email: "", username: "", userImg: "" },
+        user: {
+          email: "",
+          username: "",
+          userImg: "",
+        },
       };
     case USER_REQUEST_ERROR:
       return { ...state, isLoading: false, isError: action.payload.message };
-      case USER_INFO_SAVE:
-        return {
-          ...state,
-          auth: action.payload,
-        };
-      case USER_INFO_REMOVE:
-        return {
-          ...state,
-          auth: { email: "", userpw: "", userImg: "" },
-        };
+    case USER_IMAGE_UPLOAD:
+      return { ...state, user: { userImg: action.payload } }
+    case USER_INFO_SAVE:
+      return {
+        ...state,
+        auth: action.payload,
+      };
+    case USER_INFO_REMOVE:
+      return {
+        ...state,
+        auth: {
+          email: "",
+          userpw: "",
+          userImg: "",
+        },
+      };
     default:
       return state;
   }
