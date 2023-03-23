@@ -1,7 +1,8 @@
 import axios from "axios";
+import config from "../config"
 
 const request = axios.create({
-  baseURL: "http://localhost:3005",
+  baseURL: `http://${config.HOST}:${config.BACKEND_PORT}`,
   withCredentials: true,
   headers: {
     "Content-type": "application/json",
