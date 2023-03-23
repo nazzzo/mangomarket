@@ -6,9 +6,8 @@ import config from "../../config"
 
 
 export const ProfileImg = ({ width, height, src, setState }) => {
+  if (!src) src = `http://${config.HOST}:${config.IMG_PORT}/default-image.png`
   const fileInputRef = useRef(null);
-  console.log(config)
-
   const handleImageClick = () => {
     fileInputRef.current.click();
   };
@@ -22,12 +21,14 @@ export const ProfileImg = ({ width, height, src, setState }) => {
         const response = await request.post("/users/single", body, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-        const responseData = `http://${config.HOST}:${config.IMGPORT}/${response.data.filename}`;
+        const responseData = `http://${config.HOST}:${config.IMG_PORT}/${response.data.filename}`; 
         setState(responseData);
       } catch (e) {
         console.error(e);
       }
   };
+
+  console.log(src)
 
   return (
     <ImageWrapper width={width} height={height}>
@@ -35,7 +36,7 @@ export const ProfileImg = ({ width, height, src, setState }) => {
         width={width}
         height={height}
         onClick={handleImageClick}
-        src={src || `http://${config.HOST}:${config.IMGPORT}/default-image.png`}
+        src={src}
       />
       <IconWrap><Icon icon="bxs:camera-plus" /></IconWrap>
       <form onSubmit={(e) => e.preventDefault()}>
