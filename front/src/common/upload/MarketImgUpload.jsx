@@ -6,7 +6,6 @@ import {
   ImageCount,
   MarketImage,
   Input,
-  ThumbnailChoice,
 } from "./styled";
 import { Icon } from "@iconify/react";
 import config from "../../config";
@@ -81,7 +80,7 @@ export const MarketImgUpload = ({ width, height }) => {
       </MarketImageUploader>
       {uploadedImages.map((imageSrc, index) => (
         <MarketImage
-          key={imageSrc}
+          key={index}
           width={width}
           height={height}
           src={imageSrc}

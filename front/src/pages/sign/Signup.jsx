@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { userLogin } from "../../store/user";
 import { useNavigate } from "react-router-dom";
 import { useInput } from "../../hooks";
@@ -7,7 +7,7 @@ import { Input } from "../../common/input";
 import { validCheck, duplicateCheck, passwordCheck, InputCheck } from "../../common/inputCheck" 
 import { Button } from "../../common/button";
 import { ProfileImgUpload } from "../../common/upload";
-import { CheckBox } from "../../common/checkbox";
+// import { CheckBox } from "../../common/checkbox";
 import { SignupWrap, ImageBox, FormWrap, SignupForm, Label } from "./styled";
 import request from "../../utils/request";
 
@@ -18,7 +18,7 @@ export const Signup = () => {
   const [isDuplicated, setIsDuplicated] = useState(false)
 
   const dispatch = useDispatch();
-  const { isLoading, isError, isLogin, user } = useSelector((state) => state.user);
+  // const { isLoading, isError, isLogin, user } = useSelector((state) => state.user);
   const username = useInput("");
   const userpw = useInput("");
   const pwcheck = useInput("");

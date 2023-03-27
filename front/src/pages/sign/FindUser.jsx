@@ -25,9 +25,9 @@ export const FindUser = () => {
       });
       setIsResponse(response.data.email);
     } else {
-      const response = await request.post("/users/usercheck", {
-        email: email.value,
-      });
+      // const response = await request.post("/users/usercheck", {
+      //   email: email.value,
+      // });
     }
   };
 

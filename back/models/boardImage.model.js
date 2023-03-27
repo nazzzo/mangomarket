@@ -8,6 +8,10 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false,
             defaultValue: null,
           },
+          thumbnail: {
+            type: Sequelize.BOOLEAN(),
+            defaultValue: false,
+          }
         },
         {
           sequelize,
@@ -15,6 +19,9 @@ module.exports = (sequelize, Sequelize) => {
       );
     }
     static associate(models) {
+      this.belongsTo(models.Board, {
+        foreignKey: "boardid",
+    })
     }
   }
   BoardImage.createTable();

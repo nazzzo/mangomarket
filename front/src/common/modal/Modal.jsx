@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { ModalWrapper, ModalContent } from "./styled";
 
 export const Modal = ({ isOpen, setIsOpen, children, width, height }) => {
@@ -30,7 +30,7 @@ export const Modal = ({ isOpen, setIsOpen, children, width, height }) => {
       document.removeEventListener("mousedown", handleClose);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen === true]);
+  }, [setIsOpen]);
 
   return isOpen ? (
     <ModalWrapper>

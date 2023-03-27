@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { ProfileImg } from "../../../common/upload"
 
 const SignupWrapStyled = styled.div`
   width: ${({ width }) => width};

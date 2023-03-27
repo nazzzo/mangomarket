@@ -95,4 +95,12 @@ export const SigninOption = styled.div`
     color: #d67900;
     cursor: pointer;
   }
+
+  & button {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    color: #f18800;
+    cursor: pointer;
+  }
 `
