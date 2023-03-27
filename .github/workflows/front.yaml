@@ -13,7 +13,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y nodejs
+          echo $(node -v)
           sudo apt-get install -y npm
+          echo $(npm -v)
       - name: Build React app
         run: |
           cd front
