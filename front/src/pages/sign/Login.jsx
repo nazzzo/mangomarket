@@ -86,7 +86,7 @@ export const Login = () => {
           </li>
           <li onClick={()=>{setIsOpen(true)}}>비밀번호 찾기</li>
         </ul>
-        <p>아직 회원이 아니신가요? <a onClick={()=>{navigate("/signup")}}>회원가입</a></p>
+        <p>아직 회원이 아니신가요? <button onClick={() => {navigate("/signup")}}>회원가입</button></p>
       </SigninOption>
     </SigninWrap>
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}><FindUser /></Modal>
