@@ -53,6 +53,14 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false,
             defaultValue: "user",
           },
+          address: {
+            type: Sequelize.STRING(50),
+            allouwNull: true,
+          },
+          alarm : {
+            type: Sequelize.BOOLEAN(),
+            defaultValue: false,
+          }
         },
         {
           sequelize,
@@ -67,6 +75,9 @@ module.exports = (sequelize, Sequelize) => {
         foreignKey: "email",
       });
       this.hasMany(models.History, {
+        foreignKey: "email",
+      });
+      this.hasMany(models.Keyword, {
         foreignKey: "email",
       });
       this.hasMany(models.PointUp, {

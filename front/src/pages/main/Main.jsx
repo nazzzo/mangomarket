@@ -14,6 +14,7 @@ export const Main = () => {
       try {
         const response = await request.get(`boards/?count=${count}`);
         console.log(response.data)
+        console.log(`count:::`, count)
         const newBoardList = response.data;
         if (count === 0) {
           setBoardList(newBoardList);

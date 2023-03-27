@@ -7,14 +7,6 @@ module.exports = (sequelize, Sequelize) => {
                         type: Sequelize.TEXT(),
                         allowNull: false,
                     },
-                    depth: {
-                        type: Sequelize.INTEGER,
-                        defaultValue: 0,
-                    },
-                    parentid: {
-                        type: Sequelize.INTEGER,
-                        allowNull: false,
-                    },
                 },
                 {
                     sequelize,
@@ -23,8 +15,8 @@ module.exports = (sequelize, Sequelize) => {
             );
         }
         static associate(models) {
-            this.belongsTo(models.Board, {
-                foreignKey: "boardid",
+            this.belongsTo(models.Community, {
+                foreignKey: "communityid",
             });
             this.belongsTo(models.User, {
                 foreignKey: "email",

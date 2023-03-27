@@ -22,6 +22,9 @@ module.exports = (sequelize, Sequelize) => {
         this.belongsTo(models.User, {
             foreignKey: "email"
         })
+        this.hasMany(models.Comment, {
+            foreignKey: "communityid"
+        })
         this.hasMany(models.PointUp, {
           foreignKey: "communityid",
       });

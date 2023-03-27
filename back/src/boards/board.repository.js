@@ -35,30 +35,29 @@ class BoardRepository {
             const limitquery = !limit ? `` : `Limit ${limit.limit}, ${limit.views}`;
 
             const query = `SELECT 
-        A.id,
-        A.email, 
-        A.subject, 
-        A.content,
-        A.createdAt, 
-        A.hit,
-        A.image,
-        A.category,
-        A.state,
-        B.userImg,
-        B.username,
-        (SELECT GROUP_CONCAT(D.email SEPARATOR ', ') FROM Liked AS D WHERE A.id = D.boardid) AS likeidlist,
-        GROUP_CONCAT(C.tagname SEPARATOR ', ') AS tagname,
-        (SELECT COUNT(boardid) FROM Chat WHERE boardid = A.id) AS messageCount, 
-        (SELECT COUNT(BoardId) FROM Liked WHERE BoardId = A.id) AS likeCount
-        FROM Board AS A 
-        LEFT JOIN User AS B 
-        ON A.email = B.email
-        LEFT JOIN Hashtag AS C
-        ON A.id = C.boardid
-        ${where}${categoryKey}
-        GROUP BY A.id
-        ${sortKey}
-        ${limitquery};`;
+            A.id,
+            A.email, 
+            A.subject, 
+            A.content,
+            A.createdAt, 
+            A.hit,
+            A.category,
+            A.state,
+            B.userImg,
+            B.username,
+            D.image,
+            (SELECT GROUP_CONCAT(D.email SEPARATOR ', ') FROM Liked AS D WHERE A.id = D.boardid) AS likeidlist,
+            GROUP_CONCAT(C.tagname SEPARATOR ', ') AS tagname,
+            (SELECT COUNT(Chat.id) FROM Chat WHERE Chat.id = A.id) AS messageCount, 
+            (SELECT COUNT(Liked.BoardId) FROM Liked WHERE Liked.BoardId = A.id) AS likeCount
+            FROM Board AS A 
+            LEFT JOIN User AS B ON A.email = B.email
+            LEFT JOIN Hashtag AS C ON A.id = C.boardid
+            LEFT JOIN BoardImage AS D ON A.id = D.boardid
+            ${where}${categoryKey}
+            GROUP BY A.id, D.id
+            ${sortKey}
+            ${limitquery};`;
             const [findAll] = await this.sequelize.query(query);
             console.log(findAll);
             return findAll;
@@ -370,4 +369,6 @@ ORDER BY SUBSTRING_INDEX(PATH, '-', 1)*1, SUBSTRING_INDEX(PATH, '-', -1)*1;`);
 }
 
 module.exports = BoardRepository;
+
+
 
