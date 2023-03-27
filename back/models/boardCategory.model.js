@@ -5,7 +5,6 @@ module.exports = (sequelize, Sequelize) => {
           {
             category: {
               type: Sequelize.STRING(50),
-              primaryKey: true
             },
           },
           {

@@ -19,6 +19,7 @@ router.post("/array", upload.fields([{ name: "images" }, { name: "thumbnail" }])
     const thumbnailFile = files.thumbnail ? files.thumbnail[0] : null;
     const thumbnail = thumbnailFile ? [thumbnailFile.filename] : [];
     const images = imageFiles.map((v) => v.filename);
+    console.log(`images:::`, images)
     res.json({ images, thumbnail });
   });
   

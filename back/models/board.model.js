@@ -12,11 +12,6 @@ module.exports = (sequelize, Sequelize) => {
                         type: Sequelize.TEXT,
                         allowNull: false,
                     },
-                    image: {
-                        type: Sequelize.TEXT(),
-                        allowNull: false,
-                        defaultValue: `http://${host}:${imgport}/board/default-board.png`,
-                    },
                     hit: {
                         type: Sequelize.INTEGER,
                         defaultValue: 0,
@@ -26,10 +21,14 @@ module.exports = (sequelize, Sequelize) => {
                         defaultValue: "public",
                         allowNull: false,
                     },
+                    location: {
+                        type: Sequelize.TEXT(),
+                        allowNull: true,
+                    }
                 },
                 {
                     sequelize,
-                    timestamp: true,
+                    timestamps: true,
                 }
             );
         }
@@ -40,6 +39,9 @@ module.exports = (sequelize, Sequelize) => {
             this.belongsTo(models.BoardCategory, {
                 foreignKey: "category",
             });
+            this.hasMany(models.BoardImage, {
+                foreignKey: "boardid",
+            })
             this.hasMany(models.Comment, {
                 foreignKey: "boardid",
             });

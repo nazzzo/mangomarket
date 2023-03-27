@@ -1,6 +1,6 @@
 const {
     sequelize: {
-      models: { Category },
+      models: { Category, BoardCategory },
     },
     sequelize,
   } = require("../../models/index");
@@ -10,7 +10,7 @@ const {
   const CategoryController = require("./category.controller");
   const config = require("../../config");
   
-  const repository = new CategoryRepository({ Category, sequelize });
+  const repository = new CategoryRepository({ Category, BoardCategory, sequelize });
   const service = new CategoryService({ categoryRepository: repository, config });
   const controller = new CategoryController({ categoryService: service });
   

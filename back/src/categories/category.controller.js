@@ -10,6 +10,15 @@ class CategoryController {
       next(e);
     }
   }
+  async getBoardCategory(req, res, next) {
+    try {
+      const response = await this.categoryService.getBoardCategory();
+      console.log(`response:::`, response);
+      res.json(response);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 module.exports = CategoryController;

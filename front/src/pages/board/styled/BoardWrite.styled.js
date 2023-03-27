@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { ManualText } from '../../sign/styled/FindUser.styled';
 
 
 const SubjectWrap = styled.div`
@@ -18,32 +19,53 @@ export const Subject = ({height, children}) => {
 }
 
 
-const CategoryWrap = styled.div`
+const CategoryOpenerStyled = styled.div`
     margin-top: 2%;
     width: 100%;
     height: ${({height}) => height};
     line-height: 250%;
     border-bottom: 1px solid #ddd;
+    cursor: pointer;
 `
 
 
-export const Category = ({height, children}) => {
-    return <CategoryWrap height={height}>{children}</CategoryWrap>
+const CategoryBoxStyled = styled.div`
+    margin-top: 2%;
+    width: 100%;
+    height: ${({height}) => height};
+    width: ${({width}) => width};
+    line-height: 250%;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+`
+
+
+export const CategoryOpener = ({height, onClick, children}) => {
+    return <CategoryOpenerStyled height={height} onClick={onClick}>{children}</CategoryOpenerStyled>
+}
+
+export const CategoryBox = ({height, width, children}) => {
+    console.log(`cccc:::`, children)
+
+    return <CategoryBoxStyled height={height} width={width}>{children}</CategoryBoxStyled>
 }
 
 
 
-const WishListWrap = styled.div`
+
+const WishListWrap = styled.ul`
     margin-top: 2%;
     width: 100%;
     height: ${({height}) => height};
     line-height: 250%;
     border-bottom: 1px solid #ddd;
+
+
 `
 
 
 export const WishList = ({height, children}) => {
-    return <WishListWrap height={height}>{children}</WishListWrap>
+    return <WishListWrap height={height}><li>{children}</li></WishListWrap>
 }
 
 
@@ -57,8 +79,8 @@ const ContentWrap = styled.div`
 `
 
 
-export const Content = ({height, children}) => {
-    return <ContentWrap height={height}>{children}</ContentWrap>
+export const Content = ({height, text}) => {
+    return <ContentWrap height={height}>{text}</ContentWrap>
 }
 
 
