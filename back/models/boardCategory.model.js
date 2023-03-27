@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    class Type extends Sequelize.Model {
+    class BoardCategory extends Sequelize.Model {
       static createTable() {
         return this.init(
           {
@@ -19,6 +19,5 @@ module.exports = (sequelize, Sequelize) => {
           })
       }
     }
-    Type.createTable();
+    BoardCategory.createTable();
   };
-  
