@@ -28,7 +28,7 @@ const App = () => {
         }
       })();
     }
-  }, [dispatch]);
+  }, [document.cookie]);
 
   useEffect(() => {
     dispatch(CategoryRequest());
