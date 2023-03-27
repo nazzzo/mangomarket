@@ -51,20 +51,18 @@ class UserService {
   async putProfile(userData) {
       try {
           console.log(`userData ::::`, userData);
-          if (userData.userImg.indexOf("http://") === -1) userData.userImg = `http://${this.config.host}:${this.config.port}/${userData.userImg}`;
-          const { userpw, ...rest } = userData;
-          const hash = this.crypto.createHmac("sha256", this.salt).update(userpw).digest("hex");
+          if (!userData.userImg) userData.userImg = `http://${this.config.host}:${this.config.imgport}/default-image.png`
+        //   const { userpw, ...rest } = userData;
 
-          const user = await this.userRepository.updateProfile({
-              userpw: hash,
-              ...rest,
-          });
-          if (user === 1) {
-              console.log(`user :::::::`, 1);
-              const modified = await this.userRepository.getUserById(userData.userid);
-              const token = await this.jwt.createToken(modified);
-              console.log(`token :::::::`, token);
-              return token;
+        //   const hash = this.crypto.createHmac("sha256", this.salt).update(userpw).digest("hex");
+
+          const updatedUser = await this.userRepository.updateProfile(userData);
+          if (updatedUser === 1) {
+            //   console.log(`user :::::::`, 1);
+              const { email, userImg, username } = await this.userRepository.getUserById(userData.email);
+            //   const token = this.jwt.createToken(modified);
+            //   console.log(`token :::::::`, token);
+            return { email, userImg, username };
           } else {
               const error = new Error("수정 실패");
               error.status = 401;

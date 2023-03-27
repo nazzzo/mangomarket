@@ -34,8 +34,10 @@ export const passwordCheck = ({userpw, pwcheck, setIsValid}) => {
 
 export const InputCheck = ({id, isFocused, isValid, isDuplicated, duplicated, enable, invalid }) => {
     return id === isFocused 
-    ? (isValid? <span>{isDuplicated 
-        ? duplicated : enable }</span> 
+    ? (isValid
+        ? <span>{isDuplicated 
+        ? duplicated 
+        : enable }</span> 
         : <span>{invalid}</span>) 
     : <></>
 }

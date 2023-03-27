@@ -1,8 +1,8 @@
 import styled from "styled-components"
 
 export const AppWrapper = styled.div`
-    background-color: red;
-    width: 620px;
+    max-width: 620px;
+    min-width: 500px;
     margin: 0 auto;
     position: relative;
 `

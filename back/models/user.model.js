@@ -52,7 +52,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.ENUM("user", "admin"),
             allowNull: false,
             defaultValue: "user",
-        },
+          },
         },
         {
           sequelize,
@@ -60,6 +60,22 @@ module.exports = (sequelize, Sequelize) => {
       );
     }
     static associate(models) {
+      this.hasMany(models.Board, {
+        foreignKey: "email",
+      });
+      this.hasMany(models.Comment, {
+        foreignKey: "email",
+      });
+      this.hasMany(models.History, {
+        foreignKey: "email",
+      });
+      this.hasMany(models.PointUp, {
+        foreignKey: "email",
+      });
+      this.belongsToMany(models.Board, {
+        through: "Liked",
+        foreignKey: "email",
+      });
       this.hasMany(models.Community, {
         foreignKey: "email",
       });

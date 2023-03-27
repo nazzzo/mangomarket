@@ -29,13 +29,13 @@ class UserRepository {
           throw new Error(e);
       }
   }
-  async getUserById(userid) {
-      console.log(`repo:`, userid);
+  async getUserById(email) {
+      console.log(`repo:`, email);
       try {
           const user = await this.User.findOne({
               raw: true,
               where: {
-                  userid,
+                  email,
               },
           });
           return user;
@@ -47,26 +47,12 @@ class UserRepository {
   async updateProfile(userData) {
       try {
           console.log(`repo userData : `, userData);
-          // const user = await this.User.update(
-          //   {
-          //     userImg: userData.userImg,
-          //     nickname: userData.nickname,
-          //     username: userData.username,
-          //     userpw: userData.userpw,
-          //     phoneNumber: userData.phoneNumber,
-          //     email: userData.email,
-          //   },
-          //   {
-          //     where: { userid: userData.userid },
-          //     returning: true
-          //   }
-          // );
-          const user = await this.User.update(userData, {
-              where: { userid: userData.userid },
+          const result = await this.User.update(userData, {
+              where: { email: userData.email },
               returning: true,
           });
-          console.log(`repo2 : `, user[1]);
-          return user[1];
+          console.log(`repo2 : `, result[1]);
+          return result[1];
       } catch (e) {
           throw new Error(e);
       }
