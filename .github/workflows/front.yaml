@@ -26,7 +26,7 @@ jobs:
           EC2_HOST: ${{ secrets.FRONT_HOST }}
         run: |
           echo "${SSH_PEM_FILE}" > frontend.pem
-          chmod 600 frontend.pem
+          chmod 400 frontend.pem
           mkdir -p ~/.ssh
           ssh-keyscan -t rsa ${EC2_HOST} >> ~/.ssh/known_hosts
           scp -i /home/runner/work/actions_practice/actions_practice/frontend.pem -r ./build ${EC2_USER}@${EC2_HOST}:/home/ubuntu/www
