@@ -13,8 +13,8 @@ export const Main = () => {
     const fetchData = async () => {
       try {
         const response = await request.get(`boards/?count=${count}`);
-        console.log(response.data)
-        console.log(`count:::`, count)
+        // console.log(response.data)
+        // console.log(`count:::`, count)
         const newBoardList = response.data;
         if (count === 0) {
           setBoardList(newBoardList);
@@ -33,7 +33,7 @@ export const Main = () => {
       setCount((prevCount) => prevCount + 1);
     }
   };
-  console.log(boardList)
+  // console.log(boardList)
 
 
   useEffect(() => {
