@@ -37,7 +37,7 @@ module.exports = (sequelize, Sequelize) => {
             this.belongsTo(models.User, {
                 foreignKey: "email",
             });
-            this.belongsTo(models.Category, {
+            this.belongsTo(models.BoardCategory, {
                 foreignKey: "category",
             });
             this.hasMany(models.Comment, {

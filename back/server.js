@@ -5,11 +5,19 @@ const PORT = config.port
 
 app.listen(PORT, async () => {
     await sequelize.sync({ force: false })
-    // await sequelize.models.Category.create({ path: '/', name: 'Home' })
-    // await sequelize.models.Category.create({ path: '/signup', name: 'Signup', isLogin: false })
-    // await sequelize.models.Category.create({ path: '/login', name: 'Login', isLogin: false })
-    // await sequelize.models.Category.create({ path: '/logout', name: 'Logout', isLogin: true })
-    // await sequelize.models.Category.create({ path: '/profile', name: 'Profile', isLogin: true })
-    // await sequelize.models.Category.create({ path: '/comment', name: 'Comment', isLogin: true })
+    await sequelize.models.Category.create({ path: '/', name: 'Home' })
+    await sequelize.models.Category.create({ path: '/signup', name: 'Signup', isLogin: false })
+    await sequelize.models.Category.create({ path: '/login', name: 'Login', isLogin: false })
+    await sequelize.models.Category.create({ path: '/logout', name: 'Logout', isLogin: true })
+    await sequelize.models.Category.create({ path: '/profile', name: 'Profile', isLogin: true })
+    await sequelize.models.Category.create({ path: '/comment', name: 'Comment', isLogin: true })
+    
+    
+    // await sequelize.models.BoardCategory.create({ category: "food" });
+    // await sequelize.models.BoardCategory.create({ category: "tech" });
+    // await sequelize.models.BoardCategory.create({ category: "default" });
+    // await sequelize.models.BoardCategory.create({ category: "travel" });
+    // await sequelize.models.BoardCategory.create({ category: "life" });
+    
     console.log(`backend server listening on port ${PORT}`)
 })
