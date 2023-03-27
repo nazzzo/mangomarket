@@ -1,1 +1,1 @@
-// export * from './CommunityWrite.styled'
+export * from './CommunityWrite.styled'
