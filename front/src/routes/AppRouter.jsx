@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router";
 import { Main, Login, Logout, Signup, Profile } from "../pages";
 import { BoardRouter } from "./BoardRouter";
+import { CommunityRouter } from "./CommunityRouter";
 
 export const AppRouter = () => {
 
@@ -12,6 +13,7 @@ export const AppRouter = () => {
       <Route path="/signup" element={<Signup />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/board/*" element={ <BoardRouter />} />
+      <Route path="/community/*" element={<CommunityRouter />} />
     </Routes>
   );
 };
