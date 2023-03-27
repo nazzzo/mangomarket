@@ -9,9 +9,8 @@ import request from "../../utils/request";
 
 export const UserInfo = ({ width, height, imgSize, fontSize }) => {
   const dispatch = useDispatch();
-  const { isLoading, isError, isLogin, user } = useSelector(
-    (state) => state.user
-  );
+  const { user } = useSelector((state) => state.user);
+  // const { isLoading, isError, isLogin, user } = useSelector((state) => state.user);
   const [isEdit, setIsEdit] = useState(false);
   const [profileImage, setProfileImage] = useState(user.userImg);
   const username = useInput(user.username);

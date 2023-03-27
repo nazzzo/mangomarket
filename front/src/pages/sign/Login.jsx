@@ -15,14 +15,15 @@ export const Login = () => {
   const [rememberMe, setRememberMe] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const dispatch = useDispatch();
-  const { isLoading, isError, isLogin, user, auth } = useSelector((state) => state.user);
+  // const { isLoading, isError, isLogin, user, auth } = useSelector((state) => state.user);
+  const { auth } = useSelector((state) => state.user);
   const email = useInput(auth.email);
   const userpw = useInput(auth.userpw);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (auth.email && auth.userpw) setRememberMe(true);
-  }, []);
+  }, [auth.email, auth.userpw]);
 
   const handleCheck = (e) => {
     setRememberMe((prevState) => !prevState)

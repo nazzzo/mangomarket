@@ -78,6 +78,6 @@ const ImageWrapper = styled.div`
 
 export const MarketImage = ({ src, width, height, className, onClick }) => {
     return <ImageWrapper width={width} height={height} className={className} onClick={onClick}>
-        <img src={src} />
+        <img src={src} alt="" />
         </ImageWrapper>
 }

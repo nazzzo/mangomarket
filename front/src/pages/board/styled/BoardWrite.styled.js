@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import { ManualText } from '../../sign/styled/FindUser.styled';
 
 
 const SubjectWrap = styled.div`
@@ -59,8 +58,6 @@ const WishListWrap = styled.ul`
     height: ${({height}) => height};
     line-height: 250%;
     border-bottom: 1px solid #ddd;
-
-
 `
 
 
