@@ -1,27 +1,21 @@
 module.exports = (sequelize, Sequelize) => {
-  class Community extends Sequelize.Model {
+  class BoardImage extends Sequelize.Model {
     static createTable() {
       return this.init(
         {
-          content: {
+          image: {
             type: Sequelize.TEXT(),
             allowNull: false,
+            defaultValue: null,
           },
         },
         {
           sequelize,
-          timestamps: true
         }
       );
     }
     static associate(models) {
-        this.belongsTo(models.User, {
-            foreignKey: "email"
-        })
-        this.hasMany(models.PointUp, {
-          foreignKey: "communityid",
-      });
     }
   }
-  Community.createTable();
+  BoardImage.createTable();
 };

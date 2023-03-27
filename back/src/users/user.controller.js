@@ -34,10 +34,8 @@ class UserController {
   }
   async putProfile(req, res, next) {
     try {
-      const token = await this.userService.putProfile(req.body);
-      // console.log(token);
-      // res.cookie('token', token)
-      res.json({ token });
+      const user = await this.userService.putProfile(req.body);
+      res.json({user});
     } catch (e) { next(e); }
   }
   async deleteUser(req, res, next) {

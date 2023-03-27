@@ -5,7 +5,7 @@ import { Icon } from "@iconify/react";
 import config from "../../config"
 
 
-export const ProfileImg = ({ width, height, src, setState }) => {
+export const ProfileImgUpload = ({ width, height, src, setState }) => {
   if (!src) src = `http://${config.HOST}:${config.IMG_PORT}/default-image.png`
   const fileInputRef = useRef(null);
   const handleImageClick = () => {

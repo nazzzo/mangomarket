@@ -4,9 +4,11 @@ class JWT {
         this.config = config
     }
     createToken(payloadData) {
+        console.log(payloadData)
         const header = this.encode({ tpy: "JWT", alg: "HS256"})
         const payload = this.encode(payloadData)
         const signature = this.createSignature([header, payload])
+        console.log(this.config.salt)
 
         return [header, payload, signature].join(".")
     }

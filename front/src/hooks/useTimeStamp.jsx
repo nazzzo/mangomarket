@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 
-export const useTimeStamp = (timestamp) => {
+export const useTimeStamp = (createdAt) => {
+  const parsedTime = new Date(Date.parse(createdAt))
+  const thisTime = new Date().getTime() + (1000 * 60 * 60 * 9);
   const [timeAgo, setTimeAgo] = useState("");
 
   const updateTimeStamp = () => {
-    const timeElapsed = Math.floor((new Date() - new Date(timestamp)) / 1000);
+    const timeElapsed = Math.floor((thisTime - parsedTime) / 1000);
 
     if (timeElapsed < 60) {
       setTimeAgo(`방금 전`);
@@ -18,14 +20,14 @@ export const useTimeStamp = (timestamp) => {
       const days = Math.floor(timeElapsed / (60 * 60 * 24));
       setTimeAgo(`${days}일 전`);
     } else {
-      const date = new Date(timestamp).toISOString().slice(0, 10);
+      const date = parsedTime.toISOString().slice(0, 10);
       setTimeAgo(date);
     }
   };
 
   useEffect(() => {
     updateTimeStamp();
-  }, [timestamp]);
+  }, [parsedTime]);
 
   return timeAgo;
 };

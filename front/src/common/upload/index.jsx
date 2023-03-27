@@ -1,2 +1,2 @@
-export *  from "./ProfileImg"
-export * from "./MarketImg"
+export * from "./ProfileImgUpload"
+export * from "./MarketImgUpload"

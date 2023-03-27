@@ -6,7 +6,7 @@ import { useInput } from "../../hooks";
 import { Input } from "../../common/input";
 import { validCheck, duplicateCheck, passwordCheck, InputCheck } from "../../common/inputCheck" 
 import { Button } from "../../common/button";
-import { ProfileImg } from "../../common/upload";
+import { ProfileImgUpload } from "../../common/upload";
 import { CheckBox } from "../../common/checkbox";
 import { SignupWrap, ImageBox, FormWrap, SignupForm, Label } from "./styled";
 import request from "../../utils/request";
@@ -67,7 +67,7 @@ export const Signup = () => {
     <>
     <SignupWrap width="23rem" height="42rem">
       <ImageBox>
-        <ProfileImg width="7rem" height="7rem" src={profileImage} setState={setProfileImage} />
+        <ProfileImgUpload width="7rem" height="7rem" src={profileImage} setState={setProfileImage} />
       </ImageBox>
       <FormWrap>
       <SignupForm onSubmit={handleSubmit}>

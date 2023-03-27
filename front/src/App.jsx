@@ -4,6 +4,7 @@ import { Header } from "./common";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from "./store/user";
 import { CategoryRequest } from "./store";
+import { AppWrapper } from "./styles/App.styled"
 import request from "./utils/request";
 
 const App = () => {
@@ -39,7 +40,7 @@ const App = () => {
   return (
     <>
       <Header categories={data} isLogin={isLogin} user={user} />
-      <AppRouter />
+      <AppWrapper><AppRouter /></AppWrapper>
     </>
   );
 };
