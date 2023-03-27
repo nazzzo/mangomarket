@@ -1,11 +1,14 @@
-import { CommunityWrap, Subject, Content } from './styled'
+import { Community, Subject, Content, KakaoMap } from './styled'
 import { Button } from '../../common/button'
 export const CommunityWrite = () => {
     return (
-        <CommunityWrap>
+        <Community>
             <Subject />
             <Content />
-            <Button color="yellow" fontColor="#fff" fontSize="1.1rem" height="3rem" />
-        </CommunityWrap>
+            <KakaoMap />
+            <Button color="yellow" fontColor="#fff" fontSize="1.1rem" height="3rem" width="7rem">
+                글쓰기
+            </Button>
+        </Community>
     )
 }

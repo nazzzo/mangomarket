@@ -2,7 +2,6 @@ import styled from 'styled-components'
 
 const ContentWrap = styled.div`
     width: 100%;
-    background: red;
     margin-top: 1rem;
 
     & > textarea {
@@ -39,8 +38,27 @@ export const Subject = () => {
     )
 }
 
-export const CommunityWrap = styled.div`
+const CommunityWrap = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
+    & > button {
+        display: block;
+        margin-left: 79%;
+    }
 `
+
+export const Community = ({ children }) => {
+    return <CommunityWrap>{children}</CommunityWrap>
+}
+
+const KakaoMapWrap = styled.div`
+    width: 100%;
+    height: 10rem;
+    background: grey;
+    margin: 3rem 0;
+`
+
+export const KakaoMap = () => {
+    return <KakaoMapWrap>KakaoMap</KakaoMapWrap>
+}
