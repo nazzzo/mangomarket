@@ -1,6 +1,6 @@
 import request from "../../utils/request";
 import { useRef, useState, useEffect } from "react";
-import { useTimeStamp } from "../../hooks"
+// import { useTimeStamp } from "../../hooks"
 import { HomeWrapper, List, ItemWrapper, ItemImage, ItemContent, TextBoxA, TextBoxB, TextBoxC, Count, PageCounter } from "./styled";
 import { Icon } from "@iconify/react";
 

@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 
 export const useTimeStamp = (createdAt) => {
-  const parsedTime = new Date(Date.parse(createdAt))
+  const parsedTime = useMemo(() => new Date(Date.parse(createdAt)), [createdAt])
   const thisTime = new Date().getTime() + (1000 * 60 * 60 * 9);
   const [timeAgo, setTimeAgo] = useState("");
 
-  const updateTimeStamp = () => {
+  const updateTimeStamp = useCallback(() => {
     const timeElapsed = Math.floor((thisTime - parsedTime) / 1000);
 
     if (timeElapsed < 60) {
@@ -23,11 +23,11 @@ export const useTimeStamp = (createdAt) => {
       const date = parsedTime.toISOString().slice(0, 10);
       setTimeAgo(date);
     }
-  };
+  }, [thisTime, parsedTime]);
 
   useEffect(() => {
     updateTimeStamp();
-  }, [parsedTime]);
+  }, [parsedTime, updateTimeStamp]);
 
   return timeAgo;
 };
