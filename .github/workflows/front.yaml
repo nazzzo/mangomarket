@@ -11,6 +11,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Install dependencies
         run: |
+          echo $(lsb_release -a)
           sudo apt-get update
           sudo apt-get install -y nodejs
           echo $(node -v)
