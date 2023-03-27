@@ -14,11 +14,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y nodejs
           sudo apt-get install -y npm
-      # - name: Build React app
-      #   run: |
-      #     cd front
-      #     npm install
-      #     npm run build
+      - name: Build React app
+        run: |
+          cd front
+          npm install
+          npm run build
       - name: Upload build folder to EC2 instance
         env:
           SSH_PEM_FILE: ${{ secrets.FRONT_PEM }}
