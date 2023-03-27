@@ -5,18 +5,18 @@ on:
       - main
 jobs:
   build_and_upload:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Install dependencies
-        run: |
-          echo $(lsb_release -a)
-          sudo apt-get update
-          sudo apt-get install -y nodejs
-          echo $(node -v)
-          sudo apt-get install -y npm
-          echo $(npm -v)
+        uses: actions/checkout@v3
+      # - name: Install dependencies
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y nodejs
+      #     sudo apt-get install -y npm
+      #     echo $(lsb_release -a)
+      #     echo $(node -v)
+      #     echo $(npm -v)
       - name: Build React app
         run: |
           cd front
