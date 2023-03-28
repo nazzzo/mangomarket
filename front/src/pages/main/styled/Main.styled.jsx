@@ -1,9 +1,9 @@
-import styled from "styled-components"
-import { useTimeStamp } from "../../../hooks"
+import styled from 'styled-components'
+import { useTimeStamp } from '../../../hooks'
 
 export const HomeWrapper = styled.div`
-  background-color: #fff;
-  border-bottom: 1px solid #ddd;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
 `
 
 export const List = styled.ul`
@@ -12,7 +12,7 @@ export const List = styled.ul`
 
 export const ItemWrapper = styled.li`
     width: 100%;
-    height: ${({height})=>height};
+    height: ${({ height }) => height};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -47,7 +47,7 @@ export const ItemContent = styled.div`
 
 const TextBoxAStyled = styled.div`
     display: flex;
-    justify-content: left ;
+    justify-content: left;
     height: 20%;
     width: 100%;
     margin-top: 1%;
@@ -63,17 +63,17 @@ const TextBoxAStyled = styled.div`
     }
 `
 const State = styled.span`
-        background-color: ${props=> props.color};
+    background-color: ${(props) => props.color};
 `
 
 const Category = styled.span`
-        background-color: ${props=> props.color};
+    background-color: ${(props) => props.color};
 `
 
 const TextBoxBStyled = styled.span`
     height: 20%;
     font-size: 1.1rem;
-    color: #999;    
+    color: #999;
 `
 
 export const TextBoxD = styled.div`
@@ -88,11 +88,12 @@ export const Count = styled.span`
     display: flex;
     font-size: 1.2rem;
     margin-left: 0.5rem;
-    color: #666; 
+    color: #666;
     & .iconify {
         margin-right: 0.2rem;
- }
+    }
 `
+
 
 export const TextBoxA = ({state, category, subject}) => {
     
@@ -103,8 +104,12 @@ export const TextBoxA = ({state, category, subject}) => {
     </TextBoxAStyled>
 }
 
-export const TextBoxB = ({address, date}) => {
-    return <TextBoxBStyled>{address} ᐧ {useTimeStamp(date)}</TextBoxBStyled>
+export const TextBoxB = ({ address, date }) => {
+    return (
+        <TextBoxBStyled>
+            {address} ᐧ {useTimeStamp(date)}
+        </TextBoxBStyled>
+    )
 }
 
 const HashTags = styled.ul`
@@ -126,9 +131,8 @@ export const TextBoxC = ({hashtag}) => {
     return <HashTags>{hashtags}</HashTags>;
   };
 
-
 export const PageCounter = styled.div`
-        width: 100%;
-        height: 100px;
-        background-color:red;
+    width: 100%;
+    height: 100px;
+    background-color: red;
 `
