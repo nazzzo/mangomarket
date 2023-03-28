@@ -19,22 +19,26 @@ export const ItemWrapper = styled.li`
 `
 
 const ItemImageWrap = styled.div`
-    flex-basis:  ${({size})=> size};
+    flex-basis: ${({ size }) => size};
     padding-left: 2%;
     height: 85%;
     display: flex;
     border-radius: 8px;
 
     & img {
-      object-fit: cover;
-      border-radius: 8px;
-      width: 100%;
-      height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+        width: 100%;
+        height: 100%;
     }
 `
 
-export const ItemImage = ({ size, src}) => {
-    return <ItemImageWrap siez={size}><img src={src} alt="" /></ItemImageWrap>
+export const ItemImage = ({ size, src }) => {
+    return (
+        <ItemImageWrap siez={size}>
+            <img src={src} alt="" />
+        </ItemImageWrap>
+    )
 }
 
 export const ItemContent = styled.div`
@@ -94,14 +98,14 @@ export const Count = styled.span`
     }
 `
 
-
-export const TextBoxA = ({state, category, subject}) => {
-    
-    return <TextBoxAStyled>
-        {state !=="public" ? <State color="yellow">{state}</State> : <></>}
-        <Category color="orange">{category}</Category>
-        <h2>{subject}</h2>
-    </TextBoxAStyled>
+export const TextBoxA = ({ state, category, subject }) => {
+    return (
+        <TextBoxAStyled>
+            {state !== 'public' ? <State color="yellow">{state}</State> : <></>}
+            <Category color="orange">{category}</Category>
+            <h2>{subject}</h2>
+        </TextBoxAStyled>
+    )
 }
 
 export const TextBoxB = ({ address, date }) => {
@@ -117,22 +121,26 @@ const HashTags = styled.ul`
 `
 const HashTag = styled.li`
     margin-right: 10px;
-    background:  ${({ theme, color }) => theme[color].color};
+    background: ${({ theme, color }) => theme[color].color};
     padding: 1.5%;
     border-radius: 4px;
     color: #fff;
     font-size: 0.8rem;
 `
 
-export const TextBoxC = ({hashtag}) => {
-    if (!hashtag) return null;
-    const hashtags = hashtag.split(',').map(hashtag => <HashTag color="green" key={hashtag}>{hashtag}</HashTag>);
-    
-    return <HashTags>{hashtags}</HashTags>;
-  };
+export const TextBoxC = ({ hashtag }) => {
+    if (!hashtag) return null
+    const hashtags = hashtag.split(',').map((hashtag) => (
+        <HashTag color="green" key={hashtag}>
+            {hashtag}
+        </HashTag>
+    ))
+
+    return <HashTags>{hashtags}</HashTags>
+}
 
 export const PageCounter = styled.div`
-        width: 100%;
-        height: 100px;
-        /* background-color:red; */
+    width: 100%;
+    height: 100px;
+    /* background-color:red; */
 `
