@@ -1,5 +1,1 @@
-export * from "./HeaderWrapper.styled"
-export * from "./HeaderWrap.styled"
-export * from "./HeaderLogo.styled"
-export * from "./HeaderMenu.styled"
-export * from "./HeaderRight.styled"
+export * from "./Header.styled"

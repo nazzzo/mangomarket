@@ -1,61 +1,57 @@
-import { NavLink } from "react-router-dom";
-import { HeaderWrapper, HeaderWrap, HeaderLogo, HeaderMenu, HeaderRight } from "./styled"
-// import { memo } from "react";
-
+import { Navigate, NavLink, useNavigate } from "react-router-dom";
+import { HeaderWrapper, HeaderWrap, HeaderLogoWrap, HeaderLogoImgWrap, HeaderLogoImg, HeaderMenuWrap, HeaderMenuul, HeaderMenuli, HeaderFunctionWrap, HeaderSearchWrap, HeaderSearchBox, HeaderSearchInput, HeaderSearchIcon, HeaderAlarmWrap, HeaderAlarm, HeaderUserWrap, HeaderUser } from "./styled"
 
 export const Header = (({ categories, isLogin, user }) => {
-  // const loginFiltered = categories.filter(
-  //   (v) => v.isLogin === null || v.isLogin === isLogin
-  // );
-  // const navigation = loginFiltered.map((category) => {
-  //   return (
-  //     <li key={category.id}>
-  //       <NavLink to={category.path}>{category.name}</NavLink>
-  //     </li>
-  //   );
-  // });
-  // return <ul>{navigation}</ul>;
-const category = [
-    {
-        name: "Products",
-        path: "/products"
-    },
-    {
-        name: "Documents",
-        path: "/documents"
-    },
-    {
-        name: "Application",
-        path: "/application"
-    },
-    {
-        name: "Suppport",
-        path: "/support"
-    },
-    {
-        name: "Forum",
-        path: "/forum"
-    }
-]
+    const navigate = useNavigate()
 
-const categoryList = (category) => {
-    return category.map((item) => {
-        return (
-        <li key={item.path}>
-            <NavLink to={item.path}>{item.name}</NavLink>
-        </li>
-        )
-    })
-}
+    const loginFilter = categories.filter( v => v.isLogin === null || v.isLogin === isLogin )
+
+    const navigation = loginFilter.map( v => { return(
+                <HeaderMenuli key={v.id}>
+                    <NavLink to={v.path}>
+                        {v.name}
+                    </NavLink>
+                </HeaderMenuli>
+            )})
 
     return(
-        <HeaderWrapper>
-            <HeaderWrap>
-                <HeaderLogo>Logo</HeaderLogo>
-                {/* <HeaderMenu category={category} categoryList={categoryList}></HeaderMenu> */}
-                <HeaderRight></HeaderRight>
-            </HeaderWrap>
-        </HeaderWrapper>
-    )
-
-});
+            <HeaderWrapper>
+                <HeaderWrap>
+                    <HeaderLogoWrap>
+                        <HeaderLogoImgWrap onClick={() => {navigate("/")}}>
+                            <HeaderLogoImg src='./mango.png'/>
+                        </HeaderLogoImgWrap>
+                    </HeaderLogoWrap>
+                    <HeaderMenuWrap>
+                        <HeaderMenuul>
+                            {navigation}
+                        </HeaderMenuul>
+                    </HeaderMenuWrap>
+                    <HeaderFunctionWrap>
+                        <HeaderSearchWrap>
+                            <HeaderSearchBox>
+                                <HeaderSearchInput placeholder='검색어를 입력해주세요' type={'search'}/>
+                                <HeaderSearchIcon src='./search.png'/>
+                            </HeaderSearchBox>
+                        </HeaderSearchWrap>
+                        <HeaderAlarmWrap>
+                        <HeaderAlarm src='./alarm.png'/>
+                        </HeaderAlarmWrap>
+                        <HeaderUserWrap>
+                            <HeaderUser src='./user.png'/>
+                        </HeaderUserWrap>
+                    </HeaderFunctionWrap>
+                </HeaderWrap>
+            </HeaderWrapper>
+        )
+        
+    });
+    
+    // <HeaderWrapper>
+    //     <HeaderWrap>
+    //         <HeaderLogo>Logo</HeaderLogo>
+    //         {navigation}
+    //         {/* <HeaderMenu>{}</HeaderMenu> */}
+    //         <HeaderRight></HeaderRight>
+    //     </HeaderWrap>
+    // </HeaderWrapper>

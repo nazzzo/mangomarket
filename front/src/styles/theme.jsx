@@ -41,6 +41,9 @@ export const GlobalTheme = ({ children }) => {
       color: "#8257e5",
       hover: "#9b4dca",
       active: "#6c40bb",
+    },
+    header: {
+      color: "#ececec"
     }
   };
   

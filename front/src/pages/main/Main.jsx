@@ -9,29 +9,28 @@ export const Main = () => {
     const [count, setCount] = useState(0)
     const [boardList, setBoardList] = useState([])
 
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await request.get(`boards/?count=${count}`);
-        // console.log(response.data)
-        // console.log(`count:::`, count)
-        const newBoardList = response.data;
-        if (count === 0) {
-          setBoardList(newBoardList);
-        } else {
-          setBoardList((prevList) => [...prevList, ...newBoardList]);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await request.get(`boards/?count=${count}`);
+                const newBoardList = response.data;
+                if (count === 0) {
+                    setBoardList(newBoardList);
+                } else {
+                    setBoardList((prevList) => [...prevList, ...newBoardList]);
+                }
+            } catch(error) {
+                console.log(error)
+            }
         }
         fetchData()
-    }, [count])
+    }, [ count ])
 
     const handleIntersection = (entries) => {
         if (entries[0].intersectionRatio === 1) {
             setCount((prevCount) => prevCount + 1)
         }
     }
-
-  };
   // console.log(boardList)
 
     useEffect(() => {
