@@ -117,6 +117,7 @@ export const HeaderSearchInput = styled.input`
 `
 
 export const HeaderSearchIcon = styled.img`
+    cursor: pointer;
     position: absolute;
     top: 0.25rem;
     right: 0.5rem;
@@ -132,6 +133,7 @@ export const HeaderAlarmWrap = styled.div`
 `
 
 export const HeaderAlarm = styled.img`
+    cursor: pointer;
     height: 35%;
 `
 
@@ -144,6 +146,7 @@ export const HeaderUserWrap = styled.div`
 `
 
 export const HeaderUser = styled.img`
+    cursor: pointer;
     height: 60%;
     border-radius: 50%;
 `
