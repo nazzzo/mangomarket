@@ -130,5 +130,5 @@ export const TextBoxC = ({hashtag}) => {
 export const PageCounter = styled.div`
         width: 100%;
         height: 100px;
-        background-color:red;
+        /* background-color:red; */
 `
