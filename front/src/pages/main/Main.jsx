@@ -3,6 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import { HomeWrapper, List, ItemWrapper, ItemImage, ItemContent, TextBoxA, TextBoxB, TextBoxC, TextBoxD, Count, PageCounter } from "./styled";
 import { Icon } from "@iconify/react";
 
+
 export const Main = () => {
   const pageCountRef = useRef(null);
   const [count, setCount] = useState(0);
@@ -40,7 +41,6 @@ export const Main = () => {
       observer.disconnect();
     };
   }, []);
-
 
     return (
         <HomeWrapper>
