@@ -1,19 +1,13 @@
 import { useState, useRef } from "react";
 import request from "../../utils/request";
-import {
-  MarketImageWrapper,
-  MarketImageUploader,
-  ImageCount,
-  MarketImage,
-  Input,
-} from "./styled";
+import { MarketImageWrapper, MarketImageUploader, ImageCount, MarketImage, Input, } from "./styled";
 import { Icon } from "@iconify/react";
 import config from "../../config";
 
-export const MarketImgUpload = ({ width, height }) => {
-  const [uploadedImages, setUploadedImages] = useState([]);
+export const MarketImgUpload = ({ width, height, uploadedImages, setUploadedImages, thumbnailIndex, setThumbnailIndex }) => {
+  // const [uploadedImages, setUploadedImages] = useState([]);
+    // const [thumbnailIndex, setThumbnailIndex] = useState(0);
   const [imageCount, setImageCount] = useState(0);
-  const [thumbnailIndex, setThumbnailIndex] = useState(0);
 
   const fileInputRef = useRef(null);
 
@@ -24,7 +18,7 @@ export const MarketImgUpload = ({ width, height }) => {
   const handleThumbnailClick = (index) => {
     setThumbnailIndex(index);
   };
-  // console.log(`thumb:::`, thumbnailIndex);
+  console.log(`thumb:::`, thumbnailIndex);
 
   const handleFileChange = async (e) => {
     const files = e.target.files;

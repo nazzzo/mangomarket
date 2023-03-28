@@ -13,8 +13,8 @@ export const GlobalTheme = ({ children }) => {
       active: "#a71d2a",
     },
     green: {
-      color: "#218838",
-      hover: "#28a745",
+      color: "#28a745",
+      hover: "#218838",
       active: "#1e7e34",
     },
     yellow: {

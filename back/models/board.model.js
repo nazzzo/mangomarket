@@ -1,4 +1,3 @@
-const { imgport, host } = require('../config')
 module.exports = (sequelize, Sequelize) => {
     class Board extends Sequelize.Model {
         static createTable() {
@@ -24,7 +23,7 @@ module.exports = (sequelize, Sequelize) => {
                     location: {
                         type: Sequelize.TEXT(),
                         allowNull: true,
-                    }
+                    },
                 },
                 {
                     sequelize,

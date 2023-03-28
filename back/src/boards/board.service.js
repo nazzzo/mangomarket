@@ -103,8 +103,8 @@ class BoardService {
             console.error(e);
         }
     }
-    async postWrite({ email, subject, content, hashtag, category }) {
-        console.log(`serv :`, { email, subject, content, hashtag, category });
+    async postWrite({ email, subject, content, hashtag, category, images, thumbnail }) {
+        console.log(`serv :`, { email, subject, content, hashtag, category, images, thumbnail });
         try {
             if (!email || !subject || !content) throw "내용이 없습니다";
             const { username } = await this.userRepository.getUserById(email)
@@ -115,11 +115,21 @@ class BoardService {
                 content,
                 hashtag,
                 category,
-                // images,
             };
             const write = await this.boardRepository.createBoard(boarddata);
             write.username = username
-            console.log(`postServ:::`, write)
+            console.log(write.id)
+            // images []
+            // thumbnail num
+            const arr = []
+            images.map((v, index) => {
+                const obj = {}
+                arr[index] = obj
+                arr[index].image = v
+                thumbnail === index ? arr[index].thumbnail = true : arr[index].thumbnail = false
+                arr[index].boardid = write.id
+            })
+            await this.boardRepository.uploadImage(arr)
             return write;
         } catch (e) {
             throw new this.BadRequest(e);
