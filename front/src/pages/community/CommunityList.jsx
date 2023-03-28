@@ -19,17 +19,19 @@ export const CommunityList = () => {
         getData()
     }, [])
 
+    if (boardList === []) return
+
     return (
         <CommunityWrapper>
             {boardList.map((board) => (
                 <List>
                     <ItemWrapper>
-                        <ItemContent key={board.id}>
+                        <ItemContent>
                             <TextBoxA
                                 subject={board.subject}
                                 content={board.content}
                                 date={board.createdAt}
-                            ></TextBoxA>
+                            />
                         </ItemContent>
                     </ItemWrapper>
                 </List>

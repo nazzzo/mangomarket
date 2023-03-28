@@ -43,7 +43,7 @@ const TextBoxASubject = styled.h2`
     padding: 2% 3%;
     margin-right: 0.8rem;
 `
-const TextBoxAContent = styled.span`
+const TextBoxAContent = styled.div`
     font-size: 1.2rem;
     height: 60%;
     margin-left: 0.8rem;
