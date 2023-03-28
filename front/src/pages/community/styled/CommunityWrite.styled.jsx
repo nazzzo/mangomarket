@@ -4,19 +4,15 @@ const ContentWrap = styled.div`
     width: 100%;
     margin-top: 1rem;
 
-    & > textarea {
+    /* & .input-style {
         width: 100%;
         height: 30rem;
         border: none;
-    }
+    } */
 `
 
-export const Content = () => {
-    return (
-        <ContentWrap>
-            <textarea placeholder="내용을 입력해주세요" />
-        </ContentWrap>
-    )
+export const Content = ({ children }) => {
+    return <ContentWrap>{children}</ContentWrap>
 }
 
 const SubjectWrap = styled.div`
