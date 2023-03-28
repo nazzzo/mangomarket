@@ -1,26 +1,39 @@
-import request from "../../utils/request";
-import { useRef, useState, useEffect } from "react";
-// import { useTimeStamp } from "../../hooks"
-import { HomeWrapper, List, ItemWrapper, ItemImage, ItemContent, TextBoxA, TextBoxB, TextBoxC, Count, PageCounter } from "./styled";
-import { Icon } from "@iconify/react";
+import request from '../../utils/request'
+import { useRef, useState, useEffect } from 'react'
+import { useTimeStamp } from '../../hooks'
+import {
+    HomeWrapper,
+    List,
+    ItemWrapper,
+    ItemImage,
+    ItemContent,
+    TextBoxA,
+    TextBoxB,
+    TextBoxC,
+    Count,
+    PageCounter,
+} from './styled'
+import { Icon } from '@iconify/react'
 
 export const Main = () => {
     const pageCountRef = useRef(null)
     const [count, setCount] = useState(0)
     const [boardList, setBoardList] = useState([])
 
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await request.get(`boards/?count=${count}`);
-        // console.log(response.data)
-        // console.log(`count:::`, count)
-        const newBoardList = response.data;
-        if (count === 0) {
-          setBoardList(newBoardList);
-        } else {
-          setBoardList((prevList) => [...prevList, ...newBoardList]);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await request.get(`boards/?count=${count}`)
+                console.log(response.data)
+                const newBoardList = response.data
+                if (count === 0) {
+                    setBoardList(newBoardList)
+                } else {
+                    setBoardList((prevList) => [...prevList, ...newBoardList])
+                }
+            } catch (error) {
+                console.log(error)
+            }
         }
         fetchData()
     }, [count])
@@ -30,9 +43,6 @@ export const Main = () => {
             setCount((prevCount) => prevCount + 1)
         }
     }
-
-  };
-  // console.log(boardList)
 
     useEffect(() => {
         const observer = new IntersectionObserver(handleIntersection, { threshold: 1, root: null })
