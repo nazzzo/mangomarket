@@ -23,6 +23,11 @@ export const HeaderWrap = styled.div`
     align-items: center;
     justify-content: space-between;
     background-color: #d2bfbf;
+    
+    @media screen and (max-width: 480px){
+        width: 30rem;
+        background-color: #fff;
+    }
 `
 
 export const HeaderLogoWrap = styled.div`
@@ -32,6 +37,10 @@ export const HeaderLogoWrap = styled.div`
     min-width: 4rem;
     width: 10%;
     height: inherit;
+
+    @media screen and (max-width: 480px){
+        width: 5rem;
+    }
 `
 
 export const HeaderLogoImgWrap = styled.div`
@@ -47,6 +56,11 @@ export const HeaderLogoImg = styled.img`
 export const HeaderMenuWrap = styled.div`
     width: 60%;
     height: inherit;
+
+    @media screen and (max-width: 480px){
+        display: none;
+        width: 0;
+    }
 `
 
 export const HeaderMenuul = styled.ul`
@@ -90,6 +104,10 @@ export const HeaderFunctionWrap = styled.div`
     display: flex;
     width: 30%;
     height: inherit;
+
+    @media screen and (max-width: 480px){
+        width: 9rem;
+    }
 `
 
 export const HeaderSearchWrap = styled.div`
@@ -98,6 +116,10 @@ export const HeaderSearchWrap = styled.div`
     align-items: center;
     min-width: 13rem;
     height: 100%;
+
+    @media screen and (max-width: 480px){
+        min-width: 0;
+    }
 `
 
 export const HeaderSearchBox = styled.div`
@@ -114,6 +136,10 @@ export const HeaderSearchInput = styled.input`
     background-color: #efefef;
     box-sizing: border-box;
     padding: 0 0.5rem;
+
+    @media screen and (max-width: 480px){
+        display: none;
+    }
 `
 
 export const HeaderSearchIcon = styled.img`
@@ -122,6 +148,10 @@ export const HeaderSearchIcon = styled.img`
     top: 0.25rem;
     right: 0.5rem;
     height: 75%;
+
+    @media screen and (max-width: 480px){
+        right: 0; 
+    }
 `
 
 export const HeaderAlarmWrap = styled.div`
@@ -130,6 +160,10 @@ export const HeaderAlarmWrap = styled.div`
     align-items: center;
     width: 4rem;
     height: 100%;
+
+    @media screen and (max-width: 480px){
+        width: 5rem; 
+    }
 `
 
 export const HeaderAlarm = styled.img`
@@ -143,10 +177,18 @@ export const HeaderUserWrap = styled.div`
     align-items: center;
     width: 5.5rem;
     height: 100%;
+    
+    @media screen and (max-width: 480px){
+        width: 2.5rem;
+    }
 `
 
 export const HeaderUser = styled.img`
     cursor: pointer;
     height: 60%;
     border-radius: 50%;
+
+    @media screen and (max-width: 480px){
+        display: none;
+    }
 `
