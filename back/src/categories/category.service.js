@@ -16,6 +16,7 @@ class CategoryService {
     async getBoardCategory() {
       try {
           const result = await this.categoryRepository.findBoardCategory();
+          console.log(`result:::`, result);
           const category = result.map(v => v.category);
           if (result.length === 0) throw "내용이 없습니다";
           return category;

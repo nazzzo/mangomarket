@@ -1,7 +1,8 @@
 class BoardRepository {
-    constructor({ sequelize, Board, Temp, History, Hashtag, Comment, User, Hash, Liked, PointUp }) {
+    constructor({ sequelize, Board, BoardImage, Temp, History, Hashtag, Comment, User, Hash, Liked, PointUp }) {
         this.sequelize = sequelize;
         this.Board = Board;
+        this.BoardImage = BoardImage;
         this.Temp = Temp;
         this.History = History;
         this.Hashtag = Hashtag;
@@ -53,7 +54,7 @@ class BoardRepository {
             FROM Board AS A 
             LEFT JOIN User AS B ON A.email = B.email
             LEFT JOIN Hashtag AS C ON A.id = C.boardid
-            LEFT JOIN BoardImage AS D ON A.id = D.boardid
+            LEFT JOIN BoardImage AS D ON A.id = D.boardid WHERE D.thumbnail = 1
             ${where}${categoryKey}
             GROUP BY A.id, D.id
             ${sortKey}
@@ -153,18 +154,32 @@ ORDER BY SUBSTRING_INDEX(PATH, '-', 1)*1, SUBSTRING_INDEX(PATH, '-', -1)*1;`);
         return nextPost;
     }
     async createBoard(boarddata) {
+        console.log(`boarddata:::`, boarddata)
         try {
-            const { email, username, subject, content, hashtag, category, image } = boarddata;
+            const { email, username, subject, content, hashtag, category } = boarddata;
             const createBoard = await this.Board.create(boarddata, { plain: true });
-            // const addHash = hashtag.map((tagname) => this.Hash.findOrCreate({ where: { tagname } }));
-            // const tagResult = await Promise.all(addHash);
-            // await createBoard.addHashes(tagResult.map((v) => v[0]));
-            const boardid = createBoard.dataValues.id;
+            const addHash = hashtag.map((tagname) => this.Hash.findOrCreate({ where: { tagname } }));
+            const tagResult = await Promise.all(addHash);
+            await createBoard.addHashes(tagResult.map((v) => v[0]));
+            // const boardid = createBoard.dataValues.id;
             return createBoard.dataValues;
         } catch (e) {
             throw new Error(e);
         }
     }
+    async uploadImage(images) {
+        console.log(`123123:::`, images)
+        try {
+            const imageData = images.map(img => 
+                this.BoardImage.create(img)
+                )
+            const promise = await Promise.all(imageData)
+            console.log(promise)
+        } catch (e) {
+            throw new Error(e)
+        }
+    }
+
     async getState(id) {
         try {
             const board = await this.Board.findOne({ where: { id: id } });

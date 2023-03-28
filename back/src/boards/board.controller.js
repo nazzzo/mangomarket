@@ -51,18 +51,15 @@ class BoardController {
         }
     }
     async postWrite(req, res, next) {
+        console.log(req.body)
         try {
             if (!req.body.subject) throw new Error("제목이 없습니다");
             if (!req.body.content) throw new Error("내용이 없습니다");
-            const { email, subject, content, hashtag, category } = req.body;
+            const { email, subject, content, hashtag, category, images, thumbnail } = req.body;
             const response = await this.boardService.postWrite({
-                email,
-                subject,
-                content,
-                category,
-                hashtag,
+                email, subject, content, category, hashtag, images, thumbnail,
             });
-            console.log(`postCon:::`, response)
+            // console.log(`postCon:::`, response)
             res.status(201).json(response);
         } catch (e) {
             next(e);

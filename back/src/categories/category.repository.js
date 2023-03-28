@@ -13,7 +13,10 @@ class CategoryRepository {
   }
   async findBoardCategory() {
     try {
-      const findAll = await this.BoardCategory.findAll();
+      const findAll = await this.BoardCategory.findAll({ 
+        raw: true,
+        order: [['id', 'ASC']]
+       });
       return findAll;
     } catch (e) {
       throw new Error(e);
