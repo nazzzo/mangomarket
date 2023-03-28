@@ -2,7 +2,7 @@ import request from "../../utils/request";
 import { useRef, useState, useEffect } from "react";
 import { HomeWrapper, List, ItemWrapper, ItemImage, ItemContent, TextBoxA, TextBoxB, TextBoxC, TextBoxD, Count, PageCounter } from "./styled";
 import { Icon } from "@iconify/react";
-
+import { navigation } from "react-router-dom"
 
 export const Main = () => {
   const pageCountRef = useRef(null);
@@ -42,11 +42,15 @@ export const Main = () => {
     };
   }, []);
 
+  const handleClick = () => {
+
+  }
+
     return (
         <HomeWrapper>
             <List>
                 {boardList.map((board) => (
-                    <ItemWrapper height="220px" key={board.id}>
+                    <ItemWrapper height="220px" key={board.id} onClick={handleClick}>
                         <ItemImage size="220px" src={board.image} />
                         <ItemContent key={board.id}>
                             <TextBoxA
