@@ -18,13 +18,24 @@ export const ItemWrapper = styled.li`
     justify-content: center;
 `
 
-export const ItemImage = styled.img`
-    min-width: 30%;
-    margin-left: 2%;
+const ItemImageWrap = styled.div`
+    flex-basis:  ${({size})=> size};
+    padding-left: 2%;
     height: 85%;
     display: flex;
     border-radius: 8px;
+
+    & img {
+      object-fit: cover;
+      border-radius: 8px;
+      width: 100%;
+      height: 100%;
+    }
 `
+
+export const ItemImage = ({ size, src}) => {
+    return <ItemImageWrap siez={size}><img src={src} alt="" /></ItemImageWrap>
+}
 
 export const ItemContent = styled.div`
     width: 70%;
@@ -65,10 +76,9 @@ const TextBoxBStyled = styled.span`
     color: #999;    
 `
 
-export const TextBoxC = styled.div`
+export const TextBoxD = styled.div`
     display: flex;
-    height: 60%;
-    padding-right: 2%;
+    padding-right: 5%;
     justify-content: flex-end;
     align-items: flex-end;
     margin-top: auto;
@@ -85,8 +95,9 @@ export const Count = styled.span`
 `
 
 export const TextBoxA = ({state, category, subject}) => {
+    
     return <TextBoxAStyled>
-        <State color="gray">{state}</State>
+        {state !=="public" ? <State color="yellow">{state}</State> : <></>}
         <Category color="orange">{category}</Category>
         <h2>{subject}</h2>
     </TextBoxAStyled>
@@ -95,6 +106,25 @@ export const TextBoxA = ({state, category, subject}) => {
 export const TextBoxB = ({address, date}) => {
     return <TextBoxBStyled>{address} ᐧ {useTimeStamp(date)}</TextBoxBStyled>
 }
+
+const HashTags = styled.ul`
+    display: flex;
+`
+const HashTag = styled.li`
+    margin-right: 10px;
+    background:  ${({ theme, color }) => theme[color].color};
+    padding: 1.5%;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 0.8rem;
+`
+
+export const TextBoxC = ({hashtag}) => {
+    if (!hashtag) return null;
+    const hashtags = hashtag.split(',').map(hashtag => <HashTag color="green" key={hashtag}>{hashtag}</HashTag>);
+    
+    return <HashTags>{hashtags}</HashTags>;
+  };
 
 
 export const PageCounter = styled.div`

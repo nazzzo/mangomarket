@@ -8,9 +8,9 @@ const config = {
   salt: process.env.SALT,
   env: process.env.NODE_ENV || "development",
   port: process.env.PORT || "",
-  host: process.env.HOST || "127.0.0.1",
-  redirect_host: process.env.REDIRECT_HOST || "localhost",
-  redirect_port: process.env.REDIRECT_PORT || "3000",
+  host: process.env.HOST || "",
+  redirect_host: process.env.REDIRECT_HOST || "",
+  redirect_port: process.env.REDIRECT_PORT || "",
   imgport: process.env.IMGPORT,
   db: {
     development: {
