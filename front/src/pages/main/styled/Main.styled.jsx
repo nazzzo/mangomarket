@@ -16,6 +16,7 @@ export const ItemWrapper = styled.li`
     display: flex;
     align-items: center;
     justify-content: center;
+    border-bottom: 1px solid #eee;
 `
 
 const ItemImageWrap = styled.div`

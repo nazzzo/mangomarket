@@ -1,4 +1,13 @@
-import { USER_LOGIN, USER_LOGOUT, USER_REQUEST_ERROR, USER_IMAGE_UPLOAD, USER_INFO_SAVE, USER_INFO_REMOVE } from "./types"
+import {
+  USER_LOGIN,
+  USER_LOGOUT,
+  USER_REQUEST_ERROR,
+  USER_IMAGE_UPLOAD,
+  USER_INFO_SAVE,
+  USER_INFO_REMOVE,
+  USER_LIKE_ADD,
+  USER_LIKE_REMOVE
+} from "./types";
 
 export const userLogin = (isLogin, user) => ({
   type: USER_LOGIN,
@@ -22,15 +31,24 @@ export const userImageUpload = (payload) => ({
   payload,
 });
 
+export const userLikeAdd = (payload) => ({
+  type: USER_LIKE_ADD,
+  payload,
+});
+
+export const userLikeRemove = (payload) => ({
+  type: USER_LIKE_REMOVE,
+  payload,
+});
 
 export const saveUserInfo = (email, userpw) => ({
   type: USER_INFO_SAVE,
   payload: {
     email,
-    userpw
-  }
-})
+    userpw,
+  },
+});
 
 export const removeUserInfo = () => ({
   type: USER_INFO_REMOVE,
-})
+});

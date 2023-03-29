@@ -84,6 +84,10 @@ module.exports = (sequelize, Sequelize) => {
         foreignKey: "email",
       });
       this.belongsToMany(models.Board, {
+        through: "Hit",
+        foreignKey: "email",
+      });
+      this.belongsToMany(models.Board, {
         through: "Liked",
         foreignKey: "email",
       });

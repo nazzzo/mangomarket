@@ -36,6 +36,14 @@ export const UserInfoWrap = styled.div`
   }
 `
 
+export const WriterInfoWrap = styled.div`
+  display: flex;
+  align-items: center;
+  padding-left: 2%;
+  padding-bottom: 4%;
+  border-bottom: 1px solid #ccc;
+`
+
 export const UserImg = styled.img`
   width: ${(props) => props.imgSize};
   height: ${(props) => props.imgSize};

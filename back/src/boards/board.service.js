@@ -29,7 +29,7 @@ class BoardService {
     }
     async getMain(id) {
         try {
-            id = { id: `A.userid = '${id}'`, sql: ``, order: `A.id` };
+            id = { id: `A.email = '${id}'`, sql: ``, order: `A.id` };
             const main = await this.boardRepository.findMain(id);
             if (main) {
                 const tags = main
@@ -71,34 +71,17 @@ class BoardService {
             throw new this.BadRequest(e);
         }
     }
-    async getView(id, idx, userid) {
+    async getView(id, email) {
         try {
-            console.log(`view::::`, id, idx, userid);
-            const currentState = await this.boardRepository.getState(idx);
+            const currentState = await this.boardRepository.getState(id);
+            console.log("current state:::", currentState);
             if (currentState === "blind") {
-                console.log("current state:::", currentState);
                 throw new Error("차단된 게시글입니다");
             }
-            if (userid !== "null") {
-                if (!this.viewObj["hit"]) this.viewObj["hit"] = [];
-                if (this.viewObj["hit"].indexOf(`${userid}+${idx}`) === -1 && id !== userid) {
-                    this.viewObj["hit"].push(`${userid}+${idx}`);
-                    await this.boardRepository.updatehit(idx);
-                }
-                console.log(this.viewObj["hit"]);
-                setTimeout(() => {
-                    this.viewObj["hit"].splice(this.viewObj["hit"].indexOf(`${userid}+${idx}`), 1);
-                }, 200000);
-            }
-            if (userid !== "null" && userid !== "guest") await this.boardRepository.updatehistory(userid, idx);
-
-            const [view, prevPost, nextPost, comment] = await this.boardRepository.findOne(id, idx);
-            let { userImg: test } = view;
-            if (test.indexOf("http") === -1) {
-                test = `http://${config.host}:${config.IMGPORT}/${test}`;
-            }
-            const data = { ...view, prevPost, nextPost, userImg: test };
-            return [data, comment];
+            const view = await this.boardRepository.findOne(id)
+            if (email !== "guest") await this.boardRepository.updatehit(id, email)
+            console.log(view)
+            return view
         } catch (e) {
             console.error(e);
         }
@@ -245,11 +228,11 @@ class BoardService {
         }
     }
 
-    async postLike(boardid, userid) {
-        console.log(`serv :`, { boardid, userid });
+    async postLike(boardid, email) {
+        console.log(`serv :`, { boardid, email });
         try {
-            if (!boardid || !userid) throw "추천 실패";
-            const [count, check] = await this.boardRepository.createLike({ boardid, userid });
+            if (!boardid || !email) throw "추천 실패";
+            const [count, check] = await this.boardRepository.createLike({ boardid, email });
             return [count, check];
         } catch (e) {
             throw new this.BadRequest(e);
