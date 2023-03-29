@@ -3,23 +3,21 @@ import { Input } from "../../../common/input";
 import { useTimeStamp } from "../../../hooks";
 
 export const ViewWrapper = styled.div`
-  width: 100%;
-  padding: 30px;
+    width: 100%;
+    padding: 30px;
 `
 
-const LocalTime = styled.ul`
-`
+const LocalTime = styled.ul``
 
-const Nickname = styled.span`
-
-`
+const Nickname = styled.span``
 
 const Img = styled.img`
-  width: 5rem;
-  height: 5rem;
+    width: 5rem;
+    height: 5rem;
 `
 
 const ProfileWrapper = styled.div`
+
   display: flex;
   
   
@@ -36,23 +34,23 @@ export const Profile = ({username, date}) => {
       </LocalTime>
     </ProfileWrapper>
   )
+
 }
 
 const Content = styled.div`
-  margin-top: 2rem;
-  margin-bottom: 3rem;
-  min-height: 10rem;
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+    min-height: 10rem;
 `
 
 const Subject = styled.h3`
-  margin-top: 4rem;
+    margin-top: 4rem;
 `
 
 const ContentWrapper = styled.div`
-  width: 100%;
-  border-bottom: 1px solid;
+    width: 100%;
+    border-bottom: 1px solid;
 `
-
 export const ViewContent = ({children, subject, content}) => {
   return (
     <ContentWrapper>
@@ -105,7 +103,7 @@ export const Comment = () => {
 }
 
 export const Buttons = styled.div`
-  display: flex;
-  justify-content: right;
-  margin-bottom: 2rem;
+    display: flex;
+    justify-content: right;
+    margin-bottom: 2rem;
 `
