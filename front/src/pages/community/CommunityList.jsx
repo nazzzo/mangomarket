@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom"
 export const CommunityList = () => {
     const navigate = useNavigate()
     const [boardList, setBoardList] = useState([])
-    const navigate = useNavigate()
     useEffect(() => {
         const getData = async () => {
             try {

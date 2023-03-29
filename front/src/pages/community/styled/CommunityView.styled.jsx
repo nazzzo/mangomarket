@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useTimeStamp } from "../../../hooks";
 
 export const ViewWrapper = styled.div`
   width: 100%;
@@ -19,18 +20,18 @@ const Img = styled.img`
 
 const ProfileWrapper = styled.div`
   display: flex;
-  align-content: ;
+  
   
 `
 
-export const Profile = () => {
+export const Profile = ({username, date}) => {
   return (
     <ProfileWrapper>
       <Img />
-      <Nickname>이정민</Nickname>
+      <Nickname>{username}</Nickname>
       <LocalTime>
         <li>논현 고잔동</li>
-        <li>3시간 전</li>
+        <li>{useTimeStamp(date)}</li>
       </LocalTime>
     </ProfileWrapper>
   )
@@ -51,14 +52,14 @@ const ContentWrapper = styled.div`
   border-bottom: 1px solid;
 `
 
-export const ViewContent = ({children}) => {
+export const ViewContent = ({children, subject, content}) => {
   return (
     <ContentWrapper>
       <Subject>
-        저녁에 같이 산책하실분?
+        {subject}
       </Subject>
       <Content>
-        산책 가즈아
+        {content}
       </Content>
       {children}
     </ContentWrapper>

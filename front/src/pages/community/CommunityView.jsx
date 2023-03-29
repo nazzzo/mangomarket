@@ -1,13 +1,14 @@
 import { useParams } from "react-router-dom"
 import { Button } from "../../common/button"
 import request from "../../utils/request"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { ViewWrapper, Profile, ViewContent, Comment, Buttons } from "./styled/CommunityView.styled"
 
 
 export const CommunityView = () => {
 
   const {id} = useParams()
+  const [view, setView] = useState()
   console.log(id)
 
   useEffect(()=>{
@@ -15,18 +16,19 @@ export const CommunityView = () => {
       try{
         const response = await request.get(`/community/${id}`)
         console.log(response)
+        setView(response.data)
       } catch(e){
         throw new Error(e)
       }
       }
     getWriting()
   }, [])
-
-
+  console.log(view)
   return (
+  
     <ViewWrapper>
-      <Profile />
-      <ViewContent>
+      { view ? (<><Profile username={view.username} date={view.createdAt}/>
+      <ViewContent subject={view.subject} content={view.content} >
       <Buttons>
         <Button                     
           color="yellow"
@@ -42,6 +44,8 @@ export const CommunityView = () => {
           width="7rem">삭제</Button>
       </Buttons>
       </ViewContent>
+      </>): (<></>)
+      }
       <Comment />
     </ViewWrapper>
   )
