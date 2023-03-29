@@ -1,8 +1,20 @@
 class CommunityService {
-    constructor({ communityRepository, config }) {
+    constructor({ communityRepository, config, userRepository }) {
         this.communityRepository = communityRepository
         this.config = config
         this.BadRequest = config.exception.BadRequest
+        this.userRepository = userRepository
+    }
+
+    async getWriting({id}){
+        try{
+            const view = await this.communityRepository.findOne({id})
+            const {subject, content, email, createdAt} = view
+            const {username} = await this.userRepository.getUserById(email)
+            return {username, subject, content, createdAt}
+        } catch(e){
+            throw new this.BadRequest(e)
+        }
     }
 
     async getList() {

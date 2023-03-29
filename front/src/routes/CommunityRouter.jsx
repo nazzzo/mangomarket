@@ -6,7 +6,7 @@ export const CommunityRouter = () => {
       <Routes>
         <Route path="" element={<CommunityList />}/>
         <Route path="write" element={<CommunityWrite />} />
-        <Route path="view/:id" element={<CommunityView />}/>
+        <Route path=":id" element={<CommunityView />}/>
       </Routes>
   )
 }

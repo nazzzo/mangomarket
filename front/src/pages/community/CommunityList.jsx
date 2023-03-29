@@ -1,8 +1,10 @@
 import request from '../../utils/request'
 import { CommunityWrapper, List, ItemWrapper, ItemContent, TextBoxA } from './styled'
 import { useState, useEffect } from 'react'
+import { useNavigate } from "react-router-dom"
 
 export const CommunityList = () => {
+    const navigate = useNavigate()
     const [boardList, setBoardList] = useState([])
 
     useEffect(() => {
@@ -25,7 +27,7 @@ export const CommunityList = () => {
         <CommunityWrapper>
             {boardList.map((board) => (
                 <List>
-                    <ItemWrapper>
+                    <ItemWrapper key={board.id} onClick={(()=>{navigate(`/community/${board.id}`)})}>
                         <ItemContent>
                             <TextBoxA
                                 subject={board.subject}

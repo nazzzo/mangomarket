@@ -2,13 +2,24 @@ class CommunityRepository {
     constructor({ Community }) {
         this.Community = Community
     }
+
+    async findOne({id}){
+        try {
+            const response = await this.Community.findOne({ raw: true, where: {id} })
+            console.log(response)
+            return response
+        } catch(e){
+            throw new Error(e)
+        }
+    }
+
     async createWriting({subject, content}){
-      try {
+        try {
         const create = await this.Community.create({subject, content})
         return create
-      } catch (e){
+        } catch (e){
         throw new Error(e)
-      }
+        }
     }
     async findAll() {
         try {
