@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Input } from "../../../common/input";
 import { useTimeStamp } from "../../../hooks";
 
 export const ViewWrapper = styled.div`
@@ -67,13 +68,38 @@ export const ViewContent = ({children, subject, content}) => {
 }
 
 const CommentWrapper = styled.div`
-  margin-top: 3rem;
+  margin-top: 2rem;
+`
+
+const CommentInput = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+const ContentInput = styled.input`
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-right: none;
+`
+
+const CommentButton = styled.button`
+  background-color: #4CF504;
+  color: black;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
 `
 
 export const Comment = () => {
   return (
     <CommentWrapper>
-      같이가요
+      <>같이가요</>
+      <CommentInput>
+        <ContentInput />
+        <CommentButton>button</CommentButton>
+      </CommentInput>
     </CommentWrapper>
   )
 }
