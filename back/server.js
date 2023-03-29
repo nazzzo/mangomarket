@@ -5,6 +5,7 @@ const PORT = config.port
 
 app.listen(PORT, async () => {
     await sequelize.sync({ force: false })
+
     // await sequelize.models.Category.create({ path: '/', name: 'Home' })
     // await sequelize.models.Category.create({ path: '/signup', name: 'Signup', isLogin: false })
     // await sequelize.models.Category.create({ path: '/login', name: 'Login', isLogin: false })

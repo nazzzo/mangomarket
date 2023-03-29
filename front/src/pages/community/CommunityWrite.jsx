@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+
 import { Community, Subject, Content, KakaoMap, CommunityForm } from './styled'
 import { Input } from '../../common/input'
 import { TextArea } from '../../common/textarea'
@@ -30,7 +30,6 @@ export const CommunityWrite = () => {
         }
         navigate('/Community')
     }
-
     return (
         <Community>
             <CommunityForm width="100%" height="33rem" onSubmit={handleSubmit}>
