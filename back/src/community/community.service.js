@@ -4,7 +4,14 @@ class CommunityService {
       this.config = config;
       this.BadRequest = config.exception.BadRequest;
     }
-  
+    async postWrite({subject, content}){
+      try{
+        const writing = await this.communityRepository.createWriting({subject, content})
+        return writing
+      } catch(e){
+        throw new this.BadRequest(e)
+      }
+    }
     async getList() {
       try {
         const list = await this.communityRepository.findAll();

@@ -2,6 +2,18 @@ class CommunityController {
     constructor({ communityService }) {
       this.communityService = communityService;
     }
+    async postWriting(req, res, next){
+      try{
+        console.log(req.body)
+        const {subject, content} = req.body
+        const response = await this.communityService.postWrite({
+          subject,
+          content,
+        })
+      } catch(e){
+        next(e)
+      }
+    }
     async getList(req, res, next) {
       try {
         const response = await this.communityService.getList();

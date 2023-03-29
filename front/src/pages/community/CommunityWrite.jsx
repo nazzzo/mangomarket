@@ -3,14 +3,21 @@ import { Community, Subject, Content, KakaoMap, CommunityForm } from './styled'
 import { Input } from '../../common/input'
 import { Button } from '../../common/button'
 import { useInput } from '../../hooks'
+import request from '../../utils/request'
 export const CommunityWrite = () => {
     const [subjectValue, setSubjectValue] = useState('')
     const [contentValue, setContentValue] = useState('')
     const subject = useInput('')
-    console.log(subject.value)
-    const handleSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log('subject:::', subjectValue)
+        console.log('subject:::', subject.value)
+        console.log('content', contentValue)
+        const response = await request.post('/community/write', {
+            subject: subject.value,
+            content: contentValue
+        })
+        console.log(response)
     }
 
     return (
@@ -19,7 +26,7 @@ export const CommunityWrite = () => {
                 <Subject subjectValue={subjectValue} setSubjectValue={setSubjectValue}>
                     <Input value={subject.value} onChange={subject.onChange} />
                 </Subject>
-                <Content />
+                <Content value={contentValue} onChange={(e)=>setContentValue(e.target.value)} />
                 <KakaoMap />
                 <Button
                     color="yellow"

@@ -11,10 +11,10 @@ const ContentWrap = styled.div`
     }
 `
 
-export const Content = () => {
+export const Content = ({value, onChange}) => {
     return (
         <ContentWrap>
-            <textarea placeholder="내용을 입력해주세요" />
+            <textarea value={value} onChange={onChange} placeholder="내용을 입력해주세요" />
         </ContentWrap>
     )
 }
