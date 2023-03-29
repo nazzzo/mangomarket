@@ -1,9 +1,11 @@
 import request from '../../utils/request'
 import { CommunityWrapper, List, ItemWrapper, ItemContent, TextBoxA } from './styled'
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom"
+
 
 export const CommunityList = () => {
+    const navigate = useNavigate()
     const [boardList, setBoardList] = useState([])
     const navigate = useNavigate()
     useEffect(() => {
@@ -43,6 +45,7 @@ export const CommunityList = () => {
             ) : (
                 <></>
             )}
+
         </CommunityWrapper>
     )
 }
