@@ -11,10 +11,6 @@ module.exports = (sequelize, Sequelize) => {
                         type: Sequelize.TEXT,
                         allowNull: false,
                     },
-                    hit: {
-                        type: Sequelize.INTEGER,
-                        defaultValue: 0,
-                    },
                     state: {
                         type: Sequelize.ENUM('blind', 'reserved', 'sold', 'public'),
                         defaultValue: 'public',
@@ -45,6 +41,10 @@ module.exports = (sequelize, Sequelize) => {
                 foreignKey: 'boardid',
             })
             this.hasMany(models.PointUp, {
+                foreignKey: 'boardid',
+            })
+            this.belongsToMany(models.User, {
+                through: 'Hit',
                 foreignKey: 'boardid',
             })
             this.belongsToMany(models.User, {

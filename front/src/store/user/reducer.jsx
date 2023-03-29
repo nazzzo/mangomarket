@@ -1,10 +1,4 @@
-import {
-  USER_LOGIN,
-  USER_LOGOUT,
-  USER_REQUEST_ERROR,
-  USER_IMAGE_UPLOAD,
-  USER_INFO_SAVE,
-  USER_INFO_REMOVE,
+import { USER_LOGIN, USER_LOGOUT, USER_REQUEST_ERROR, USER_IMAGE_UPLOAD, USER_INFO_SAVE, USER_INFO_REMOVE, USER_LIKE_ADD, USER_LIKE_REMOVE,
 } from "./types";
 
 const initialState = {
@@ -20,9 +14,14 @@ const initialState = {
     email: "",
     userpw: "",
   },
+  like: {
+    email: "",
+    boardid: "",
+  }
 };
 
 export const user = (state = initialState, action) => {
+  // console.log(`action:::`, action.payload)
   switch (action.type) {
     case USER_LOGIN:
       return {
@@ -60,6 +59,19 @@ export const user = (state = initialState, action) => {
           userImg: "",
         },
       };
+      case USER_LIKE_ADD:
+        return {
+          ...state,
+          like: action.payload,
+        };
+      case USER_LIKE_REMOVE:
+        return {
+          ...state,
+          like: {
+            email: "",
+            boardid: "",
+          },
+        };
     default:
       return state;
   }

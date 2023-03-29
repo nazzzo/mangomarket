@@ -13,6 +13,7 @@ app.listen(PORT, async () => {
     // await sequelize.models.Category.create({ path: '/profile', name: 'Profile', isLogin: true })
     // await sequelize.models.Category.create({ path: '/comment', name: 'Comment', isLogin: true })
 
+
     // await sequelize.models.BoardCategory.create({ id: 1, category: "생활가전" });
     // await sequelize.models.BoardCategory.create({ id: 2, category: "디지털기기" });
     // await sequelize.models.BoardCategory.create({ id: 3, category: "가구/인테리어" });

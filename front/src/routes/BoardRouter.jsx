@@ -5,7 +5,7 @@ export const BoardRouter = () => {
   return (
     <Routes>
       <Route path="write" element={<BoardWrite />} />
-      <Route path="view/:id" element={<BoardView />} />
+      <Route path=":id" element={<BoardView />} />
     </Routes>
   );
 };
