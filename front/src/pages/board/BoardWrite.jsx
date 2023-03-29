@@ -9,7 +9,6 @@ import { useInput } from "../../hooks";
 import { Subject, CategoryOpener, Category, WishList, Content, Submit } from "./styled";
 import request from "../../utils/request"
 
-
 export const BoardWrite = () => {
   const { user } = useSelector((state) => state.user);
   const [isOpen, setIsOpen] = useState(false);
