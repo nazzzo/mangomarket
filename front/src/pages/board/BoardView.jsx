@@ -30,9 +30,11 @@ export const BoardView = () => {
 
    if (!viewData) return null;
   return (
-    <>
+    viewData
+    ? (<>
       <MainSlider images={viewData.images} />
       <WriterInfo
+        email={viewData.email}
         username={viewData.username}
         userImg={viewData.userImg}
         width="100%"
@@ -48,7 +50,7 @@ export const BoardView = () => {
         hit={viewData.hit}
         date={viewData.createdAt}
       />
-      <ViewFooter isLogin={isLogin} user={user.email} size="3rem" footerHeight="4.5rem" footerWidth="30rem" />
-    </>
+      {isLogin ? <ViewFooter isLogin={isLogin} user={user.email} size="3rem" footerHeight="4.5rem" footerWidth="30rem" /> : <></>} 
+    </>) : <></>
   );
 };

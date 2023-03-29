@@ -1,13 +1,26 @@
+import { useState } from "react";
 import { WriterInfoWrap, UserImg, UserName } from "./styled";
+import { Modal } from "../modal";
+import { UserHistory } from "./";
 
-export const WriterInfo = ({ username, userImg, width, height, imgSize, fontSize }) => {
+export const WriterInfo = ({ email, username, userImg, width, height, imgSize, fontSize }) => {
+    const [isOpen, setIsOpen] = useState(false);
 
-return (
+
+  return (
     <>
-      <WriterInfoWrap width={width} height={height}>
-            <UserImg imgSize={imgSize} src={userImg} />
-            <UserName fontSize={fontSize}>{username}</UserName>
+      <WriterInfoWrap width={width} height={height} onClick={()=>{setIsOpen(true)}}>
+        <UserImg imgSize={imgSize} src={userImg} />
+        <UserName fontSize={fontSize}>{username}</UserName>
       </WriterInfoWrap>
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+        <UserHistory
+          height="30rem"
+          width="20rem"
+          email={email}
+          setIsOpen={setIsOpen}
+        />
+      </Modal>
     </>
   );
 };

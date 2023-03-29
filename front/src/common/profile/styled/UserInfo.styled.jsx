@@ -42,6 +42,7 @@ export const WriterInfoWrap = styled.div`
   padding-left: 2%;
   padding-bottom: 4%;
   border-bottom: 1px solid #ccc;
+  cursor: pointer;
 `
 
 export const UserImg = styled.img`
@@ -72,4 +73,12 @@ export const ProfileEdit = styled.button`
     background: ${({ theme, color }) => theme[color].hover};
     transition: all 0.3s ease-out;
   }
+`
+
+
+
+
+export const UserHistoryWrap = styled.div`
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
 `

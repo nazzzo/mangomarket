@@ -6,6 +6,7 @@ import { Hamburger, SearchPopUp, MenuPopUp } from '../index';
 export const Header = (({ categories, isLogin, user }) => {
     const [ searchBox, setSearchBox ] = useState(false)
     const [ menuBox, setMenuBox ] = useState(false)
+    console.log(user)
 
     const navigate = useNavigate()
 
@@ -70,7 +71,7 @@ export const Header = (({ categories, isLogin, user }) => {
                             <HeaderAlarm src='./alarm.png'/>
                             </HeaderAlarmWrap>
                             <HeaderUserWrap onClick={menuClickHandler}>
-                                <HeaderUser src='./user.png'/>
+                                { user.userImg ? <HeaderUser src={user.userImg}/> : <></>}
                                 <Hamburger />
                             </HeaderUserWrap>
                         </HeaderFunctionWrap>
