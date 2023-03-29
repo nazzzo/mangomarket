@@ -12,6 +12,20 @@ class CommunityRepository {
             throw new Error(e)
         }
     }
+
+    async findOne(boardId) {
+        try {
+            console.log('repository boardId', boardId)
+            const boardView = await this.Community.findOne({
+                raw: true,
+                where: { id: boardId },
+            })
+            console.log(boardView)
+            return boardView
+        } catch (e) {
+            throw new Error(e)
+        }
+    }
     async create(commentData) {
         console.log('commentData', commentData)
         try {

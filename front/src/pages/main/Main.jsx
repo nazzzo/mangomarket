@@ -1,50 +1,60 @@
-import request from "../../utils/request";
-import { useRef, useState, useEffect } from "react";
-import { HomeWrapper, List, ItemWrapper, ItemImage, ItemContent, TextBoxA, TextBoxB, TextBoxC, TextBoxD, Count, PageCounter } from "./styled";
-import { Icon } from "@iconify/react";
-import { navigation } from "react-router-dom"
+import request from '../../utils/request'
+import { useRef, useState, useEffect } from 'react'
+import {
+    HomeWrapper,
+    List,
+    ItemWrapper,
+    ItemImage,
+    ItemContent,
+    TextBoxA,
+    TextBoxB,
+    TextBoxC,
+    TextBoxD,
+    Count,
+    PageCounter,
+} from './styled'
+import { Icon } from '@iconify/react'
+import { navigation } from 'react-router-dom'
 
 export const Main = () => {
-  const pageCountRef = useRef(null);
-  const [count, setCount] = useState(0);
-  const [boardList, setBoardList] = useState([]);
+    const pageCountRef = useRef(null)
+    const [count, setCount] = useState(0)
+    const [boardList, setBoardList] = useState([])
 
-  const handleIntersection = (entries) => {
-    if (entries[0].intersectionRatio === 1) {
-      setCount((prevCount) => prevCount + 1);
-    }
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await request.get(`boards/?count=${count}`);
-        const newBoardList = response.data;
-        if (count === 0) {
-          setBoardList(newBoardList);
-        } else {
-          setBoardList((prevList) => [...prevList, ...newBoardList]);
+    const handleIntersection = (entries) => {
+        if (entries[0].intersectionRatio === 1) {
+            setCount((prevCount) => prevCount + 1)
         }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
-  }, [count]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(handleIntersection, { threshold: 1, root: null });
-    if (pageCountRef.current) {
-      observer.observe(pageCountRef.current);
     }
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
 
-  const handleClick = () => {
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await request.get(`boards/?count=${count}`)
+                const newBoardList = response.data
+                if (count === 0) {
+                    setBoardList(newBoardList)
+                } else {
+                    setBoardList((prevList) => [...prevList, ...newBoardList])
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchData()
+    }, [count])
 
-  }
+    useEffect(() => {
+        const observer = new IntersectionObserver(handleIntersection, { threshold: 1, root: null })
+        if (pageCountRef.current) {
+            observer.observe(pageCountRef.current)
+        }
+        return () => {
+            observer.disconnect()
+        }
+    }, [])
+
+    const handleClick = () => {}
 
     return (
         <HomeWrapper>
@@ -59,7 +69,7 @@ export const Main = () => {
                                 subject={board.subject}
                             />
                             <TextBoxB address={board.address} date={board.createdAt} />
-                            <TextBoxC hashtag={board.tagname}/>
+                            <TextBoxC hashtag={board.tagname} />
                             <TextBoxD>
                                 <Count id="messageCount">
                                     <Icon icon="ant-design:message-outlined" /> {board.messageCount}

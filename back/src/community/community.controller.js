@@ -12,6 +12,17 @@ class CommunityController {
             next(e)
         }
     }
+    async getView(req, res, next) {
+        try {
+            const boardId = req.params
+            console.log('controller ::', boardId)
+            const response = await this.communityService.getView({ boardId })
+            console.log('response data ::: ', response.data)
+            res.json(response)
+        } catch (e) {
+            next(e)
+        }
+    }
     async postCommunity(req, res, next) {
         console.log('req.body:::', req.body)
         try {
