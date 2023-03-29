@@ -9,7 +9,7 @@ export const HeaderWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: ${(props) => props.theme.header.color};
+    /* background-color: ${(props) => props.theme.header.color}; */
     border-bottom: 1px solid #d6d6d6;
     box-sizing: content-box;
     z-index: 999;
@@ -22,7 +22,6 @@ export const HeaderWrap = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #d2bfbf;
     
     @media screen and (max-width: 480px){
         width: 30rem;

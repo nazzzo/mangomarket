@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import { HeaderWrapper, HeaderWrap, HeaderLogoWrap, HeaderLogoImgWrap, HeaderLogoImg, HeaderMenuWrap, HeaderMenuul, HeaderMenuli, HeaderFunctionWrap, HeaderSearchWrap, HeaderSearchBox, HeaderSearchInput, HeaderSearchIcon, HeaderAlarmWrap, HeaderAlarm, HeaderUserWrap, HeaderUser } from "./styled"
-import { Hamburger, SearchPopUp } from '../index';
+import { Hamburger, SearchPopUp, MenuPopUp } from '../index';
 
 export const Header = (({ categories, isLogin, user }) => {
     const [ searchBox, setSearchBox ] = useState(false)
@@ -11,13 +11,17 @@ export const Header = (({ categories, isLogin, user }) => {
 
     const loginFilter = categories.filter( v => v.isLogin === null || v.isLogin === isLogin )
 
-    const navigation = loginFilter.map( v => { return(
-                <HeaderMenuli key={v.id}>
+    const navigation = (styledComponent) => loginFilter.map( v => {
+        const Component = styledComponent
+        return(
+                <Component key={v.id}>
                     <NavLink to={v.path}>
                         {v.name}
                     </NavLink>
-                </HeaderMenuli>
+                </Component>
             )})
+
+    const headerMenuList = navigation(HeaderMenuli)
 
     const searchClickHandler = () => {
         if(menuBox) {
@@ -29,6 +33,7 @@ export const Header = (({ categories, isLogin, user }) => {
     }
 
     const menuClickHandler = () => {
+        console.log(1)
         if(searchBox) {
             setSearchBox(!searchBox)
             setMenuBox(!menuBox)}
@@ -50,7 +55,7 @@ export const Header = (({ categories, isLogin, user }) => {
                         {/*  */}
                         <HeaderMenuWrap>
                             <HeaderMenuul>
-                                {navigation}
+                                {headerMenuList}
                             </HeaderMenuul>
                         </HeaderMenuWrap>
                         {/*  */}
@@ -64,7 +69,7 @@ export const Header = (({ categories, isLogin, user }) => {
                             <HeaderAlarmWrap>
                             <HeaderAlarm src='./alarm.png'/>
                             </HeaderAlarmWrap>
-                            <HeaderUserWrap>
+                            <HeaderUserWrap onClick={menuClickHandler}>
                                 <HeaderUser src='./user.png'/>
                                 <Hamburger />
                             </HeaderUserWrap>
@@ -73,6 +78,7 @@ export const Header = (({ categories, isLogin, user }) => {
                     </HeaderWrap>
                 </HeaderWrapper>
                 <SearchPopUp visible={searchBox}/>
+                <MenuPopUp visible={menuBox} navigation={navigation}/>
             </>
         )
     }

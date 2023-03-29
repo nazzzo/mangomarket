@@ -13,6 +13,7 @@ const SearchPopUpWrap = styled.div`
         height: 5rem;
         background-color: #cecece;
         transition: all 0.25s;
+        z-index: ${ props => props.visible ? 2 : 0 };
     }
 `
 
@@ -32,7 +33,7 @@ const SearchPopInput = styled.input`
 export const SearchPopUp = ({visible}) => {
     return(
         <SearchPopUpWrap visible={visible}>
-            <SearchPopInput placeholder='검색어를 입력해주세요'/>
+            <SearchPopInput placeholder='검색어를 입력해주세요' type='search'/>
         </SearchPopUpWrap>
     )
 }
