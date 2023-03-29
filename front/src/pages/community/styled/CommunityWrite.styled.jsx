@@ -11,6 +11,7 @@ const ContentWrap = styled.div`
     } */
 `
 
+
 export const Content = ({ children }) => {
     return <ContentWrap>{children}</ContentWrap>
 }

@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 import { CommunityList, CommunityView, CommunityWrite } from '../pages/community'
 
 export const CommunityRouter = () => {
+
     return (
         <Routes>
             <Route path="" element={<CommunityList />} />

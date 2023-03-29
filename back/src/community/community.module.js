@@ -1,17 +1,20 @@
 const {
   sequelize: {
-    models: { Community },
+    models: { Community,User },
   },
   sequelize,
 } = require("../../models/index");
 
+const {Sequelize} = require('sequelize')
 const CommunityRepository = require("./community.repository");
 const CommunityService = require("./community.service");
 const CommunityController = require("./community.controller");
 const config = require("../../config");
+const UserRepository = require("../users/user.repository");
 
-const repository = new CommunityRepository({ Community, sequelize });
-const service = new CommunityService({ communityRepository: repository, config });
+const userRepository = new UserRepository({ sequelize, User, Sequelize})
+const repository = new CommunityRepository({ Community, sequelize, User });
+const service = new CommunityService({ communityRepository: repository, config, userRepository });
 const controller = new CommunityController({ communityService: service });
 
 module.exports = {

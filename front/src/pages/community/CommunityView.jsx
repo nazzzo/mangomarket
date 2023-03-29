@@ -1,22 +1,49 @@
-import request from '../../utils/request'
+import { useParams } from "react-router-dom"
+import { Button } from "../../common/button"
+import request from "../../utils/request"
+import { useEffect } from "react"
+import { ViewWrapper, Profile, ViewContent, Comment, Buttons } from "./styled/CommunityView.styled"
+
 
 export const CommunityView = () => {
-    const getData = async () => {
-        try {
-            const boardId = window.location.pathname.split('/community/')[1]
-            console.log(boardId)
-            console.log('sdadaskljfglkajlkadjfal')
-            const response = await request(`/community/${boardId}`)
-            // console.log(response.data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-    getData()
 
-    return (
-        <div>
-            <h2></h2>
-        </div>
-    )
+  const {id} = useParams()
+  console.log(id)
+
+  useEffect(()=>{
+    const getWriting = async () => {
+      try{
+        const response = await request.get(`/community/${id}`)
+        console.log(response)
+      } catch(e){
+        throw new Error(e)
+      }
+      }
+    getWriting()
+  }, [])
+
+
+  return (
+    <ViewWrapper>
+      <Profile />
+      <ViewContent>
+      <Buttons>
+        <Button                     
+          color="yellow"
+          fontColor="#fff"
+          fontSize="1.1rem"
+          height="3rem"
+          width="7rem">수정</Button>
+        <Button
+          color="yellow"
+          fontColor="#fff"
+          fontSize="1.1rem"
+          height="3rem"
+          width="7rem">삭제</Button>
+      </Buttons>
+      </ViewContent>
+      <Comment />
+    </ViewWrapper>
+  )
 }
+
