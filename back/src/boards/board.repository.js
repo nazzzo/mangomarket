@@ -1,5 +1,5 @@
 class BoardRepository {
-    constructor({ sequelize, Board, BoardImage, Temp, History, Hashtag, Comment, User, Hash, Liked, PointUp }) {
+    constructor({ sequelize, Board, BoardImage, Temp, History, Hashtag, Comment, User, Hash, Liked, Hit, PointUp }) {
         this.sequelize = sequelize;
         this.Board = Board;
         this.BoardImage = BoardImage;
@@ -10,6 +10,7 @@ class BoardRepository {
         this.User = User;
         this.Hash = Hash;
         this.Liked = Liked;
+        this.Hit = Hit;
         this.PointUp = PointUp;
     }
 
@@ -41,7 +42,6 @@ class BoardRepository {
             A.subject, 
             A.content,
             A.createdAt, 
-            A.hit,
             A.category,
             A.state,
             B.userImg,
@@ -50,7 +50,8 @@ class BoardRepository {
             (SELECT GROUP_CONCAT(D.email SEPARATOR ', ') FROM Liked AS D WHERE A.id = D.boardid) AS likeidlist,
             GROUP_CONCAT(C.tagname SEPARATOR ', ') AS tagname,
             (SELECT COUNT(Chat.id) FROM Chat WHERE Chat.id = A.id) AS messageCount, 
-            (SELECT COUNT(Liked.BoardId) FROM Liked WHERE Liked.BoardId = A.id) AS likeCount
+            (SELECT COUNT(Liked.BoardId) FROM Liked WHERE Liked.BoardId = A.id) AS likeCount,
+            (SELECT COUNT(Hit.BoardId) FROM Hit WHERE Hit.BoardId = A.id) AS hit
             FROM Board AS A 
             LEFT JOIN User AS B ON A.email = B.email
             LEFT JOIN Hashtag AS C ON A.id = C.boardid
@@ -74,7 +75,6 @@ class BoardRepository {
       A.email, 
       A.subject, 
       A.createdAt, 
-      A.hit,
       A.image,
       A.category,
       A.state,
@@ -83,7 +83,8 @@ class BoardRepository {
       (SELECT GROUP_CONCAT(D.email SEPARATOR ', ') FROM Liked AS D WHERE A.id = D.boardid) AS likeidlist,
       GROUP_CONCAT(C.tagname SEPARATOR ', ') AS tagname,
       (SELECT COUNT(boardid) FROM Comment WHERE boardid = A.id) AS commentCount, 
-      (SELECT COUNT(BoardId) FROM Liked WHERE BoardId = A.id) AS likeCount
+      (SELECT COUNT(BoardId) FROM Liked WHERE BoardId = A.id) AS likeCount,
+      (SELECT COUNT(Hit.BoardId) FROM Hit WHERE Hit.BoardId = A.id) AS hit
       FROM Board AS A 
       JOIN User AS B 
       ON A.email = B.email
@@ -99,42 +100,33 @@ class BoardRepository {
             throw new Error(e);
         }
     }
-    async findOne(id, idx) {
+    async findOne(id) {
         try {
-            const [view] = await this.findAll({ searchType: "A.id", search: idx, notice: 1 });
-            console.log("view :::", view);
-            // const comment = await this.Comment.findAll({
-            //     raw: true,
-            //     where: { boardid: idx },
-            // });
-            // console.log("view", view);
-            const [comment] = await this.sequelize.query(`
-            WITH RECURSIVE comments (id, content, depth, parentid, createdAt, updatedAt, boardid, email, PATH) AS (
-SELECT id, content, depth, parentid, createdAt, updatedAt, boardid, email, CAST(id as CHAR(100))
-  FROM Comment
-  WHERE parentid = 0
-  UNION ALL
-  SELECT t.id, t.content, comments.depth + 1, t.parentid, t.createdAt, t.updatedAt, t.boardid, t.email, CONCAT(comments.PATH, '-', t.id)
-  FROM comments
-  JOIN Comment t ON comments.id = t.parentid
-)
-SELECT comments.*, B.userimg
-FROM comments
-JOIN User AS B
-ON comments.email = B.email
-WHERE comments.boardid = ${idx}
-ORDER BY SUBSTRING_INDEX(PATH, '-', 1)*1, SUBSTRING_INDEX(PATH, '-', -1)*1;`);
-            // const hashtag = await this.Hashtag.findAll({
-            //     attributes: ["tagname"],
-            //     raw: true,
-            //     where: { boardid: idx },
-            // });
-
-            const prevPost = await this.findPrevOne(id, idx);
-            const nextPost = await this.findNextOne(id, idx);
-            // console.log(`repo::::`, prevPost, nextPost);
-            console.log("comment", [view, prevPost, nextPost, comment]);
-            return [view, prevPost, nextPost, comment];
+            const query = `SELECT 
+            A.id,
+            A.email, 
+            A.subject, 
+            A.content,
+            A.createdAt, 
+            A.category,
+            A.state,
+            B.userImg,
+            B.username,
+            GROUP_CONCAT(D.image SEPARATOR ', ') AS images,
+            (SELECT GROUP_CONCAT(D.email SEPARATOR ', ') FROM Liked AS D WHERE A.id = D.boardid) AS likeidlist,
+            GROUP_CONCAT(C.tagname SEPARATOR ', ') AS tagname,
+            (SELECT COUNT(Chat.id) FROM Chat WHERE Chat.id = A.id) AS messageCount, 
+            (SELECT COUNT(Liked.BoardId) FROM Liked WHERE Liked.BoardId = A.id) AS likeCount,
+            (SELECT COUNT(Hit.BoardId) FROM Hit WHERE Hit.BoardId = A.id) AS hit
+        FROM Board AS A 
+        LEFT JOIN User AS B ON A.email = B.email
+        LEFT JOIN Hashtag AS C ON A.id = C.boardid
+        LEFT JOIN BoardImage AS D ON A.id = D.boardid
+        WHERE A.id = ${id}
+        GROUP BY A.id`;
+        const [[findOne]] = await this.sequelize.query(query);
+        console.log(findOne);
+        return findOne
         } catch (e) {
             throw new Error(e);
         }
@@ -323,9 +315,9 @@ ORDER BY SUBSTRING_INDEX(PATH, '-', 1)*1, SUBSTRING_INDEX(PATH, '-', -1)*1;`);
         return result;
     }
 
-    async updatehit(id) {
+    async updatehit(id, email) {
         try {
-            await this.Board.increment({ hit: 1 }, { where: { id: id } });
+            await this.Hit.findOrCreate({ where: { BoardId: id, email: email } });
         } catch (e) {
             throw new Error(e);
         }

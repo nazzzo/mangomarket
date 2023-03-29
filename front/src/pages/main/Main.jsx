@@ -2,12 +2,13 @@ import request from "../../utils/request";
 import { useRef, useState, useEffect } from "react";
 import { HomeWrapper, List, ItemWrapper, ItemImage, ItemContent, TextBoxA, TextBoxB, TextBoxC, TextBoxD, Count, PageCounter } from "./styled";
 import { Icon } from "@iconify/react";
-import { navigation } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 export const Main = () => {
   const pageCountRef = useRef(null);
   const [count, setCount] = useState(0);
   const [boardList, setBoardList] = useState([]);
+  const navigate = useNavigate()
 
   const handleIntersection = (entries) => {
     if (entries[0].intersectionRatio === 1) {
@@ -42,15 +43,12 @@ export const Main = () => {
     };
   }, []);
 
-  const handleClick = () => {
-
-  }
 
     return (
         <HomeWrapper>
             <List>
                 {boardList.map((board) => (
-                    <ItemWrapper height="220px" key={board.id} onClick={handleClick}>
+                    <ItemWrapper height="220px" key={board.id} onClick={()=>{navigate(`board/${board.id}`)}}>
                         <ItemImage size="220px" src={board.image} />
                         <ItemContent key={board.id}>
                             <TextBoxA

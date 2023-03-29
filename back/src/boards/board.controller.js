@@ -42,9 +42,9 @@ class BoardController {
     }
     async getView(req, res, next) {
         try {
-            const { id, idx, userid } = req.params;
-            const response = await this.boardService.getView(id, idx, userid);
-            console.log(response);
+            const { id, idx } = req.params;
+            const response = await this.boardService.getView(id, idx);
+            // console.log(`response:::`, response);
             res.json(response);
         } catch (e) {
             next(e);
@@ -144,9 +144,10 @@ class BoardController {
     }
 
     async postLike(req, res, next) {
-        console.log(`postCon:`, req.params.idx, req.body.userid);
+        console.log(`postCon:`, req.params.id, req.body);
         try {
-            const [count, check] = await this.boardService.postLike(req.params.idx, req.body.userid);
+            const [count, check] = await this.boardService.postLike(req.params.id, req.body.email);
+            console.log(count, check)
             res.status(201).json({ count, check });
         } catch (e) {
             next(e);

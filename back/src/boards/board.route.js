@@ -5,8 +5,9 @@ const upload = require("../../middlewares/boardUpload");
 
 router.get("/", (req, res, next) => controller.getList(req, res, next));
 router.get("/profile/:userid", (req, res, next) => controller.attention(req, res, next));
-router.get("/:id", (req, res, next) => controller.getMain(req, res, next));
-router.get("/:id/:idx/:userid", (req, res, next) => controller.getView(req, res, next));
+// router.get("/:id", (req, res, next) => controller.getMain(req, res, next));
+// router.get("/:id/:idx/:userid", (req, res, next) => controller.getView(req, res, next));
+router.get("/:id/:idx", (req, res, next) => controller.getView(req, res, next));
 router.get("/:id/favorites", (req, res, next) => controller.getFavor(req, res, next));
 router.get("/:id/histories", (req, res, next) => controller.getHistory(req, res, next));
 
@@ -32,7 +33,7 @@ router.put("/:id/comments/:idx", (req, res, next) => controller.putComment(req, 
 router.delete("/:id/comments/:idx", (req, res, next) => controller.deleteComment(req, res, next));
 
 router.post("/:id/:idx/likes", (req, res, next) => controller.postLike(req, res, next));
-router.get("/:id/:idx/likes", (req, res, next) => controller.getcheck(req, res, next));
+router.get("/:id/likes", (req, res, next) => controller.getcheck(req, res, next));
 // router.delete("/:id/likes", (req, res, next) => controller.deleteLike(req, res, next));
 
 // router.post("/single", upload.single("filename"), (req, res) => {
