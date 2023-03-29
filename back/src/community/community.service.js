@@ -14,6 +14,17 @@ class CommunityService {
             throw new this.BadRequest(e)
         }
     }
+
+    async getView({ boardId }) {
+        try {
+            console.log('Service boardId ::', boardId)
+            const list = await this.communityRepository.findOne(boardId)
+            return list
+        } catch (e) {
+            throw new this.BadRequest(e)
+        }
+    }
+
     async postCommunity({ email, content, subject }) {
         console.log(`serv :`, { email, content, subject })
         try {

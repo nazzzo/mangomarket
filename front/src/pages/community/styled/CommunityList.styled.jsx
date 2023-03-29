@@ -49,6 +49,7 @@ const TextBoxAContent = styled.div`
     margin-left: 0.8rem;
     margin-top: 0.5rem;
     color: #666;
+    width: 100%;
 `
 const TextBoxADate = styled.div`
     display: flex;
@@ -58,11 +59,22 @@ const TextBoxADate = styled.div`
     align-items: flex-end;
 `
 
+const TextBoxASpan = styled.span`
+    display: block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 90%;
+    padding-top: 10%;
+`
+
 export const TextBoxA = ({ subject, content, date }) => {
     return (
         <TextBoxAStyled>
             <TextBoxASubject>{subject}</TextBoxASubject>
-            <TextBoxAContent>{content}</TextBoxAContent>
+            <TextBoxAContent>
+                <TextBoxASpan>{content}</TextBoxASpan>
+            </TextBoxAContent>
             <TextBoxADate>{useTimeStamp(date)}</TextBoxADate>
         </TextBoxAStyled>
     )
