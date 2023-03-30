@@ -2,9 +2,35 @@ class CommunityController {
     constructor({ communityService }) {
         this.communityService = communityService
     }
-    async getWriting(req, res, next){
+
+    async getComment(req, res, next){
+        try{
+            const {id, idx} = req.params
+            console.log(req.params)
+            const response = await this.communityService.getComment({id, idx})
+            res.json(response)
+        } catch(e){
+            next(e)
+        }
+    }
+
+
+    async postComment(req, res, next){
         try{
             const {id} = req.params
+            const {content} = req.body
+            const response = await this.communityService.postComment({id, content})
+            res.json(response)
+        } catch(e){
+            next(e)
+        }
+    }
+    
+    async getWriting(req, res, next){
+        try{
+            
+            const {id} = req.params
+            console.log("getWriting :::",id)
             const response = await this.communityService.getWriting({id})
             res.json(response)
         } catch(e) {
@@ -22,17 +48,17 @@ class CommunityController {
             next(e)
         }
     }
-    async getView(req, res, next) {
-        try {
-            const boardId = req.params
-            console.log('controller ::', boardId)
-            const response = await this.communityService.getView({ boardId })
-            console.log('response data ::: ', response.data)
-            res.json(response)
-        } catch (e) {
-            next(e)
-        }
-    }
+    // async getView(req, res, next) {
+    //     try {
+    //         const boardId = req.params
+    //         console.log('controller ::', boardId)
+    //         const response = await this.communityService.getView({ boardId })
+    //         console.log('response data ::: ', response.data)
+    //         res.json(response)
+    //     } catch (e) {
+    //         next(e)
+    //     }
+    // }
     async postCommunity(req, res, next) {
         console.log('req.body:::', req.body)
         try {

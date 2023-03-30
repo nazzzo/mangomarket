@@ -6,12 +6,33 @@ class CommunityService {
         this.userRepository = userRepository
     }
 
+    async getComment({id}){
+        try{
+            const response = await this.communityRepository.findComments({id})
+            return response
+        } catch(e){
+            throw new this.BadRequest
+        }
+    }
+
+    async postComment({id, content}){
+        try{
+            const response = await this.communityRepository.create({id, content})
+            console.log('postComment' , response)
+            return response
+        } catch(e){
+            throw new this.BadRequest(e)
+        }
+    }
+
     async getWriting({id}){
         try{
+            console.log('service', id)
             const view = await this.communityRepository.findOne({id})
-            const {subject, content, email, createdAt} = view
-            const {username} = await this.userRepository.getUserById(email)
-            return {username, subject, content, createdAt}
+            const {username} = await this.userRepository.getUserById(view.boardView.email)
+            view.boardView.username = username
+            console.log(`view:::`, view)
+            return view
         } catch(e){
             throw new this.BadRequest(e)
         }
@@ -27,21 +48,21 @@ class CommunityService {
         }
     }
 
-    async getView({ boardId }) {
-        try {
-            console.log('Service boardId ::', boardId)
-            const list = await this.communityRepository.findOne(boardId)
-            return list
-        } catch (e) {
-            throw new this.BadRequest(e)
-        }
-    }
+    // async getView({ boardId }) {
+    //     try {
+    //         console.log('Service boardId ::', boardId)
+    //         const list = await this.communityRepository.findOne(boardId)
+    //         return list
+    //     } catch (e) {
+    //         throw new this.BadRequest(e)
+    //     }
+    // }
 
     async postCommunity({ email, content, subject }) {
         console.log(`serv :`, { email, content, subject })
         try {
             if (!subject || !content) throw '내용이 없습니다'
-            const community = await this.communityRepository.create({ email, content, subject })
+            const community = await this.communityRepository.createWriting({ email, content, subject })
             return community
         } catch (e) {
             throw new this.BadRequest(e)

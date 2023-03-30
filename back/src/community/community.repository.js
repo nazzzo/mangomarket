@@ -1,21 +1,33 @@
 class CommunityRepository {
-    constructor({ Community }) {
+    constructor({ Community, Comment }) {
         this.Community = Community
+        this.Comment = Comment
+        
     }
-
-    async findOne({id}){
-        try {
-            const response = await this.Community.findOne({ raw: true, where: {id} })
-            console.log(response)
+    async findComments({id}){
+        try{
+            const response = await this.Comment.findAll({raw: true, where: {communityid: id}})
             return response
         } catch(e){
             throw new Error(e)
         }
     }
 
-    async createWriting({subject, content}){
+    async findOne({id}){
         try {
-        const create = await this.Community.create({subject, content})
+            console.log("findoneid:::",id)
+            const boardView = await this.Community.findOne({ raw: true, where: {id} })
+            const commentList = await this.Comment.findAll({raw: true, where: {communityid: id}})
+            console.log(`commentList:::`, commentList) 
+            return {boardView, commentList}
+        } catch(e){
+            throw new Error(e)
+        }
+    }
+
+    async createWriting({email ,subject, content}){
+        try {
+        const create = await this.Community.create({email, subject, content})
         return create
         } catch (e){
         throw new Error(e)
@@ -32,25 +44,27 @@ class CommunityRepository {
         }
     }
 
-    async findOne(boardId) {
-        try {
-            console.log('repository boardId', boardId)
-            const boardView = await this.Community.findOne({
-                raw: true,
-                where: { id: boardId },
-            })
-            console.log(boardView)
-            return boardView
-        } catch (e) {
-            throw new Error(e)
-        }
-    }
+    // async findOne(boardId) {
+    //     try {
+    //         console.log('repository boardId', boardId)
+    //         const boardView = await this.Community.findOne({
+    //             raw: true,
+    //             where: { id: boardId },
+    //         })
+    //         console.log(boardView)
+    //         return boardView
+    //     } catch (e) {
+    //         throw new Error(e)
+    //     }
+    // }
     async create(commentData) {
         console.log('commentData', commentData)
         try {
-            const create = await this.Community.create(commentData)
-            console.log(create)
-            return create
+            const create = await this.Comment.create({raw: true, communityid: commentData.id, content: commentData.content})
+            console.log('create:', create)
+            const findAll = await this.Comment.findAll({raw: true, where: {communityid: commentData.id}})
+            console.log(findAll)
+            return findAll
         } catch (e) {
             throw new Error(e)
         }
