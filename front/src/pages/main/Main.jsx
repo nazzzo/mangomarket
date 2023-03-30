@@ -1,13 +1,20 @@
 import request from "../../utils/request";
 import { useRef, useState, useEffect } from "react";
-import { HomeWrapper, List, ItemWrapper, ItemImage, ItemContent, TextBoxA, TextBoxB, TextBoxC, TextBoxD, Count, PageCounter } from "./styled";
+import { Modal } from "../../common/modal";
+import { RefreshBtn } from "../../common/button"
+import { CategoryOpener, CategorySelector } from "../../common/category"
+import { HomeWrapper, BtnBox, List, ItemWrapper, ItemImage, ItemContent, TextBoxA, TextBoxB, TextBoxC, TextBoxD, Count, PageCounter } from "./styled";
 import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
+
 
 export const Main = () => {
   const pageCountRef = useRef(null);
   const [count, setCount] = useState(0);
   const [boardList, setBoardList] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("")
+  console.log(selectedCategory)
   const navigate = useNavigate();
 
   const handleIntersection = (entries) => {
@@ -19,9 +26,12 @@ export const Main = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await request.get(`boards/?count=${count}`);
+        if (selectedCategory) {
+          setCount(0)
+        }      
+        const response = await request.get(`boards/?count=${count}&category=${selectedCategory}`);
         const newBoardList = response.data;
-        if (count === 0) {
+        if (count === 0|| selectedCategory !== "") {
           setBoardList(newBoardList);
         } else {
           setBoardList((prevList) => [...prevList, ...newBoardList]);
@@ -31,7 +41,7 @@ export const Main = () => {
       }
     };
     fetchData();
-  }, [count]);
+  }, [count, selectedCategory]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(handleIntersection, {
@@ -48,6 +58,13 @@ export const Main = () => {
 
   return (
     <HomeWrapper>
+      <BtnBox height="2.5rem">
+        <CategoryOpener width="8.5rem" height="2.5rem" onClick={()=>{setIsOpen(true)}} />
+        <RefreshBtn height="2.5rem" width="3rem"  onClick={()=>{setSelectedCategory("")}} />
+      </BtnBox>
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+        <CategorySelector setSelectedCategory={setSelectedCategory} setIsOpen={setIsOpen} height="20rem" width="20rem" />
+      </Modal>
       <List>
         {boardList.map((board) => (
           <ItemWrapper

@@ -8,20 +8,21 @@ class BoardService {
         this.viewObj = new Object();
     }
 
-    async getList({ searchType, search, sort, category }, { count, sort: pagingsort, category: pagingcategory }) {
+    async getList({ sort, category }, { count, searchType, search, sort: pagingsort, category: pagingcategory }) {
         try {
             console.log("scht, sch, srt", searchType, search, sort, count, pagingsort, pagingcategory);
             if (category === `default`) category = ``;
-            if (pagingcategory === `default`) pagingcategory = ``;
-            const views = 9;
-            if (!count) count = 0;
+            if (searchType === "email") searchType = "A.email";
+            const views = 8;
             let limitval = views * count;
+            console.log(`limitval:::`, limitval);
+            if (!count || Number(count) === 1) limitval = views;
             const limit = {
                 limit: limitval,
                 views,
             };
             const data = await this.boardRepository.findAll({ searchType, search, sort, category, limit, pagingsort, pagingcategory });
-            console.log("serv", data);
+            // console.log("serv", data);
             return data;
         } catch (e) {
             throw new this.BadRequest(e);

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { Input } from "../input";
 import { useInput } from "../../hooks";
 import { HashTagContainer, HashTagItem, HashTagText } from "./styled";
@@ -7,25 +7,18 @@ export const HashTag = ({ width, height, color, placeholder, tags, setTags }) =>
   // const [tags, setTags] = useState([]);
   const hashtag = useInput("");
 
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "Enter") {
-        const newTag = hashtag.value;
-        console.log(`tag:::`, newTag);
-        if (newTag && !tags.includes(newTag) && tags.length < 3) {
-          setTags([...tags, newTag]);
-          hashtag.clear();
-        }
+  const handleKeyDown = useCallback((e) => {
+    if (e.keyCode === 13) {
+      console.log("Enter key pressed")
+      const newTag = hashtag.value;
+      if (newTag && !tags.includes(newTag) && tags.length < 3) {
+        
+        setTags([...tags, newTag]);
+        hashtag.clear();
       }
-    };
-    
-    const input = document.getElementById("hashtag");
-    input.addEventListener("keydown", handleKeyDown);
-    
-    return () => {
-      input.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [tags, hashtag]);
+    }
+  },[hashtag]);
+
 
   const handleDeleteTag = (tag) => {
     const newTags = tags.filter((v) => v !== tag);
@@ -41,6 +34,7 @@ export const HashTag = ({ width, height, color, placeholder, tags, setTags }) =>
           name="hashtag"
           value={hashtag.value}
           onChange={hashtag.onChange}
+          onKeyDown={handleKeyDown}
           placeholder={placeholder}
         />
         {tags.map((tag) => (

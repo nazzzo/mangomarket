@@ -3,7 +3,20 @@ import { useTimeStamp } from '../../../hooks'
 
 export const HomeWrapper = styled.div`
     background-color: #fff;
-    border-bottom: 1px solid #ddd;
+    /* border-bottom: 1px solid #ddd; */
+`
+
+export const BtnBox = styled.div`
+    display: flex;
+    width: 500px;
+    height: ${({ height }) => height};
+    align-items: center;
+    margin: 3% 0;
+    padding-left: 3%;
+
+    & button {
+        margin-right: 1rem;
+    }
 `
 
 export const List = styled.ul`
@@ -20,7 +33,9 @@ export const ItemWrapper = styled.li`
 `
 
 const ItemImageWrap = styled.div`
-    flex-basis: ${({ size }) => size};
+    /* flex-basis: ${({ size }) => size}; */
+    width: 200px;
+    height: 200px;
     padding-left: 2%;
     height: 85%;
     display: flex;
@@ -43,7 +58,7 @@ export const ItemImage = ({ size, src }) => {
 }
 
 export const ItemContent = styled.div`
-    width: 70%;
+    width: 60%;
     height: 85%;
     display: flex;
     flex-direction: column;
@@ -54,17 +69,25 @@ const TextBoxAStyled = styled.div`
     display: flex;
     justify-content: left;
     height: 20%;
-    width: 100%;
+    width: 95%;
     margin-top: 1%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 
     & > span {
         border-radius: 4px;
         font-size: 0.9rem;
         height: 30px;
-        line-height: 0.9rem;
+        line-height: 1.2rem;
         color: #fff;
         padding: 2% 3%;
         margin-right: 10px;
+    }
+
+    & h2 {
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
 `
 const State = styled.span`

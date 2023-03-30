@@ -8,6 +8,9 @@ const TextBoxWrapper = styled.div`
 const Subject = styled.h2`
   height: 5rem;
   line-height: 5rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `;
 const Category = styled.span`
   color: #999;
