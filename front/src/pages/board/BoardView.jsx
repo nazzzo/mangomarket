@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { MainSlider } from "../../common/slide";
 import { WriterInfo } from "../../common/profile";
 import request from "../../utils/request";
@@ -12,6 +12,7 @@ export const BoardView = () => {
   const userLikes = useSelector((state) => state.user.like);
   const [viewData, setViewData] = useState();
   const { id } = useParams();
+  const navigate = useNavigate();
 //   console.log(user)
 
 
@@ -26,7 +27,7 @@ export const BoardView = () => {
       }
     };
     getView();
-  }, [userLikes]);
+  }, [userLikes, navigate]);
 
    if (!viewData) return null;
   return (
@@ -34,6 +35,7 @@ export const BoardView = () => {
     ? (<>
       <MainSlider images={viewData.images} />
       <WriterInfo
+        navigate={navigate}
         email={viewData.email}
         username={viewData.username}
         userImg={viewData.userImg}

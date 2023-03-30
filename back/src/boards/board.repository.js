@@ -33,7 +33,8 @@ class BoardRepository {
                 where = !searchType ? "" : `AND ${searchType}="${search}"`;
             }
             const sortKey = !sortvalue ? `ORDER BY A.id DESC` : `ORDER BY ${sortvalue} DESC`;
-            const categoryKey = !categoryvalue ? `` : `AND category="${categoryvalue}"`;
+            const categoryKey = !categoryvalue ? `` : `AND A.category="${categoryvalue}"`;
+            console.log(`category:::`, categoryKey, where)
             const limitquery = !limit ? `` : `Limit ${limit.limit}, ${limit.views}`;
 
             const query = `SELECT 

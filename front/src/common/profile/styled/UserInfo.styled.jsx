@@ -77,8 +77,20 @@ export const ProfileEdit = styled.button`
 
 
 
-
 export const UserHistoryWrap = styled.div`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
 `
+
+const TextHeaderWrap = styled.div`
+  height: 15%;
+  text-align: center;
+`
+
+export const TextHeader = ({children}) => {
+  return (
+    <TextHeaderWrap>
+      <h2>{children}</h2>
+    </TextHeaderWrap>
+  )
+}
