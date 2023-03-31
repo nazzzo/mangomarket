@@ -19,11 +19,11 @@ jobs:
         echo "${ENV_FILE}" > .env
     - name: Upload BackServer build floder to EC2 instance
       env:
-        SSH_PEM_FILE: ${{ secrets.BACK_FILE }}
+        BACK_PEM_FILE: ${{ secrets.BACK_FILE }}
         EC2_USER: ${{ secrets.BACK_USER }}
         EC2_HOST: ${{ secrets.BACK_HOST }}
       run: |
-        echo "${SSH_PEM_FILE}" > exfrserver.pem
+        echo "${BACK_PEM_FILE}" > exfrserver.pem
         echo $(ls)
         chmod 600 exfrserver.pem
         chmod 400 exfrserver.pem
