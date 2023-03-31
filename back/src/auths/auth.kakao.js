@@ -25,7 +25,7 @@ class Kakao {
     });
     const { data } = await this.axios.post(host, body, headers)
     return data;
-  }
+  } 
 
   async kakaoSignup({ data }) {
     console.log(`data::::`, data)

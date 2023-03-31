@@ -161,15 +161,17 @@ export const TooltipWrapper = styled.div`
   justify-content: center;
   align-items: center;
   background-color: white;
-  border-radius: 4px;
+  border-radius: 6px;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   padding: 8px;
+  height: 7rem;
+  width: 13rem;
 `;
 
 export const TooltipLabel = styled.span`
   font-size: 14px;
   line-height: 1.5;
-  color: black;
+  color: #333;
   margin-bottom: 4px;
 `;
 
@@ -184,7 +186,7 @@ const MyPointStyled = styled.div`
   margin-right: 1%;
   display: flex;
   justify-items: flex-end;
-  justify-content:space-between;
+  justify-content:space-around;
   align-items: center;
   
   
@@ -200,14 +202,14 @@ export const MyPointWrapper = ({ children, score, sum }) => {
   const mangoScore = `${score}점`
   return (
     <MyPointStyled>
-      <div style={{ width: '40%', display: "flex", alignItems: "center"}}>
-        <span>내 활동점수</span>
-        <div style={{ width: '40%', position: 'relative',  }}>
+      <div style={{ height: "7rem", width: '13rem', display: "flex", alignItems: "center", borderRadius: '6px', boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)'}}>
+        <span style={{ paddingLeft: "15%"}}>활동점수</span>
+        <div style={{ width: '50%', position: 'relative',  }}>
           <div
             style={{
               position: 'absolute',
               top: '63%',
-              left: '61%',
+              left: '57%',
               transform: 'translate(-50%, -50%)',
               fontSize: '0.9rem',
               fontWeight: 'bold',
@@ -221,8 +223,20 @@ export const MyPointWrapper = ({ children, score, sum }) => {
       </div>
       <TooltipWrapper>
           <TooltipLabel>내 게시글 {sum.boardCount}</TooltipLabel>
-          <TooltipLabel>성사된 교환내역 {sum.soldCount}건</TooltipLabel>
+          <TooltipLabel>교환내역 {sum.soldCount}건</TooltipLabel>
         </TooltipWrapper>
     </MyPointStyled>
   );
 };
+
+
+export const MyKeywordWrap = styled.button`
+  margin: 5%;
+  width: 90%;
+  height: 5rem;
+  background-color: #fff;
+  outline: none;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+`

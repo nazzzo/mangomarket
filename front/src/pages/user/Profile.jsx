@@ -1,4 +1,4 @@
-import { MyInfo, MyPoint } from "../../common/profile";
+import { MyInfo, MyPoint, MyKeyword } from "../../common/profile";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import request from "../../utils/request";
@@ -30,6 +30,7 @@ export const Profile = () => {
       ) : (
         <></>
       )}
+      <MyKeyword />
     </>
   );
 };

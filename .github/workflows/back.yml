@@ -17,7 +17,6 @@ jobs:
         ENV_FILE: ${{ secrets.ENV_FILE }}
       run: |
         cd back
-        npm install
         echo "${ENV_FILE}" > .env
     - name: Upload BackServer build floder to EC2 instance
       env:
