@@ -1,4 +1,3 @@
-
 import { Community, Subject, Content, KakaoMap, CommunityForm } from './styled'
 import { Input } from '../../common/input'
 import { TextArea } from '../../common/textarea'
@@ -13,7 +12,6 @@ export const CommunityWrite = () => {
     const subject = useInput('')
     const content = useTextArea('')
     const navigate = useNavigate()
-    console.log('user::', user)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -46,7 +44,6 @@ export const CommunityWrite = () => {
                     <TextArea
                         value={content.value}
                         onChange={content.onChange}
-                        placeholder="내용을 입력해주세요"
                         id="content"
                         name="content"
                     />
