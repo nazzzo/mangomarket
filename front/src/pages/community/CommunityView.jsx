@@ -10,6 +10,9 @@ import { CommunityUpdate } from './CommunityUpdate'
 export const CommunityView = () => {
     const { user } = useSelector((state) => state.user)
     const { id } = useParams()
+    // const [view, setView] = useState()
+    // const [editMode, setEditMode] = useState(false)
+    // const [deleteMode, setDeleteMode] = useState(false)
     const [view, setView] = useState()
     const [editMode, setEditMode] = useState(false)
     const [deleteMode, setDeleteMode] = useState(false)
@@ -21,6 +24,7 @@ export const CommunityView = () => {
             try {
                 const response = await request.get(`/community/${id}`)
                 console.log(response.data)
+                // setView(response.data)
                 setView(response.data)
                 console.log('view:::', view)
             } catch (e) {
@@ -29,6 +33,15 @@ export const CommunityView = () => {
         }
         getWriting()
     }, [])
+
+    // const getDelete = async () => {
+    //     const responseDelete = await request.delete(`/community/${id}`)
+    //     if (responseDelete.data === 1) {
+    //         setDeleteMode(false)
+    //         alert('삭제되었습니다.')
+    //         navigate('/community')
+    //     }
+    // }
 
     const getDelete = async () => {
         const responseDelete = await request.delete(`/community/${id}`)
@@ -40,6 +53,54 @@ export const CommunityView = () => {
     }
 
     return (
+        // <ViewWrapper>
+        //     {view && !editMode ? (
+        //         <>
+        //             <Profile username={view.username} date={view.createdAt} />
+        //             <ViewContent subject={view.subject} content={view.content}>
+        //                 {user.email === view.email ? (
+        //                     <Buttons>
+        //                         <Button
+        //                             color="yellow"
+        //                             fontColor="#fff"
+        //                             fontSize="1.1rem"
+        //                             height="3rem"
+        //                             width="7rem"
+        //                             onClick={() => {
+        //                                 setEditMode(true)
+        //                             }}
+        //                         >
+        //                             수정
+        //                         </Button>
+        //                         <Button
+        //                             color="yellow"
+        //                             fontColor="#fff"
+        //                             fontSize="1.1rem"
+        //                             height="3rem"
+        //                             width="7rem"
+        //                             onClick={() => {
+        //                                 setDeleteMode(true)
+        //                                 getDelete()
+        //                             }}
+        //                         >
+        //                             삭제
+        //                         </Button>
+        //                     </Buttons>
+        //                 ) : (
+        //                     <></>
+        //                 )}
+        //             </ViewContent>
+        //         </>
+        //     ) : (
+        //         <></>
+        //     )}
+        //     {view && editMode ? (
+        //         <CommunityUpdate view={view} setView={setView} setEditMode={setEditMode} />
+        //     ) : (
+        //         <></>
+        //     )}
+        //     <Comment />
+        // </ViewWrapper>
         <ViewWrapper>
             {view && !editMode ? (
                 <>

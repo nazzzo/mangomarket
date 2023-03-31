@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { useTimeStamp } from '../../../hooks'
+// import { motion } from 'framer-motion'
 import { motion } from 'framer-motion'
 
 export const CommunityWrapper = styled.div`
@@ -56,6 +57,18 @@ const TextBoxASpan = styled.span`
     width: 90%;
     padding-top: 10%;
 `
+
+// export const List = styled(motion.ul)`
+//     width: 100%;
+// `
+// export const ItemWrapper = styled(motion.li)`
+//     width: 100%;
+//     height: 13.75rem;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     border-bottom: 1px solid #ececec;
+// `
 
 export const List = styled(motion.ul)`
     width: 100%;
