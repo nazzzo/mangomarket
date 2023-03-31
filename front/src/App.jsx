@@ -12,9 +12,12 @@ const App = () => {
   const { loading, error, data } = useSelector((state) => state.category);
   const { isLogin, user } = useSelector((state) => state.user);
 
+  console.log('배포 테스트:::', document.cookie, 'user:::', user)
+
   useEffect(() => {
     if (document.cookie.split("=")[0] === "token") {
       const token = document.cookie.split("=")[1];
+      console.log(`token:::`, token);
       (async () => {
         const response = await request.post("/auths/sns", { token });
         if (response.status === 200 && response.data.email) {
