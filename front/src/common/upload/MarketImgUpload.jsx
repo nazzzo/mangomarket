@@ -34,7 +34,7 @@ export const MarketImgUpload = ({ width, height, uploadedImages, setUploadedImag
       console.log(response.data);
       const responseData = response.data.images.map(
         (filename) =>
-          `http://${config.HOST}:${config.IMG_PORT}/board/${filename}`
+          `${config.PT}://${config.HOST}:${config.IMG_PORT}/board/${filename}`
       );
       setUploadedImages((prevImages) => {
         const maxImages = 5;

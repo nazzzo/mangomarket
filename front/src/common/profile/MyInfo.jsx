@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { userLogin } from "../../store/user";
 import { ProfileImgUpload } from "../upload/ProfileImgUpload";
 import { Input } from "../input";
@@ -7,9 +7,8 @@ import { useInput } from "../../hooks";
 import { UserInfoWrap, UserImg, UserName, ProfileEdit } from "./styled";
 import request from "../../utils/request";
 
-export const UserInfo = ({ width, height, imgSize, fontSize }) => {
+export const MyInfo = ({ user, width, height, imgSize, fontSize }) => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.user);
   // const { isLoading, isError, isLogin, user } = useSelector((state) => state.user);
   const [isEdit, setIsEdit] = useState(false);
   const [profileImage, setProfileImage] = useState(user.userImg);

@@ -114,6 +114,7 @@ class BoardService {
                 arr[index].boardid = write.id
             })
             await this.boardRepository.uploadImage(arr)
+            if (write) await this.boardRepository.createPoint({email: write.email, boardid: write.id});
             return write;
         } catch (e) {
             throw new this.BadRequest(e);

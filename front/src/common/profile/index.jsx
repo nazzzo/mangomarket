@@ -1,3 +1,5 @@
-export * from "./UserInfo"
+export * from "./MyInfo"
+export * from "./MyPoint"
 export * from "./WriterInfo"
 export * from "./UserHistory"
+export * from "./UserPoint"

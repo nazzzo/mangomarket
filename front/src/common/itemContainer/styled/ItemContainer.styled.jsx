@@ -41,6 +41,29 @@ export const ItemImage = ({ size, src }) => {
     )
 }
 
+
+const RecommendImageWrap = styled.div`
+    width: 12rem;
+    height: 10rem;
+    border-radius: 8px;
+
+    & img {
+        object-fit: cover;
+        border-radius: 8px;
+        width: 100%;
+        height: 100%;
+    }
+`
+
+export const RecommendItemImage = ({ size, src }) => {
+    return (
+        <RecommendImageWrap siez={size}>
+            <img src={src} alt="" />
+        </RecommendImageWrap>
+    )
+}
+
+
 export const ItemContent = styled.div`
     width: 85%;
     height: 85%;
@@ -81,3 +104,10 @@ export const TextBoxA = ({ state, subject }) => {
         </TextBoxAStyled>
     )
 }
+
+export const PageCounter = styled.button`
+    width: 100%;
+    height: 10px;
+    opacity: 0;
+
+`

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { MainSlider } from "../../common/slide";
 import { WriterInfo } from "../../common/profile";
+import { RecommendCategory } from "../../common/category"
 import request from "../../utils/request";
 import { ViewContent, ViewFooter } from './';
 
@@ -51,6 +52,11 @@ export const BoardView = () => {
         likeCount={viewData.likeCount}
         hit={viewData.hit}
         date={viewData.createdAt}
+      />
+      <RecommendCategory
+            height="30rem"
+            width="25rem"
+            category={viewData.category}
       />
       {isLogin ? <ViewFooter isLogin={isLogin} user={user.email} size="3rem" footerHeight="4.5rem" footerWidth="30rem" /> : <></>} 
     </>) : <></>

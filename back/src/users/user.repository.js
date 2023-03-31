@@ -69,16 +69,29 @@ class UserRepository {
       }
   }
 
-  async findPoint(userid) {
-      console.log(userid);
+  async findPoint(email) {
       try {
-          const sql = `SELECT A.id, A.userid, A.boardid, A.comment, A.commentid, A.createdAt, B.subject, C.Content FROM PointUp AS A JOIN Board AS B ON A.boardid = B.id LEFT JOIN Comment AS C ON A.commentid = C.id WHERE A.userid = '${userid}' ORDER BY A.createdAt DESC;`;
+          const sql = `SELECT 
+          A.id, 
+          A.email, 
+          A.boardid,
+          A.soldid, 
+          A.community, 
+          A.communityid, 
+          A.createdAt, 
+          B.subject, 
+          C.Content 
+          FROM PointUp AS A 
+          JOIN Board AS B ON A.boardid = B.id 
+          LEFT JOIN Community AS C ON A.communityid = C.id 
+          WHERE A.email = '${email}' ORDER BY A.createdAt DESC;`;
           const sql2 = `SELECT 
-          userid, 
-          (select count(*) from PointUp where commentid is null and userid=a.userid) as boardCount, 
-          COUNT(commentid) AS commentCount 
+          email, 
+          (select count(*) from PointUp where communityid is null and email=a.email) as boardCount,
+          COUNT(soldid) AS soldCount, 
+          COUNT(communityid) AS communityCount 
       FROM PointUp as a
-      WHERE userid = '${userid}'
+      WHERE email = '${email}'
       `;
           const [chart] = await this.sequelize.query(sql);
           const [[sum]] = await this.sequelize.query(sql2);
