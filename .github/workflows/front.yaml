@@ -1,4 +1,4 @@
-name: Build and upload React app to EC2 instance
+name: Front
 on:
   push:
     branches:
@@ -29,6 +29,7 @@ jobs:
           EC2_HOST: ${{ secrets.FRONT_HOST }}
         run: |
           echo "${SSH_PEM_FILE}" > frontend.pem
+          echo $(ls)
           chmod 600 frontend.pem
           mkdir -p ~/.ssh
           ssh-keyscan -t rsa ${EC2_HOST} >> ~/.ssh/known_hosts
