@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { useTimeStamp } from '../../../hooks'
+import { motion } from 'framer-motion'
 
 export const HomeWrapper = styled.div`
     padding-top: 5%;
@@ -20,11 +21,11 @@ export const BtnBox = styled.div`
     }
 `
 
-export const List = styled.ul`
+export const List = styled(motion.ul)`
     width: 100%;
 `
 
-export const ItemWrapper = styled.li`
+export const ItemWrapper = styled(motion.li)`
     width: 95%;
     margin: 0 auto;
     height: ${({ height }) => height};

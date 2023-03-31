@@ -34,6 +34,7 @@ export const CommunityView = () => {
         const responseDelete = await request.delete(`/community/${id}`)
         if (responseDelete.data === 1) {
             setDeleteMode(false)
+            alert('삭제되었습니다.')
             navigate('/community')
         }
     }
