@@ -8,25 +8,30 @@ export const CommentForm = styled.form`
 export const CommentInput = styled.div`
   display: flex;
   align-items: center;
+  background: #D9D9D9;
+
 `
 
 export const ContentInput = styled.input`
   flex: 1;
   padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-right: none;
+  border: none;
+  outline: none;
+  background: #D9D9D9;
 `
 
 export const CommentButton = styled.button`
-  background-color: #4CF504;
-  color: black;
   border: none;
-  border-radius: 0 5px 5px 0;
-  padding: 0.5rem 1rem;
+  background: #D9D9D9;
   cursor: pointer;
 `
 
 export const CommentList = styled.div`
   width: 100%;
+`
+
+export const Txt = styled.p`
+    word-break: break-all;
+  
 `
 

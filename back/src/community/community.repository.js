@@ -88,6 +88,25 @@ class CommunityRepository {
             throw new Error(e)
         }
     }
+    async updateComment({ id, idx, content }) {
+        try {
+            const [updateComment] = await this.Comment.update({ content: content }, { where: { communityid: id, id: idx } })
+            return updateComment
+        } catch (e) {
+            throw new Error(e)
+        }
+    }
+    async destroy(id, idx) {
+        console.log('commentid :', id)
+        try {
+            const destroy = await this.Comment.destroy({
+                where: { communityid: id, id: idx },
+            })
+            return destroy
+        } catch (e) {
+            throw new Error(e)
+        }
+    }
 }
 
 module.exports = CommunityRepository

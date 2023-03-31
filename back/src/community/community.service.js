@@ -68,20 +68,21 @@ class CommunityService {
             throw new this.BadRequest(e)
         }
     }
-    async putComment(id, content) {
+    async putComment(id, idx, content) {
         // console.log(`serv :`, { id, content });
         try {
-            const comment = await this.communityRepository.update({ id, content })
+            const comment = await this.communityRepository.updateComment({ id, idx, content })
             if (comment < 1) throw '수정할 댓글이 없습니다'
             return comment
         } catch (e) {
             throw new this.BadRequest(e)
         }
     }
-    async deleteComment(id) {
+
+    async deleteComment(id,idx) {
         // console.log(`serv :`, id);
         try {
-            const comment = await this.communityRepository.destroy(id)
+            const comment = await this.communityRepository.destroy(id, idx)
             if (comment < 1) throw '삭제할 댓글이 없습니다'
             return comment
         } catch (e) {

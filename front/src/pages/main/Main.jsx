@@ -54,6 +54,7 @@ export const Main = () => {
         }
     }, [])
 
+    console.log(count)
     const handleClick = () => {}
 
     return (
