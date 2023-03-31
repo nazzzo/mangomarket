@@ -56,7 +56,7 @@ export const Main = () => {
 
     console.log(count)
     const handleClick = () => {}
-
+    console.log(boardList)
     return (
         <HomeWrapper>
             <List>

@@ -11,10 +11,7 @@ const Img = styled.img`
 `
 
 const ProfileWrapper = styled.div`
-
   display: flex;
-  
-  
 `
 
 const Content = styled.div`
@@ -47,11 +44,6 @@ export const ViewContent = ({children, subject, content}) => {
     </ContentWrapper>
   )
 }
-
-// export const ViewWrapper = styled.div`
-//     width: 100%;
-//     padding: 30px;
-// `
 
 export const Profile = ({username, date}) => {
   console.log(`date:::`, username,date)
