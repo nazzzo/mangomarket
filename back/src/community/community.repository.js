@@ -3,22 +3,22 @@ class CommunityRepository {
         this.Community = Community
     }
 
-    async findOne({id}){
+    async findOne({ id }) {
         try {
-            const response = await this.Community.findOne({ raw: true, where: {id} })
+            const response = await this.Community.findOne({ raw: true, where: { id } })
             console.log(response)
             return response
-        } catch(e){
+        } catch (e) {
             throw new Error(e)
         }
     }
 
-    async createWriting({subject, content}){
+    async createWriting({ subject, content }) {
         try {
-        const create = await this.Community.create({subject, content})
-        return create
-        } catch (e){
-        throw new Error(e)
+            const create = await this.Community.create({ subject, content })
+            return create
+        } catch (e) {
+            throw new Error(e)
         }
     }
     async findAll() {
@@ -32,19 +32,19 @@ class CommunityRepository {
         }
     }
 
-    async findOne(boardId) {
-        try {
-            console.log('repository boardId', boardId)
-            const boardView = await this.Community.findOne({
-                raw: true,
-                where: { id: boardId },
-            })
-            console.log(boardView)
-            return boardView
-        } catch (e) {
-            throw new Error(e)
-        }
-    }
+    // async findOne(boardId) {
+    //     try {
+    //         console.log('repository boardId', boardId)
+    //         const boardView = await this.Community.findOne({
+    //             raw: true,
+    //             where: { id: boardId },
+    //         })
+    //         console.log(boardView)
+    //         return boardView
+    //     } catch (e) {
+    //         throw new Error(e)
+    //     }
+    // }
     async create(commentData) {
         console.log('commentData', commentData)
         try {
@@ -55,9 +55,12 @@ class CommunityRepository {
             throw new Error(e)
         }
     }
-    async update({ id, content }) {
+    async update({ id, content, subject }) {
         try {
-            const update = await this.Community.update({ content: content }, { where: { id: id } })
+            const [update] = await this.Community.update(
+                { content: content, subject: subject },
+                { where: { id: id } }
+            )
             return update
         } catch (e) {
             throw new Error(e)
@@ -69,6 +72,7 @@ class CommunityRepository {
             const destroy = await this.Community.destroy({
                 where: { id: id },
             })
+            console.log('destroy ::: ', destroy)
             return destroy
         } catch (e) {
             throw new Error(e)

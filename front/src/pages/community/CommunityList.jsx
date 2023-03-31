@@ -19,6 +19,7 @@ export const CommunityList = () => {
         }
         getData()
     }, [])
+
     const TextList = {
         hidden: {
             opacity: 0,

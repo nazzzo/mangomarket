@@ -6,13 +6,13 @@ class CommunityService {
         this.userRepository = userRepository
     }
 
-    async getWriting({id}){
-        try{
-            const view = await this.communityRepository.findOne({id})
-            const {subject, content, email, createdAt} = view
-            const {username} = await this.userRepository.getUserById(email)
-            return {username, subject, content, createdAt}
-        } catch(e){
+    async getWriting({ id }) {
+        try {
+            const view = await this.communityRepository.findOne({ id })
+            const { subject, content, email, createdAt } = view
+            const { username } = await this.userRepository.getUserById(email)
+            return { username, subject, content, createdAt, email, id }
+        } catch (e) {
             throw new this.BadRequest(e)
         }
     }
@@ -27,15 +27,15 @@ class CommunityService {
         }
     }
 
-    async getView({ boardId }) {
-        try {
-            console.log('Service boardId ::', boardId)
-            const list = await this.communityRepository.findOne(boardId)
-            return list
-        } catch (e) {
-            throw new this.BadRequest(e)
-        }
-    }
+    // async getView({ boardId }) {
+    //     try {
+    //         console.log('Service boardId ::', boardId)
+    //         const list = await this.communityRepository.findOne(boardId)
+    //         return list
+    //     } catch (e) {
+    //         throw new this.BadRequest(e)
+    //     }
+    // }
 
     async postCommunity({ email, content, subject }) {
         console.log(`serv :`, { email, content, subject })
@@ -47,17 +47,17 @@ class CommunityService {
             throw new this.BadRequest(e)
         }
     }
-    async putComment(id, content) {
-        // console.log(`serv :`, { id, content });
+    async putCommunity(id, content, subject) {
+        console.log(`serv :`, { id, subject, content })
         try {
-            const comment = await this.communityRepository.update({ id, content })
-            if (comment < 1) throw '수정할 댓글이 없습니다'
+            const comment = await this.communityRepository.update({ id, content, subject })
+            if (comment < 1) throw '수정할 게시글이 없습니다'
             return comment
         } catch (e) {
             throw new this.BadRequest(e)
         }
     }
-    async deleteComment(id) {
+    async deleteCommunity(id) {
         // console.log(`serv :`, id);
         try {
             const comment = await this.communityRepository.destroy(id)
