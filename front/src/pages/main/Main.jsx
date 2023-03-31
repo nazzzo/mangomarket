@@ -67,7 +67,6 @@ export const Main = () => {
                 }
             })
         }, options)
-
         if (pageCountRef.current) observer.observe(pageCountRef.current)
         return () => {
             if (pageCountRef.current) observer.unobserve(pageCountRef.current)
