@@ -24,7 +24,9 @@ jobs:
         EC2_HOST: ${{ secrets.BACK_HOST }}
       run: |
         echo "${SSH_PEM_FILE}" > exfrserver.pem
+        echo $(ls)
         chmod 600 exfrserver.pem
+        chmod 400 exfrserver.pem
         mkdir -p ~/.ssh 
         ssh-keyscan -t rsa ${EC2_HOST} >> ~/.ssh/known_hosts
         scp -i /home/runner/work/actions_practice/actions_practice/exfrserver.pem -r ../back ${EC2_USER}@${EC2_HOST}:/home/ubuntu/www
