@@ -1,1 +1,1 @@
-export * from "./UserInfo.styled"
+export * from "./UserCard.styled"

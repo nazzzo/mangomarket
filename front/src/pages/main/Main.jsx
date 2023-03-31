@@ -11,50 +11,53 @@ import { useNavigate } from "react-router-dom";
 export const Main = () => {
   const pageCountRef = useRef(null);
   const [count, setCount] = useState(0);
-  const [boardList, setBoardList] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("")
-  console.log(selectedCategory)
-  const navigate = useNavigate();
+  const [boardList, setBoardList] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleIntersection = (entries) => {
-    if (entries[0].intersectionRatio === 1) {
-      setCount((prevCount) => prevCount + 1);
-    }
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (selectedCategory) {
-          setCount(0)
-        }      
         const response = await request.get(`boards/?count=${count}&category=${selectedCategory}`);
         const newBoardList = response.data;
-        if (count === 0|| selectedCategory !== "") {
+        if (count === 0 || selectedCategory !== "") {
           setBoardList(newBoardList);
         } else {
           setBoardList((prevList) => [...prevList, ...newBoardList]);
         }
-      } catch (error) {
-        console.log(error);
-      }
+        setIsLoading(false);
+        if (newBoardList.length === 0) setIsLoading(true);
+      } catch (error) {console.log(error);}
     };
+  
+    if (selectedCategory !== "") setCount(0);
     fetchData();
   }, [count, selectedCategory]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(handleIntersection, {
-      threshold: 1,
+    const options = {
       root: null,
-    });
-    if (pageCountRef.current) {
-      observer.observe(pageCountRef.current);
-    }
-    return () => {
-      observer.disconnect();
+      rootMargin: "0px",
+      threshold: 1.0,
     };
-  }, []);
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !isLoading) {
+          setIsLoading(true);
+          setCount((prevCount) => prevCount + 1);
+        }});
+    }, options);
+
+    if (pageCountRef.current) observer.observe(pageCountRef.current);
+    return () => {
+      if (pageCountRef.current) observer.unobserve(pageCountRef.current);
+    }}, [isLoading]);
+
+  console.log(count)
 
   return (
     <HomeWrapper>
@@ -95,8 +98,8 @@ export const Main = () => {
             </ItemContent>
           </ItemWrapper>
         ))}
-        <PageCounter ref={pageCountRef} />
       </List>
+      <PageCounter ref={pageCountRef} />
     </HomeWrapper>
-  );
-};
+  )}
+  

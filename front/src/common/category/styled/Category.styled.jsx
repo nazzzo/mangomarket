@@ -6,7 +6,8 @@ export const CategoryOpenerStyled = styled.button`
   outline: none;
   border: none;
   border-radius: 4px;
-  background-color: #ededed;
+  background-color: #fff;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
   font-weight: bold;
   font-size: 1rem;
   cursor: pointer;
@@ -58,3 +59,34 @@ export const CategoryBox = ({ height, width, children }) => {
     </CategoryBoxStyled>
   );
 };
+
+
+export const RecommendWrap = styled.div`
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+`
+
+const TextHeaderWrap = styled.div`
+  height: 15%;
+  padding-bottom: 2%;
+  margin-bottom: 10%;
+  border-bottom: 1px solid #ececec;
+
+  & h2 {
+    font-size: 1.3rem;
+  }
+`
+
+export const TextHeader = ({children}) => {
+  return (
+    <TextHeaderWrap>
+      <h2>{children}</h2>
+    </TextHeaderWrap>
+  )
+}
+
+export const PageCounter = styled.div`
+    width: 100%;
+    height: 100px;
+    /* background-color:red; */
+`

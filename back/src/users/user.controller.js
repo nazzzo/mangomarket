@@ -49,8 +49,8 @@ class UserController {
   }
   async getPoint(req, res, next) {
     try {
-        const { userid } = req.params;
-        const point = await this.userService.findPoint(userid);
+        const { email } = req.params;
+        const point = await this.userService.findPoint(email);
         console.log("point", point);
         res.json(point);
     } catch (e) {

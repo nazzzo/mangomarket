@@ -14,6 +14,8 @@ export const RefreshBtnStyled = styled.button`
   width: ${({ width }) => width};
   outline: none;
   border: none;
+  background-color: #fff;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
   font-weight: bold;
   font-size: 1.3rem;

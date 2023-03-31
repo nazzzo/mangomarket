@@ -6,7 +6,7 @@ import config from "../../config"
 
 
 export const ProfileImgUpload = ({ width, height, src, setState }) => {
-  if (!src) src = `http://${config.HOST}:${config.IMG_PORT}/default-image.png`
+  if (!src) src = `${config.PT}://${config.HOST}:${config.IMG_PORT}/default-image.png`
   const fileInputRef = useRef(null);
   const handleImageClick = () => {
     fileInputRef.current.click();
@@ -21,7 +21,7 @@ export const ProfileImgUpload = ({ width, height, src, setState }) => {
         const response = await request.post("/users/single", body, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-        const responseData = `http://${config.HOST}:${config.IMG_PORT}/${response.data.filename}`; 
+        const responseData = `${config.PT}://${config.HOST}:${config.IMG_PORT}/${response.data.filename}`; 
         setState(responseData);
       } catch (e) {
         console.error(e);

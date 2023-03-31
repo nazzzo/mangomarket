@@ -2,7 +2,8 @@ import styled from 'styled-components'
 import { useTimeStamp } from '../../../hooks'
 
 export const HomeWrapper = styled.div`
-    background-color: #fff;
+    padding-top: 5%;
+    background-color: #f3f3f3;
     /* border-bottom: 1px solid #ddd; */
 `
 
@@ -11,7 +12,7 @@ export const BtnBox = styled.div`
     width: 500px;
     height: ${({ height }) => height};
     align-items: center;
-    margin: 3% 0;
+    margin: 5% 0;
     padding-left: 3%;
 
     & button {
@@ -24,12 +25,16 @@ export const List = styled.ul`
 `
 
 export const ItemWrapper = styled.li`
-    width: 100%;
+    width: 95%;
+    margin: 0 auto;
     height: ${({ height }) => height};
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 1px solid #eee;
+    background-color: #fff;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    margin-bottom: 3%;
 `
 
 const ItemImageWrap = styled.div`
@@ -163,8 +168,8 @@ export const TextBoxC = ({ hashtag }) => {
     return <HashTags>{hashtags}</HashTags>
 }
 
-export const PageCounter = styled.div`
+export const PageCounter = styled.button`
     width: 100%;
     height: 100px;
-    /* background-color:red; */
+    opacity: 0;
 `

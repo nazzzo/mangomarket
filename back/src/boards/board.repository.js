@@ -369,7 +369,8 @@ class BoardRepository {
 
     async createPoint(data) {
         try {
-            const response = await this.PointUp.create(data);
+             const response = await this.PointUp.create(data);
+             console.log(response);
         } catch (e) {
             throw new Error(e);
         }

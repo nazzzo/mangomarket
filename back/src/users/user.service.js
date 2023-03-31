@@ -51,7 +51,7 @@ class UserService {
   async putProfile(userData) {
       try {
           console.log(`userData ::::`, userData);
-          if (!userData.userImg) userData.userImg = `http://${this.config.host}:${this.config.imgport}/default-image.png`
+          if (!userData.userImg) userData.userImg = `${config.PT}://${this.config.host}:${this.config.imgport}/default-image.png`
         //   const { userpw, ...rest } = userData;
 
         //   const hash = this.crypto.createHmac("sha256", this.salt).update(userpw).digest("hex");
@@ -82,9 +82,9 @@ class UserService {
       }
   }
 
-  async findPoint(userid) {
+  async findPoint(email) {
       try {
-          const point = await this.userRepository.findPoint(userid);
+          const point = await this.userRepository.findPoint(email);
           return point;
       } catch (e) {
           throw new this.BadRequest(e);

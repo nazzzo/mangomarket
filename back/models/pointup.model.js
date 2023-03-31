@@ -4,9 +4,13 @@ module.exports = (sequelize, Sequelize) => {
             return this.init(
                 {
                     email: {
-                        type: Sequelize.STRING(16),
+                        type: Sequelize.STRING(30),
+                        allowNull: false,
                     },
                     boardid: {
+                        type: Sequelize.INTEGER,
+                    },
+                    soldid: {
                         type: Sequelize.INTEGER,
                     },
                     community: {
@@ -33,6 +37,9 @@ module.exports = (sequelize, Sequelize) => {
             });
             this.belongsTo(models.Community, {
                 foreignKey: "communityid",
+            });
+            this.belongsTo(models.Comment, {
+                foreignKey: "commentid",
             });
         }
     }
