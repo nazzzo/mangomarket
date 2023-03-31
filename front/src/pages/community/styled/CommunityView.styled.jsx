@@ -1,11 +1,5 @@
 import styled from 'styled-components'
-import { Input } from '../../../common/input'
 import { useTimeStamp } from '../../../hooks'
-
-export const ViewWrapper = styled.div`
-    width: 100%;
-    padding: 30px;
-`
 
 const LocalTime = styled.ul``
 
@@ -19,19 +13,6 @@ const Img = styled.img`
 const ProfileWrapper = styled.div`
     display: flex;
 `
-
-export const Profile = ({ username, date }) => {
-    return (
-        <ProfileWrapper>
-            <Img />
-            <Nickname>{username}</Nickname>
-            <LocalTime>
-                <li>논현 고잔동</li>
-                <li>{useTimeStamp(date)}</li>
-            </LocalTime>
-        </ProfileWrapper>
-    )
-}
 
 const Content = styled.div`
     margin-top: 2rem;
@@ -49,15 +30,6 @@ const ContentWrapper = styled.div`
     width: 100%;
     border-bottom: 1px solid;
 `
-export const ViewContent = ({ children, subject, content }) => {
-    return (
-        <ContentWrapper>
-            <Subject>{subject}</Subject>
-            <Content>{content}</Content>
-            {children}
-        </ContentWrapper>
-    )
-}
 
 const CommentWrapper = styled.div`
     margin-top: 2rem;
@@ -83,16 +55,43 @@ const CommentButton = styled.button`
     padding: 0.5rem 1rem;
     cursor: pointer;
 `
+export const ViewWrapper = styled.div`
+    width: 100%;
+`
 
-export const Comment = () => {
+// export const Comment = () => {
+//     return (
+//         <CommentWrapper>
+//             <>같이가요</>
+//             <CommentInput>
+//                 <ContentInput />
+//                 <CommentButton>button</CommentButton>
+//             </CommentInput>
+//         </CommentWrapper>
+//     )
+// }
+
+export const ViewContent = ({ children, subject, content }) => {
     return (
-        <CommentWrapper>
-            <>같이가요</>
-            <CommentInput>
-                <ContentInput />
-                <CommentButton>button</CommentButton>
-            </CommentInput>
-        </CommentWrapper>
+        <ContentWrapper>
+            <Subject>{subject}</Subject>
+            <Content>{content}</Content>
+            {children}
+        </ContentWrapper>
+    )
+}
+
+export const Profile = ({ username, date }) => {
+    console.log(`date:::`, username, date)
+    return (
+        <ProfileWrapper>
+            <Img />
+            <Nickname>{username}</Nickname>
+            <LocalTime>
+                <li>논현 고잔동</li>
+                <li>{useTimeStamp(date)}</li>
+            </LocalTime>
+        </ProfileWrapper>
     )
 }
 

@@ -2,10 +2,11 @@ import { useParams } from 'react-router-dom'
 import { Button } from '../../common/button'
 import request from '../../utils/request'
 import { useEffect, useState } from 'react'
-import { ViewWrapper, Profile, ViewContent, Comment, Buttons } from './styled/CommunityView.styled'
+import { ViewWrapper, Profile, ViewContent, Buttons } from './styled/CommunityView.styled'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { CommunityUpdate } from './CommunityUpdate'
+import { Comment } from './CommunityComment'
 
 export const CommunityView = () => {
     const { user } = useSelector((state) => state.user)
@@ -13,6 +14,7 @@ export const CommunityView = () => {
     const [view, setView] = useState()
     const [editMode, setEditMode] = useState(false)
     const [deleteMode, setDeleteMode] = useState(false)
+    const [comments, setComments] = useState([])
     const navigate = useNavigate()
     console.log(id)
 
@@ -21,7 +23,9 @@ export const CommunityView = () => {
             try {
                 const response = await request.get(`/community/${id}`)
                 console.log(response.data)
-                setView(response.data)
+                // setView(response.data)
+                setView(response.data.boardView)
+                setComments(response.data.commentList)
                 console.log('view:::', view)
             } catch (e) {
                 throw new Error(e)
@@ -34,6 +38,7 @@ export const CommunityView = () => {
         const responseDelete = await request.delete(`/community/${id}`)
         if (responseDelete.data === 1) {
             setDeleteMode(false)
+            alert('삭제되었습니다.')
             navigate('/community')
         }
     }
@@ -85,7 +90,7 @@ export const CommunityView = () => {
             ) : (
                 <></>
             )}
-            <Comment />
+            <Comment comments={comments} setComments={setComments} />
         </ViewWrapper>
     )
 }
