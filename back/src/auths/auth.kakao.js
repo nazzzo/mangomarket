@@ -73,7 +73,7 @@ class Kakao {
 
       const user = await this.kakaoSignup({ data });
       console.log(`user:::`, user);
-      res.cookie("token", this.jwt.createToken(user), { maxAge : 60_000, path : "/" });
+      res.cookie("token", this.jwt.createToken(user), { maxAge : 60_000, path : "/", secure: true });
       res.redirect(`http://${redirect_host}:${redirect_port}`);
     } catch (e) {
       next(e);
