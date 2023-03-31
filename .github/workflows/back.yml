@@ -1,0 +1,48 @@
+name: Back
+on:
+  # pull_request:
+  push:
+    branches:
+      - main
+    paths:
+      - "back/**"
+jobs:
+  build_and_upload:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: BackServer Settings
+      env:
+        ENV_FILE: ${{ secrets.ENV_FILE }}
+      run: |
+        cd back
+        npm install
+        echo "${ENV_FILE}" > .env
+    - name: Upload BackServer build floder to EC2 instance
+      env:
+        BACK_PEM_FILE: ${{ secrets.BACK_FILE }}
+        EC2_USER: ${{ secrets.BACK_USER }}
+        EC2_HOST: ${{ secrets.BACK_HOST }}
+      run: |
+        echo "${BACK_PEM_FILE}" > exfrserver.pem
+        echo $(ls)
+        chmod 600 exfrserver.pem
+        chmod 400 exfrserver.pem
+        mkdir -p ~/.ssh 
+        ssh-keyscan -t rsa ${EC2_HOST} >> ~/.ssh/known_hosts
+        scp -i exfrserver.pem -r ./back ${EC2_USER}@${EC2_HOST}:/home/ubuntu/www
+    # - name: Upload to EC2
+    #   uses: appleboy/scp-action@master
+    #   env:
+    #     FRONT_PEM: ${{ secrets.FRONT_PEM }}
+    #     FRONT_HOST: ${{ secrets.FRONT_HOST }}
+    #     FRONT_USER: ${{ secrets.FRONT_USER }}
+    #   with:
+    #     local: 'build/'
+    #     remote_path: '/home/ec2-user/react-build/'
+    #     host: ${{ secrets.FRONT_HOST }}
+    #     username: ${{ secrets.FRONT_USER }}
+    #     key: ${{ secrets.FRONT_PEM }}
+    #     source: "build/"
+    #     target: "/home/ubuntu/www/"
