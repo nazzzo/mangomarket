@@ -15,16 +15,6 @@ class CommunityController {
         }
     }
 
-    async getComment(req, res, next) {
-        try {
-            const { id, idx } = req.params
-            const response = await this.communityService.getComment({ id, idx })
-            res.json(response)
-        } catch (e) {
-            next(e)
-        }
-    }
-
     async getWriting(req, res, next) {
         try {
             const { id } = req.params

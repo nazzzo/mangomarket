@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import request from '../../utils/request'
 import { Icon } from '@iconify/react'
 
-const CommentTxT = ({ idx, content, createdAt, setDeleteComment, deleteComment }) => {
+const CommentTxT = ({ idx, content, createdAt, comments, setComments }) => {
     const [isInput, setIsInput] = useState(false)
     const [modified, setModified] = useState()
     const timeAgo = useTimeStamp(createdAt)
@@ -16,7 +16,7 @@ const CommentTxT = ({ idx, content, createdAt, setDeleteComment, deleteComment }
         try {
             const response = await request.delete(`/community/comment/${id}/${idx}`)
             console.log(response)
-            setDeleteComment(true)
+            setComments(comments.filter(comment => comment.id !== idx))
         } catch (error) {
             console.error(error)
         }
@@ -77,7 +77,6 @@ const CommentTxT = ({ idx, content, createdAt, setDeleteComment, deleteComment }
 export const Comment = ({ comments, setComments }) => {
     const { id } = useParams()
     const [commentValue, setCommentValue] = useState()
-    const [deleteComment, setDeleteComment] = useState(false)
 
     const submitHandler = async (e) => {
         e.preventDefault()
@@ -95,6 +94,7 @@ export const Comment = ({ comments, setComments }) => {
 
     return (
         <CommentForm onSubmit={submitHandler}>
+            <>총댓글수: {comments.length}</>
             {comments ? (
                 comments.map((comment) => (
                     <CommentTxT
@@ -102,8 +102,8 @@ export const Comment = ({ comments, setComments }) => {
                         idx={comment.id}
                         content={comment.content}
                         createdAt={comment.createdAt}
-                        setDeleteComment={setDeleteComment}
-                        deleteComment={deleteComment}
+                        comments={comments}
+                        setComments={setComments}
                     />
                 ))
             ) : (
