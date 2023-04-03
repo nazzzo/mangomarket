@@ -37,9 +37,6 @@ module.exports = (sequelize, Sequelize) => {
             this.hasMany(models.BoardImage, {
                 foreignKey: "boardid",
             })
-            this.hasMany(models.Comment, {
-                foreignKey: 'boardid',
-            })
             this.hasMany(models.PointUp, {
                 foreignKey: 'boardid',
             })

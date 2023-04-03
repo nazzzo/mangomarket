@@ -14,6 +14,7 @@ app.listen(PORT, async () => {
     await sequelize.models.Category.create({ path: '/board/write', name: '글쓰기', isLogin: true })
 
 
+
     await sequelize.models.BoardCategory.create({ id: 1, category: "생활가전" });
     await sequelize.models.BoardCategory.create({ id: 2, category: "디지털기기" });
     await sequelize.models.BoardCategory.create({ id: 3, category: "가구/인테리어" });
@@ -26,5 +27,6 @@ app.listen(PORT, async () => {
     await sequelize.models.BoardCategory.create({ id: 10, category: "음식" });
     await sequelize.models.BoardCategory.create({ id: 11, category: "반려동물" });
     await sequelize.models.BoardCategory.create({ id: 12, category: "기타잡화" });
+
     console.log(`backend server listening on port ${PORT}`)
 })
