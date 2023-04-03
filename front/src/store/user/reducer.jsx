@@ -1,4 +1,14 @@
-import { USER_LOGIN, USER_LOGOUT, USER_REQUEST_ERROR, USER_IMAGE_UPLOAD, USER_INFO_SAVE, USER_INFO_REMOVE, USER_LIKE_ADD, USER_LIKE_REMOVE,
+import {
+  USER_LOGIN,
+  USER_LOGOUT,
+  USER_REQUEST_ERROR,
+  USER_IMAGE_UPLOAD,
+  USER_INFO_SAVE,
+  USER_INFO_REMOVE,
+  USER_LIKE_ADD,
+  USER_LIKE_REMOVE,
+  USER_KEYWORD_ADD,
+  USER_KEYWORD_REMOVE,
 } from "./types";
 
 const initialState = {
@@ -17,11 +27,12 @@ const initialState = {
   like: {
     email: "",
     boardid: "",
-  }
+  },
+  keyword: [],
 };
 
 export const user = (state = initialState, action) => {
-  // console.log(`action:::`, action.payload)
+  console.log(`action:::`, action)
   switch (action.type) {
     case USER_LOGIN:
       return {
@@ -44,7 +55,7 @@ export const user = (state = initialState, action) => {
     case USER_REQUEST_ERROR:
       return { ...state, isLoading: false, isError: action.payload.message };
     case USER_IMAGE_UPLOAD:
-      return { ...state, user: { userImg: action.payload } }
+      return { ...state, user: { userImg: action.payload } };
     case USER_INFO_SAVE:
       return {
         ...state,
@@ -59,19 +70,33 @@ export const user = (state = initialState, action) => {
           userImg: "",
         },
       };
-      case USER_LIKE_ADD:
-        return {
-          ...state,
-          like: action.payload,
-        };
-      case USER_LIKE_REMOVE:
-        return {
-          ...state,
-          like: {
-            email: "",
-            boardid: "",
-          },
-        };
+    case USER_LIKE_ADD:
+      return {
+        ...state,
+        like: action.payload,
+      };
+    case USER_LIKE_REMOVE:
+      return {
+        ...state,
+        like: {
+          email: "",
+          boardid: "",
+        },
+      };
+    case USER_KEYWORD_ADD:
+      return {
+        ...state,
+        keyword: [...state.keyword, ...action.payload],
+      };
+    case USER_KEYWORD_REMOVE:
+      return {
+        ...state,
+        keyword: state.keyword.filter(
+          (item) =>
+            item.id !== action.payload.id &&
+            item.keyword !== action.payload.keyword
+        ),
+      };
     default:
       return state;
   }

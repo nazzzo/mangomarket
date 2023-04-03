@@ -119,8 +119,7 @@ export const Content = React.forwardRef((props, ref) => {
 export const Submit = styled.button`
   outline: none;
   border: none;
-  margin-left: 79%;
-  margin-top: 1%;
+  margin: 1% 0 5% 75%;
   padding: 1.5% 3%;
   border-radius: 6px;
   font-size: ${(props) => props.fontSize};
