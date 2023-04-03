@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 
 export const useTimeStamp = (createdAt) => {
-  const parsedTime = useMemo(() => new Date(Date.parse(createdAt)), [createdAt])
+  const parsedTime = useMemo(() => createdAt ? new Date(Date.parse(createdAt)) : null, [createdAt]);
   const thisTime = new Date().getTime() + (1000 * 60 * 60 * 9);
   const [timeAgo, setTimeAgo] = useState("");
 

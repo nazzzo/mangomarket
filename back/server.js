@@ -26,5 +26,6 @@ app.listen(PORT, async () => {
     // await sequelize.models.BoardCategory.create({ id: 10, category: "음식" });
     // await sequelize.models.BoardCategory.create({ id: 11, category: "반려동물" });
     // await sequelize.models.BoardCategory.create({ id: 12, category: "기타잡화" });
+
     console.log(`backend server listening on port ${PORT}`)
 })
