@@ -11,12 +11,10 @@ class AuthService {
   async token({ email, userpw }) {
     try {
       if (!email || !userpw) throw "사용자가 없습니다";
-
       const hash = this.crypto.createHmac("sha256", this.salt).update(userpw).digest("hex");
       const user = await this.authRepository.getUserByInfo({ email, userpw: hash });
 
       if (!user) throw "아이디와 패스워드가 일치하지 않습니다";
-
       const token = this.jwt.createToken(user)
 
       return [token, user];

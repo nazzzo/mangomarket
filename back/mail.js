@@ -24,11 +24,8 @@ let mailSender = {
     };
     
     transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log(`메일 발송: ${info.response}`);
-      }
+      if (error) throw `${error}`
+      console.log(`메일 발송: ${info.response}`)
     });
   }
 };
