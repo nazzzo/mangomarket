@@ -25,6 +25,7 @@ router.post('/mail', async(req, res, next) => {
           text: `임시 비밀번호는 ${tempPw} 입니다.`
         };
         mailer.sendGmail(emailParams);
+        console.log(tempPw)
 
         const hash = jwt.crypto
         .createHmac("sha256", config.salt)

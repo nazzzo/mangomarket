@@ -32,7 +32,7 @@ const initialState = {
 };
 
 export const user = (state = initialState, action) => {
-  console.log(`action:::`, action)
+  // console.log(`action:::`, action)
   switch (action.type) {
     case USER_LOGIN:
       return {
@@ -91,11 +91,7 @@ export const user = (state = initialState, action) => {
     case USER_KEYWORD_REMOVE:
       return {
         ...state,
-        keyword: state.keyword.filter(
-          (item) =>
-            item.id !== action.payload.id &&
-            item.keyword !== action.payload.keyword
-        ),
+        keyword: [...action.payload]
       };
     default:
       return state;

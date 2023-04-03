@@ -6,6 +6,10 @@ const config = {
     BadRequest,
   },
   salt: process.env.SALT,
+  mailer: {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_USERPW,
+  },
   env: process.env.NODE_ENV || "development",
   port: process.env.PORT || "",
   host: process.env.HOST || "",

@@ -47,10 +47,12 @@ export const userKeywordAdd = (data) => ({
   type: USER_KEYWORD_ADD,
   payload: data,
 });
-export const userKeywordRemove = (data) => ({
+export const userKeywordRemove = (data) => {
+  console.log(`data::::`, data)
+  return ({
   type: USER_KEYWORD_REMOVE,
   payload: data,
-});
+})};
 
 
 export const saveUserInfo = (email, userpw) => ({

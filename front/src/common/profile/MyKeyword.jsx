@@ -15,13 +15,12 @@ export const MyKeyword = ({ email, width, height, color }) => {
     const handleKeyDown = useCallback(async (e) => {
       if (e.keyCode === 13) {
         const newKey = keyword.value;
-        if (newKey && !userKeywords.map(v => v.keyword.includes(newKey) && userKeywords.length < 3)) {
-        // if (newKey && !keys.includes(newKey) && keys.length < 3) {
+        // if (newKey && !userKeywords.map(v => v.keyword.includes(newKey) && userKeywords.length < 3)) {
+        if (newKey && !keys.includes(newKey) && keys.length < 3) {
           const response = await request.post(`/users/keyword`, {
             email: email,
             keyword: newKey
           })
-          console.log(response.data)
           if (response.data.keyword)
           dispatch(userKeywordAdd([{id: response.data.id, keyword: response.data.keyword}]))
           keyword.clear();
@@ -29,7 +28,6 @@ export const MyKeyword = ({ email, width, height, color }) => {
       }
     },[keyword, userKeywords, dispatch]);
   
-    console.log(userKeywords)
   
     const handleDeleteKeys = async (key) => {
         const response = await request.delete(`/users/keyword/${email}`, {
@@ -40,7 +38,6 @@ export const MyKeyword = ({ email, width, height, color }) => {
         })
       if (response.data === 1) {
       const newKeys = userKeywords.filter((v) => v.keyword !== key);
-      console.log(`newKeys:::`, newKeys)
       dispatch(userKeywordRemove(newKeys));
         }
     };
@@ -57,11 +54,11 @@ export const MyKeyword = ({ email, width, height, color }) => {
             onKeyDown={handleKeyDown}
             placeholder="알림 키워드를 등록해주세요"
           />
-          {userKeywords.map((item) => (
+          {userKeywords? (userKeywords.map((item) => (
             <KeywordItem key={item.keyword} color={color} onClick={() => handleDeleteKeys(item.keyword)}>
               <KeywordText color={color}>{`${item.keyword}`}</KeywordText>
             </KeywordItem>
-          ))}
+          ))): <></>}
         </KeywordContainer>
       </MyKeywordWrap>
     );
