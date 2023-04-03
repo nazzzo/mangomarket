@@ -8,7 +8,7 @@ class AuthController {
       const { email, userpw } = req.body;
       const [token, user] = await this.authService.token({ email, userpw });
       if (token) {
-        res.cookie("token", token, { maxAge : 60_000, path : "/", secure: true, sameSite: "lax", domain: "cha1rey.shop" });
+        res.cookie("token", token, { maxAge : 60_000, path : "/", secure: true, sameSite: "lax", domain: ".mgmarket.store" });
         res.status(200).json(user);
       }
     } catch (e) {
