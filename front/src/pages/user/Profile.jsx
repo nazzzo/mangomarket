@@ -30,7 +30,7 @@ export const Profile = () => {
       ) : (
         <></>
       )}
-      <MyKeyword />
+      <MyKeyword email={user.email} height="9rem" width="100%" color="yellow" />
     </>
   );
 };
