@@ -61,6 +61,7 @@ class Kakao {
 
   async login(req, res, next) {
     try {
+      console.log(req)
       const { code } = req.query;
       const { access_token } = await this.getToken(code);
       const host = `https://kapi.kakao.com/v2/user/me`;
