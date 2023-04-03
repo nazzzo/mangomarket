@@ -2,6 +2,7 @@ class AuthRepository {
   constructor({ User }) {
     this.User = User;
   }
+  
   async getUserByInfo({ email, userpw }) {
     try {
         const user = await this.User.findOne({
