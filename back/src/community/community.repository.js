@@ -1,7 +1,8 @@
 class CommunityRepository {
-    constructor({ Community, Comment }) {
+    constructor({ Community, Comment, sequelize }) {
         this.Community = Community
         this.Comment = Comment
+        this.sequelize = sequelize
     }
 
     async findOne({ id }) {
@@ -19,9 +20,9 @@ class CommunityRepository {
         }
     }
 
-    async createWriting({ email, subject, content }) {
+    async createWriting({ email, subject, content, category }) {
         try {
-            const create = await this.Community.create({ email, subject, content })
+            const create = await this.Community.create({ email, subject, content, category })
             return create
         } catch (e) {
             throw new Error(e)
@@ -30,10 +31,21 @@ class CommunityRepository {
 
     async findAll() {
         try {
-            const findAll = await this.Community.findAll({
-                order: [['id', 'DESC']],
-            })
-            return findAll
+            // const findAll = await this.Community.findAll({
+            //     order: [['id', 'DESC']],
+            // })
+            const sql = `
+                SELECT 
+                A.id,A.email,A.subject,A.content,A.createdAt,A.updatedAt,A.category,B.username,B.userImg,
+                (SELECT COUNT(communityid) FROM Comment WHERE communityid = A.id) AS CommentCount
+                FROM Community AS A JOIN User AS B ON A.email = B.email
+                ORDER BY A.id DESC;
+            `
+
+            const findComment = await this.sequelize.query(sql)
+            console.log(findComment)
+
+            return findComment
         } catch (e) {
             throw new Error(e)
         }
