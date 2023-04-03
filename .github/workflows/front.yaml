@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "front/**"
 jobs:
   build_and_upload:
     runs-on: ubuntu-20.04

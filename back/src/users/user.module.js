@@ -9,11 +9,11 @@ const { Sequelize } = require("sequelize");
 const UserRepository = require("./user.repository");
 const UserService = require("./user.service");
 const UserController = require("./user.controller");
-const config =require("../../config")
-const SALT = config.salt
 
 const JWT = require("../../lib/jwt");
 const crypto = require("crypto");
+const config =require("../../config")
+const SALT = config.salt
 
 const jwt = new JWT({ crypto, SALT })
 const userRepository = new UserRepository({ sequelize, User, PointUp, Keyword, Sequelize });
