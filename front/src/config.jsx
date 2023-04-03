@@ -6,8 +6,16 @@ const config = {
     BACKEND_PORT: 443,
     IMG_PORT: 443,
 }
-
 export default config
+// const config = {
+//     PT: "https",
+//     HOST: 'char1ey.shop',
+//     PORT: 3000,
+//     BACKEND_PORT: 443,
+//     IMG_PORT: 3005,
+// }
+
+// export default config
 
 
 // const config = {

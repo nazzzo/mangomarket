@@ -6,9 +6,9 @@ class CommunityService {
         this.userRepository = userRepository
     }
 
-    async postComment({ id, content }) {
+    async postComment({ id, content, email }) {
         try {
-            const response = await this.communityRepository.create({ id, content })
+            const response = await this.communityRepository.create({ id, content, email })
             console.log('postComment', response)
             return response
         } catch (e) {

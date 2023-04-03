@@ -5,20 +5,11 @@ class CommunityController {
 
     async postComment(req, res, next) {
         try {
+            console.log('body::', req.body)
             const { id } = req.params
-            const { content } = req.body
+            const { content, email } = req.body
             if (!content) throw new Error('내용을 입력해주세요')
-            const response = await this.communityService.postComment({ id, content })
-            res.json(response)
-        } catch (e) {
-            next(e)
-        }
-    }
-
-    async getComment(req, res, next) {
-        try {
-            const { id, idx } = req.params
-            const response = await this.communityService.getComment({ id, idx })
+            const response = await this.communityService.postComment({ id, content, email })
             res.json(response)
         } catch (e) {
             next(e)
