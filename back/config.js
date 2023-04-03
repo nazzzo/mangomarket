@@ -7,7 +7,7 @@ const config = {
   },
   mailer: {
     user: process.env.MAIL_USER,
-    pass: process.env.MAIL_USERPW,
+    password: process.env.MAIL_USERPW,
   },
   salt: process.env.SALT,
   env: process.env.NODE_ENV || "development",

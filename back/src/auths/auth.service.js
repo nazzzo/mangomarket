@@ -1,6 +1,6 @@
 class AuthService {
   constructor({ userRepository, authRepository, jwt, config }) {
-    this.userRepository = userRepository;
+    this.userRepository = userRepository.userRepository;
     this.authRepository = authRepository;
     this.jwt = jwt;
     this.crypto = jwt.crypto;
@@ -47,12 +47,10 @@ class AuthService {
           userpw: hash
       }
 
-      console.log(this.userRepository)
-
-      const result = await this.authRepository.updateProfile(updateData)
+      const result = await this.userRepository.updateProfile(updateData)
       return result
     } catch (e) {
-      console.log(e)
+      next(e)
     }
   }
 }

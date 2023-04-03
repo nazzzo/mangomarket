@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const senderInfo = require('./config').mailer;
+console.log(senderInfo)
 
 let mailSender = {
   sendGmail(param) {

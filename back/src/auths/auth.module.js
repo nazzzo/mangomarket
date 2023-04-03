@@ -4,7 +4,7 @@ const {
     }
 } = require("../../models")
 
-const userRepository = require("../users/user.module").userRepository
+const userRepository = require("../users/user.module")
 const axios = require('axios')
 const qs = require('qs')
 const AuthRepository = require("./auth.repository")
