@@ -1,16 +1,15 @@
 import styled from 'styled-components'
+import Select from 'react-select'
 
 const ContentWrap = styled.div`
     width: 100%;
     margin-top: 1rem;
 
-    /* & .input-style {
-        width: 100%;
-        height: 30rem;
-        border: none;
-    } */
+    & > textarea::placeholder {
+        color: #999;
+        font-size: 1.2rem;
+    }
 `
-
 
 export const Content = ({ children }) => {
     return <ContentWrap>{children}</ContentWrap>
@@ -23,9 +22,30 @@ const SubjectWrap = styled.div`
         width: 100%;
         height: 3rem;
         border: none;
-        border-bottom: 0.1rem solid #000000;
+        border-bottom: 1px solid #ddd;
     }
 `
+
+const StyledSelect = styled(Select)`
+    width: 15rem;
+    margin-left: 0.9rem;
+`
+const selectOptions = [
+    { value: 'talking', label: '잡담' },
+    { value: 'question', label: '질문' },
+    { value: 'infomation', label: '정보공유' },
+    { value: 'request', label: '요청' },
+]
+
+export const CategorySelect = ({ onChange }) => {
+    return (
+        <StyledSelect
+            placeholder="카테고리 선택"
+            options={selectOptions}
+            onChange={onChange}
+        ></StyledSelect>
+    )
+}
 
 export const Subject = ({ children }) => {
     return <SubjectWrap>{children}</SubjectWrap>
