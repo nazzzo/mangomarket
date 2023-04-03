@@ -57,6 +57,20 @@ class UserController {
         next(e);
     }
   }
+  async postKeyword(req, res, next) {
+    try {
+      // console.log(req.body)
+      const result = await this.userService.postKeyword(req.body);
+      res.json(result)
+    } catch (e) {next(e)}
+  }
+  async deleteKeyword(req, res, next) {
+    try {
+      // console.log(req.body)
+      const result = await this.userService.deleteKeyword(req.body);
+      res.json(result)
+    } catch (e) {next(e)}
+  }
 }
 
 module.exports = UserController;

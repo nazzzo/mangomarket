@@ -55,6 +55,10 @@ module.exports = (sequelize, Sequelize) => {
                 through: 'Hashtag',
                 foreignKey: 'boardid',
             })
+            this.belongsToMany(models.Keyword, {
+                through: 'BoardKeyword',
+                foreignKey: 'boardId'
+              });
         }
     }
     Board.createTable()

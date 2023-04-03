@@ -90,6 +90,22 @@ class UserService {
           throw new this.BadRequest(e);
       }
   }
+  async postKeyword(data) {
+    try {
+        const keyword = await this.userRepository.addKeyword(data)
+        return keyword
+    } catch (e) {
+        throw new this.BadRequest(e);
+    }
+  }
+  async deleteKeyword(data) {
+    try {
+        const keyword = await this.userRepository.destroyKeyword(data)
+        return keyword
+    } catch (e) {
+        throw new this.BadRequest(e);
+    }
+  }
 }
 
 module.exports = UserService;
