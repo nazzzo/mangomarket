@@ -6,9 +6,9 @@ class CommunityService {
         this.userRepository = userRepository
     }
 
-    async postComment({ id, content }) {
+    async postComment({ id, content, email }) {
         try {
-            const response = await this.communityRepository.create({ id, content })
+            const response = await this.communityRepository.create({ id, content, email })
             console.log('postComment', response)
             return response
         } catch (e) {
@@ -43,7 +43,7 @@ class CommunityService {
 
     async getList() {
         try {
-            const list = await this.communityRepository.findAll()
+            const [list] = await this.communityRepository.findAll()
             if (list.length === 0) throw '내용이 없습니다'
             return list
         } catch (e) {
@@ -51,14 +51,15 @@ class CommunityService {
         }
     }
 
-    async postCommunity({ email, content, subject }) {
-        console.log(`serv :`, { email, content, subject })
+    async postCommunity({ email, content, subject, category }) {
+        console.log(`serv :`, { email, content, subject, category })
         try {
             if (!subject || !content) throw '내용이 없습니다'
             const community = await this.communityRepository.createWriting({
                 email,
                 content,
                 subject,
+                category,
             })
             return community
         } catch (e) {
