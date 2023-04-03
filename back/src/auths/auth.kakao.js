@@ -7,25 +7,30 @@ class Kakao {
     this.jwt = jwt;
     this.KKO_HOST = `https://kauth.kakao.com`;
     this.REST_API_KEY = `1fe7ae4bf45bdf9bd6fc758bd63e9e0f`;
-    this.REDIRECT_URI = `http://${host}:${port}/auths/kakao`;
+    this.REDIRECT_URI = `https://${host}:443/auths/kakao`;
     this.CLIENT_SERCRET = `1NLiTnJ7OOm09XyI4PrGAgIPwKispRor`;
   }
 
   async getToken(code) {
-    const headers = {
-      "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
-    };
-    const host = `${this.KKO_HOST}/oauth/token`;
-    const body = this.qs.stringify({
-      grant_type: "authorization_code",
-      client_id: this.REST_API_KEY,
-      redirect_uri: this.REDIRECT_URI,
-      code,
-      client_secret: this.CLIENT_SERCRET,
-    });
-    const { data } = await this.axios.post(host, body, headers)
-    return data;
-  } 
+    try {
+        const headers = {
+            "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
+        };
+        const host = `${this.KKO_HOST}/oauth/token`;
+        const body = this.qs.stringify({
+            grant_type: "authorization_code",
+            client_id: this.REST_API_KEY,
+            redirect_uri: this.REDIRECT_URI,
+            code,
+            client_secret: this.CLIENT_SERCRET,
+        });
+        const { data } = await this.axios.post(host, body, headers);
+        return data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
 
   async kakaoSignup({ data }) {
     console.log(`data::::`, data)
@@ -70,11 +75,11 @@ class Kakao {
           Authorization: `Bearer ${access_token}`,
         },
       });
-
+      
       const user = await this.kakaoSignup({ data });
       console.log(`user:::`, user);
       res.cookie("token", this.jwt.createToken(user), { maxAge : 60_000, path : "/", secure: true, sameSite: "lax", domain: ".mgmarket.store" });
-      res.redirect(`http://${redirect_host}:${redirect_port}`);
+      res.redirect(`http://${redirect_host}`);
     } catch (e) {
       next(e);
     }
