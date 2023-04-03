@@ -1,6 +1,7 @@
 const config = {
     PT: "https",
-    HOST: 'mgmarket.store',
+    HOST: 'www.mgmarket.store',
+    REDIRECT_HOST: 'mgmarket.store',
     PORT: 3000,
     BACKEND_PORT: 443,
     IMG_PORT: 3005,
