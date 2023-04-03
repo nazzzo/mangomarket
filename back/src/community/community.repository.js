@@ -19,7 +19,7 @@ class CommunityRepository {
                 return this.User.findOne({raw: true, where: {email}})
             }) 
 
-            const nickname = await (await Promise.all(username)).map((user) => user.username)
+            const nickname = ( await Promise.all(username)).map((user) => user.username)
             commentList = commentList.map((comment, index)=> {
                 comment.username = nickname[index]
                 return comment
