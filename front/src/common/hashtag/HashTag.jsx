@@ -9,7 +9,6 @@ export const HashTag = ({ width, height, color, placeholder, tags, setTags }) =>
 
   const handleKeyDown = useCallback((e) => {
     if (e.keyCode === 13) {
-      console.log("Enter key pressed")
       const newTag = hashtag.value;
       if (newTag && !tags.includes(newTag) && tags.length < 3) {
         

@@ -6,7 +6,9 @@ import {
   USER_INFO_SAVE,
   USER_INFO_REMOVE,
   USER_LIKE_ADD,
-  USER_LIKE_REMOVE
+  USER_LIKE_REMOVE,
+  USER_KEYWORD_ADD,
+  USER_KEYWORD_REMOVE,
 } from "./types";
 
 export const userLogin = (isLogin, user) => ({
@@ -35,11 +37,21 @@ export const userLikeAdd = (payload) => ({
   type: USER_LIKE_ADD,
   payload,
 });
-
 export const userLikeRemove = (payload) => ({
   type: USER_LIKE_REMOVE,
   payload,
 });
+
+
+export const userKeywordAdd = (data) => ({
+  type: USER_KEYWORD_ADD,
+  payload: data,
+});
+export const userKeywordRemove = (data) => ({
+  type: USER_KEYWORD_REMOVE,
+  payload: data,
+});
+
 
 export const saveUserInfo = (email, userpw) => ({
   type: USER_INFO_SAVE,
@@ -48,7 +60,7 @@ export const saveUserInfo = (email, userpw) => ({
     userpw,
   },
 });
-
 export const removeUserInfo = () => ({
   type: USER_INFO_REMOVE,
 });
+
