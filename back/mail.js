@@ -4,6 +4,7 @@ console.log(senderInfo)
 
 let mailSender = {
   sendGmail(param) {
+    console.log(senderInfo)
     let transporter = nodemailer.createTransport({
       service: 'gmail',
       host: 'smtp.gmail.com',

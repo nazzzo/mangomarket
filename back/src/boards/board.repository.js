@@ -1,6 +1,7 @@
 class BoardRepository {
-    constructor({ sequelize, Board, BoardImage, Temp, History, Hashtag, Comment, User, Hash, Liked, Hit, PointUp }) {
+    constructor({ sequelize, Op, Board, BoardImage, Temp, History, Hashtag, Comment, User, Hash, Liked, Hit, PointUp, Keyword, BoardKeyword, }) {
         this.sequelize = sequelize;
+        this.Op = Op;
         this.Board = Board;
         this.BoardImage = BoardImage;
         this.Temp = Temp;
@@ -12,6 +13,8 @@ class BoardRepository {
         this.Liked = Liked;
         this.Hit = Hit;
         this.PointUp = PointUp;
+        this.Keyword = Keyword;
+        this.BoardKeyword = BoardKeyword;
     }
 
     async findAll({ searchType, search, sort, category, limit, pagingsort, pagingcategory }) {
@@ -146,22 +149,27 @@ class BoardRepository {
         if (!nextPost) return null;
         return nextPost;
     }
-    async createBoard(boarddata) {
-        console.log(`boarddata:::`, boarddata)
+    async createBoard(payload) {
+        console.log(`boarddata:::`, payload)
         try {
-            const { email, username, subject, content, hashtag, category } = boarddata;
-            const createBoard = await this.Board.create(boarddata, { plain: true });
+            const { email, username, subject, content, hashtag, category } = payload;
+            const createBoard = await this.Board.create(payload, { plain: true });            
             const addHash = hashtag.map((tagname) => this.Hash.findOrCreate({ where: { tagname } }));
             const tagResult = await Promise.all(addHash);
             await createBoard.addHashes(tagResult.map((v) => v[0]));
-            // const boardid = createBoard.dataValues.id;
+
+            const findKeys = await this.Keyword.findAll({ where: { keyword: { [this.Op.like]: `%${payload.subject}%` } } });
+            console.log(`findKeys:::`, findKeys)
+            const boardKeywords = findKeys.map((key) => ({ boardId: createBoard.id, keywordId: key.id }));
+            await this.BoardKeyword.bulkCreate(boardKeywords);
+            
             return createBoard.dataValues;
         } catch (e) {
             throw new Error(e);
         }
     }
     async uploadImage(images) {
-        console.log(`123123:::`, images)
+        console.log(`images:::`, images)
         try {
             const imageData = images.map(img => 
                 this.BoardImage.create(img)

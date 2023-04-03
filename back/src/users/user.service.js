@@ -72,6 +72,7 @@ class UserService {
             throw new Error(e);
         }
     }
+    
     async deleteUser(user) {
         try {
             console.log(`user :::::`, user);
@@ -81,7 +82,7 @@ class UserService {
             throw new Error(e);
         }
     }
-
+    
     async findPoint(email) {
         try {
             const point = await this.userRepository.findPoint(email);
@@ -89,6 +90,24 @@ class UserService {
         } catch (e) {
             throw new this.BadRequest(e);
         }
+    }
+  
+    async postKeyword(data) {
+      try {
+          const keyword = await this.userRepository.addKeyword(data)
+          return keyword
+      } catch (e) {
+          throw new this.BadRequest(e);
+      }
+    }
+  
+    async deleteKeyword(data) {
+      try {
+          const keyword = await this.userRepository.destroyKeyword(data)
+          return keyword
+      } catch (e) {
+          throw new this.BadRequest(e);
+      }
     }
 }
 
