@@ -14,11 +14,12 @@ module.exports = (sequelize, Sequelize) => {
       );
     }
     static associate(models) {
-      this.belongsTo(models.Board, {
-        foreignKey: "boardid",
-      });
       this.belongsTo(models.User, {
         foreignKey: "email",
+      });
+      this.belongsToMany(models.Board, {
+        through: 'BoardKeyword',
+        foreignKey: 'keywordId'
       });
     }
   }

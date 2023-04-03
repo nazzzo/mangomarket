@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { saveUserInfo, removeUserInfo } from "../../store/user";
+import { userLogin, saveUserInfo, removeUserInfo } from "../../store/user";
 import { useNavigate } from "react-router-dom";
 import { useInput } from "../../hooks/useInput";
 import { Input } from "../../common/input";
@@ -43,6 +43,14 @@ export const Login = () => {
       rememberMe
       ? dispatch(saveUserInfo(email.value, userpw.value))
       : dispatch(removeUserInfo())
+
+      dispatch(
+        userLogin(true, {
+          email: response.data.email,
+          username: response.data.username,
+          userImg: response.data.userImg,
+        })
+      );
       navigate("/");
     }
   };

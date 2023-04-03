@@ -1,7 +1,8 @@
 class UserRepository {
-  constructor({ sequelize, User, PointUp }) {
+  constructor({ sequelize, User, PointUp, Keyword, }) {
       this.User = User;
       this.PointUp = PointUp;
+      this.Keyword = Keyword;
       this.sequelize = sequelize;
   }
 
@@ -100,6 +101,26 @@ class UserRepository {
       } catch (e) {
           throw new Error(e);
       }
+  }
+  async addKeyword(payload) {
+    // console.log(`payload::::`, payload);
+    try {
+        const user = await this.Keyword.create(payload, { raw: true });
+        return user;
+    } catch (e) {
+        throw new Error(e);
+    }
+  }
+  async destroyKeyword(payload) {
+    console.log(`payload::::`, payload);
+    try {
+        const user = await this.Keyword.destroy({
+            where: { email: payload.email, keyword: payload.keyword },
+        });
+        return user;
+    } catch (e) {
+        throw new Error(e);
+    }
   }
 }
 

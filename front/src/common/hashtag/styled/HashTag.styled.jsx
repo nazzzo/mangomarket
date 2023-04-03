@@ -41,5 +41,4 @@ export const HashTagItem = styled.div`
 `;
 
 export const HashTagText = styled.span`
-  margin-right: 0.5rem;
 `;

@@ -49,11 +49,14 @@ class CommunityController {
         console.log('req.body:::', req.body)
         try {
             if (!req.body.content) throw new Error('내용이 없습니다')
-            const { email, content, subject } = req.body
+            if (!req.body.category) throw new Error('카테고리를 선택해주세요')
+            if (!req.body.subject) throw new Error('제목을 입력해주세요')
+            const { email, content, subject, category } = req.body
             const response = await this.communityService.postCommunity({
                 email,
                 content,
                 subject,
+                category,
             })
             res.status(201).json(response)
         } catch (e) {

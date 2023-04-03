@@ -230,13 +230,59 @@ export const MyPointWrapper = ({ children, score, sum }) => {
 };
 
 
-export const MyKeywordWrap = styled.button`
-  margin: 5%;
-  width: 90%;
-  height: 5rem;
-  background-color: #fff;
-  outline: none;
-  border: none;
+export const MyKeywordWrap = styled.div`
+  padding: 3% 5%;
+  margin: 8% 0 0 0;
+  width: 100%;
+  height: ${({ height }) => height};
+  line-height: 250%;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   border-radius: 6px;
   cursor: pointer;
-`
+  display: flex;
+  `
+
+
+
+export const KeywordContainer = styled.div`
+  width: ${({ width }) => width};
+
+
+  & .input-style {
+    height: ${({ height }) => height};
+    margin-left: 2%;
+    width: 80%;
+    border: none;
+  }
+`;
+
+export const KeywordItem = styled.div`
+  background: ${({ theme, color }) => theme[color].color};
+  color: #fff;
+  padding: 0 2%;
+  border-radius: 6px;
+  margin-top: 0.5rem;
+  margin-right: 1rem;
+  display: inline-block;
+  position: relative;
+
+  &:hover::after {
+    content: "x";
+    display: inline-block;
+    width: 1.2rem;
+    height: 1.2rem;
+    font-size: 0.8rem;
+    text-align: center;
+    line-height: 1.1rem;
+    background-color: #555;
+    color: #fff;
+    z-index: 2;
+    top: -5%;
+    right: -10%;
+    border-radius: 50%;
+    position: absolute;
+}
+`;
+
+export const KeywordText = styled.span`
+`;
