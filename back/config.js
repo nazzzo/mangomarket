@@ -5,6 +5,10 @@ const config = {
   exception: {
     BadRequest,
   },
+  mailer: {
+    user: process.env.MAIL_USER,
+    password: process.env.MAIL_USERPW,
+  },
   salt: process.env.SALT,
   mailer: {
     user: process.env.MAIL_USER,

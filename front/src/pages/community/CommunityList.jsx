@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 export const CommunityList = () => {
     const navigate = useNavigate()
     const [boardList, setBoardList] = useState([])
+
     useEffect(() => {
         const getData = async () => {
             try {
@@ -53,8 +54,12 @@ export const CommunityList = () => {
                                 <TextBoxA
                                     subject={board.subject}
                                     content={board.content}
+                                    username={board.username}
+                                    userImg={board.userImg}
                                     date={board.createdAt}
-                                />
+                                    commentCount={board.CommentCount}
+                                    category={board.category}
+                                ></TextBoxA>
                             </ItemContent>
                         </ItemWrapper>
                     </List>
