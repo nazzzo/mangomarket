@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Map, MapMarker, ZoomControl } from "react-kakao-maps-sdk";
-import { GetAddress } from "./"
 
 export const MapAPI = () => {
   const [state, setState] = useState({
@@ -114,8 +113,6 @@ export const MapAPI = () => {
           </MapMarker>
         )}
       </MapAPI>
-
-      <GetAddress lat={state.center.lat} lng={state.center.lng} />
     </>
   );
 };
