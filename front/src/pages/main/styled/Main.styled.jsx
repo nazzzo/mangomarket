@@ -1,6 +1,7 @@
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 import { useTimeStamp } from '../../../hooks'
 import { motion } from 'framer-motion'
+
 
 export const HomeWrapper = styled.div`
     padding-top: 5%;

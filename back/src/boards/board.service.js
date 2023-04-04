@@ -250,6 +250,21 @@ class BoardService {
             throw new this.BadRequest(e);
         }
     }
+
+    async getKeywords(keywordId, email) {
+        try {
+            if (!keywordId) throw "알림 키워드가 없습니다";
+            const boardIds = await this.boardRepository.getKeywordId(keywordId);
+            const boards = await Promise.all(
+                boardIds.map(async ({ boardId }) => await this.boardRepository.findOne(boardId))
+            );
+            const filtered = boards.filter(board => board.email !== email);
+            return filtered;
+        } catch (e) {
+            throw new this.BadRequest(e);
+        }
+    }
+
     async decoded(payload) {
         try {
             const user = this.jwt.decode(payload);

@@ -5,12 +5,14 @@ export const HeaderWrapper = styled.div`
     top: 0;
     margin: auto;
     width: 100%;
-    height: 5rem;
+    height: 3.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     /* background-color: ${(props) => props.theme.header.color}; */
-    border-bottom: 1px solid #d6d6d6;
+    background-color: #fff;
+    opacity: 0.8;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
     box-sizing: content-box;
     z-index: 999;
 `
@@ -125,6 +127,14 @@ export const HeaderSearchBox = styled.div`
     position: relative;
     width: 90%;
     height: 2rem;
+
+        & .iconify {
+        position: absolute;
+        right: 4%;
+        top: 15%;
+        font-size: 1.4rem;
+        color: #333;
+    }
 `
 
 export const HeaderSearchInput = styled.input`
@@ -134,6 +144,7 @@ export const HeaderSearchInput = styled.input`
     border-radius: 4px;
     background-color: #efefef;
     box-sizing: border-box;
+    outline: none;
     padding: 0 0.5rem;
 
     @media screen and (max-width: 480px){
@@ -160,22 +171,35 @@ export const HeaderAlarmWrap = styled.div`
     width: 4rem;
     height: 100%;
 
+    &.on .snb {
+        opacity: 0.8;
+        transition: all 0.2s ease-out;
+    }
+
+    & .iconify {
+        font-size: 1.8rem;
+        color: #333;
+        cursor: pointer;
+        transition: all 0.2s ease-out;
+
+        &:hover {
+            color: #999;
+            transition: all 0.2s ease-out;
+        }
+    }
+
     @media screen and (max-width: 480px){
         width: 5rem; 
     }
 `
 
-export const HeaderAlarm = styled.img`
-    cursor: pointer;
-    height: 35%;
-`
 
 export const HeaderUserWrap = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 5.5rem;
-    height: 100%;
+    min-width: 5rem;
+    min-height: 5rem;
     
     @media screen and (max-width: 480px){
         width: 2.5rem;
@@ -192,3 +216,28 @@ export const HeaderUser = styled.img`
         display: none;
     }
 `
+
+const HeaderAlarmMenuWrapper = styled.div`
+    width: 20rem;
+    height: 4rem;
+    opacity: 0;
+    transition: all 0.2s ease-out;
+    position: fixed;
+    top: 10%;
+    right: 10%;
+    background: #fff;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 6px;
+    padding: 2%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    cursor: pointer;
+`
+
+export const HeaderAlarmMenu = ({onClick, className}) => {
+    return <HeaderAlarmMenuWrapper className={className}>
+        <div onClick={onClick}>알람 키워드</div>
+        <div>채팅 내역</div>
+    </HeaderAlarmMenuWrapper>
+}

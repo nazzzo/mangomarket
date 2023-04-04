@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { useTimeStamp } from '../../../hooks'
 
 export const HomeWrapper = styled.div`
     background-color: #fff;
@@ -71,9 +72,12 @@ export const ItemContent = styled.div`
 
 const TextBoxAStyled = styled.div`
     height: 20%;
-    width: 100%;
+    width: 10rem;
     margin-top: 8%;
     margin-bottom: 20%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
     & > span {
         border-radius: 4px;
@@ -89,18 +93,27 @@ const State = styled.span`
 `
 
 const Subject = styled.h2`
-    font-size: 1.2rem;
+    font-size: 1rem;
+    font-weight: bold;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
 `
 
+const Date = styled.p`
+    min-width: 30%;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #666;
+`
 
-export const TextBoxA = ({ state, subject }) => {
+
+export const TextBoxA = ({ state, subject, createdAt }) => {
     return (
         <TextBoxAStyled>
             {state !== 'public' ? <State color="yellow">{state}</State> : <></>}
             <Subject>{subject}</Subject>
+            <Date>{useTimeStamp(createdAt)}</Date>
         </TextBoxAStyled>
     )
 }

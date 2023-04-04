@@ -12,13 +12,13 @@ export const WriterInfo = ({ email, username, userImg, width, height, imgSize, f
   useEffect(() => {
     const getPoint = async () => {
         const response = await request.get(`/users/point/${email}`)
-        console.log(`response:::`, response.data)
+        // console.log(`response:::`, response.data)
         setChart(response.data.chart)
         setSum(response.data.sum)
     }
     getPoint()
   },[])
-  console.log(`sum:::`, sum, `chart::::`, chart)
+  // console.log(`sum:::`, sum, `chart::::`, chart)
 
   return (
     <>
