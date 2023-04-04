@@ -14,6 +14,8 @@ export const Profile = () => {
   const [sum, setSum] = useState();
   const navigate = useNavigate();
 
+  console.log(`user:::`, user)
+
   useEffect(() => {
     const getPoint = async () => {
       const response = await request.get(`/users/point/${user.email}`);

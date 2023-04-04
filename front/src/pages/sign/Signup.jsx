@@ -57,6 +57,7 @@ export const Signup = () => {
         userLogin(true, {
           email: response.data.email,
           username: response.data.username,
+          userImg: profileImage,
         })
       );
       navigate("/");
