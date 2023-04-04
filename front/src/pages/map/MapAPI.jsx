@@ -50,7 +50,7 @@ export const MapAPI = () => {
           center={state.center}
           style={{
             // 지도의 크기
-            width: "100%",
+            width: "450px",
             height: "450px",
           }}
           level={3} // 지도의 확대 레벨
