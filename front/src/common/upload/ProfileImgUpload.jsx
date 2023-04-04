@@ -28,8 +28,6 @@ export const ProfileImgUpload = ({ width, height, src, setState }) => {
       }
   };
 
-  console.log(src)
-
   return (
     <ImageWrapper width={width} height={height}>
       <Image
