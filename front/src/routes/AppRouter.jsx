@@ -14,7 +14,7 @@ export const AppRouter = () => {
       <Route path="/profile" element={<Profile />} />
       <Route path="/board/*" element={ <BoardRouter />} />
       <Route path="/community/*" element={<CommunityRouter />} />
-      <Route path="/maptest/*" element={<MapAPI />} />
+      <Route path="/map/*" element={<MapAPI />} />
     </Routes>
   );
 };
