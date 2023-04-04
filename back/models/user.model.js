@@ -94,6 +94,14 @@ module.exports = (sequelize, Sequelize) => {
       this.hasMany(models.Community, {
         foreignKey: "email",
       });
+      this.hasMany(models.Chat, {
+        foreignKey: "email",
+        as: "sender",
+      });
+      this.hasMany(models.Chat, {
+        foreignKey: "email",
+        as: "receiver",
+      });
     }
   }
   User.createTable();

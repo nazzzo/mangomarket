@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 
 export const useTimeStamp = (createdAt) => {
+  // console.log(`createdAt::`, createdAt)
   const parsedTime = useMemo(() => createdAt ? new Date(Date.parse(createdAt)) : null, [createdAt]);
   const thisTime = new Date().getTime() + (1000 * 60 * 60 * 9);
   const [timeAgo, setTimeAgo] = useState("");
@@ -20,6 +21,7 @@ export const useTimeStamp = (createdAt) => {
       const days = Math.floor(timeElapsed / (60 * 60 * 24));
       setTimeAgo(`${days}일 전`);
     } else {
+      if (!parsedTime) return 
       const date = parsedTime.toISOString().slice(0, 10);
       setTimeAgo(date);
     }

@@ -52,7 +52,7 @@ export const BoardWrite = () => {
         />
       </Subject>
       <CategoryOpener height="3.5rem" onClick={()=>{setIsOpen(true)}}>
-        카테고리 선택
+        카테고리
         {selectedCategory
         ? <Category id="category" name="category" value={selectedCategory} height="3rem" fontSize="1rem" readOnly />
         : ""
@@ -62,8 +62,8 @@ export const BoardWrite = () => {
         <CategorySelector height="20rem" width="20rem" setSelectedCategory={setSelectedCategory} setIsOpen={setIsOpen} />
       </Modal>
       <WishList height="7rem">
-        위시 리스트
-        <HashTag tags={tags} setTags={setTags} height="3rem" width="80%" color="green" placeholder="희망하는 아이템을 등록할 수 있어요 (최대 3개)" />
+        해시태그
+        <HashTag tags={tags} setTags={setTags} height="3rem" width="80%" color="green" placeholder="태그를 등록할 수 있어요 (최대 3개)" />
       </WishList>
       <Content id="content" name="content" ref={contentRef} placeholder="교환할 상품에 대한 자세한 정보를 입력해주세요 &#10;(모델명, 수리여부, 사용감 등)" height="16rem" />
       <Submit color="yellow" fontSize="1.2rem">등록하기</Submit>

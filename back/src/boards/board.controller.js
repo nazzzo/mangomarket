@@ -162,6 +162,16 @@ class BoardController {
             next(e);
         }
     }
+    
+    async getKeywords(req, res, next) {
+        console.log(`con:::`, req.query)
+        try {
+            const response = await this.boardService.getKeywords(req.query.id, req.query.email);
+            res.status(201).json(response);
+        } catch (e) {
+            next(e);
+        }
+    }
 
     async decode(req, res, next) {
         try {

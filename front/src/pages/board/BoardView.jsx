@@ -58,7 +58,17 @@ export const BoardView = () => {
             width="25rem"
             category={viewData.category}
       />
-      {isLogin ? <ViewFooter isLogin={isLogin} user={user.email} size="3rem" footerHeight="4.5rem" footerWidth="30rem" /> : <></>} 
+      {isLogin 
+        ? <ViewFooter 
+            isLogin={isLogin} 
+            user={user}
+            writerEmail={viewData.email}
+            writerName={viewData.username}
+            writerImg={viewData.userImg}              
+            size="3rem" 
+            footerHeight="4.5rem" 
+            footerWidth="30rem" /> 
+        : <></>} 
     </>) : <></>
   );
 };

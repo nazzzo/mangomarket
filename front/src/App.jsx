@@ -10,14 +10,11 @@ import request from "./utils/request";
 const App = () => {
   const dispatch = useDispatch();
   const { loading, error, data } = useSelector((state) => state.category);
-  const { isLogin, user } = useSelector((state) => state.user);
-
-  console.log('배포 테스트:::', document.cookie, 'user:::', user)
+  const { isLogin, user, keyword } = useSelector((state) => state.user);
 
   useEffect(() => {
     if (document.cookie.split("=")[0] === "token") {
       const token = document.cookie.split("=")[1];
-      console.log(`token:::`, token);
       (async () => {
         const response = await request.post("/auths/sns", { token });
         if (response.status === 200 && response.data.email) {
@@ -42,7 +39,7 @@ const App = () => {
 
   return (
     <>
-      <Header categories={data} isLogin={isLogin} user={user} />
+      <Header categories={data} isLogin={isLogin} user={user} keywords={keyword} />
       <AppWrapper><AppRouter /></AppWrapper>
     </>
   );

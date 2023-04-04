@@ -166,6 +166,7 @@ export const TooltipWrapper = styled.div`
   padding: 8px;
   height: 7rem;
   width: 13rem;
+  cursor: pointer;
 `;
 
 export const TooltipLabel = styled.span`
@@ -198,7 +199,7 @@ const MyPointStyled = styled.div`
 `
 
 
-export const MyPointWrapper = ({ children, score, sum }) => {
+export const MyPointWrapper = ({ children, score, sum, setIsOpen }) => {
   const mangoScore = `${score}점`
   return (
     <MyPointStyled>
@@ -221,7 +222,7 @@ export const MyPointWrapper = ({ children, score, sum }) => {
           {children}
         </div>
       </div>
-      <TooltipWrapper>
+      <TooltipWrapper onClick={()=>{setIsOpen(true)}}>
           <TooltipLabel>내 게시글 {sum.boardCount}</TooltipLabel>
           <TooltipLabel>교환내역 {sum.soldCount}건</TooltipLabel>
         </TooltipWrapper>
@@ -286,3 +287,9 @@ export const KeywordItem = styled.div`
 
 export const KeywordText = styled.span`
 `;
+
+
+export const KeywordAlarmWrap = styled.div`
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+`
