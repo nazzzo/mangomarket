@@ -11,6 +11,8 @@ export const MapAPI = () => {
     isLoading: true,
   });
   const [level, setLevel] = useState();
+  const [address, setAddress] = useState(null);
+
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -71,13 +73,14 @@ export const MapAPI = () => {
 
   return (
     <>
-      <MapAPI
+      <Map // 지도를 표시할 Container
         center={state.center}
         style={{
-          width: "3rem",
-          height: "3rem",
+          // 지도의 크기
+          width: "25rem",
+          height: "25rem",
         }}
-        level={3}
+        level={3} // 지도의 확대 레벨
         onZoomChanged={(map) => setLevel(map.getLevel())}
         onDragEnd={(map) => setState((prev) => ({
           ...prev,
@@ -98,12 +101,12 @@ export const MapAPI = () => {
               size: {
                 width: 64,
                 height: 69,
-              },
+              }, // 마커이미지의 크기입니다
               options: {
                 offset: {
                   x: 27,
                   y: 69,
-                }, 
+                }, // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
               },
             }}
           >
@@ -112,7 +115,7 @@ export const MapAPI = () => {
             </div>
           </MapMarker>
         )}
-      </MapAPI>
+      </Map>
     </>
   );
 };
