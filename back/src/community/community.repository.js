@@ -8,26 +8,24 @@ class CommunityRepository {
 
     async findOne({ id }) {
         try {
-            console.log('findoneid:::', id)
             const boardView = await this.Community.findOne({ raw: true, where: { id } })
             let commentList = await this.Comment.findAll({
                 raw: true,
                 where: { communityid: id },
             })
-            console.log(`commentList:::`, commentList)
             const email = commentList.map((comment) => comment.email)
             const username = email.map((email)=>{
                 return this.User.findOne({raw: true, where: {email}})
             }) 
+            console.log('username::', username)
 
             const nickname = ( await Promise.all(username)).map((user) => user.username)
+            console.log('nickname::', nickname)
             commentList = commentList.map((comment, index)=> {
                 comment.username = nickname[index]
                 return comment
             })
-            console.log(commentList)
-
-            return { boardView, commentList, email }
+            return { boardView, email, commentList}
         } catch (e) {
             throw new Error(e)
         }
@@ -73,13 +71,23 @@ class CommunityRepository {
                 content: commentData.content,
                 email: commentData.email
             })
-            console.log('create:', create)
             const findAll = await this.Comment.findAll({
                 raw: true,
                 where: { communityid: commentData.id },
             })
-            console.log(findAll)
-            return findAll
+            const email = findAll.map((comment) => comment.email)
+            const username = email.map((email)=>{
+                return this.User.findOne({raw: true, where: {email}})
+            }) 
+            console.log('username::', username)
+
+            const nickname = ( await Promise.all(username)).map((user) => user.username)
+            console.log('nickname::', nickname)
+            const commentList = findAll.map((comment, index)=> {
+                comment.username = nickname[index]
+                return comment
+            })
+            return commentList
         } catch (e) {
             throw new Error(e)
         }

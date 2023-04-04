@@ -16,7 +16,8 @@ export const CommunityView = () => {
     const [deleteMode, setDeleteMode] = useState(false)
     const [comments, setComments] = useState([])
     const navigate = useNavigate()
-    console.log(id)
+    console.log('1', comments)
+    console.log('2', view)
 
     useEffect(() => {
         const getWriting = async () => {

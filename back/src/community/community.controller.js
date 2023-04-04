@@ -10,16 +10,7 @@ class CommunityController {
             const { content, email } = req.body
             if (!content) throw new Error('내용을 입력해주세요')
             const response = await this.communityService.postComment({ id, content, email })
-            res.json(response)
-        } catch (e) {
-            next(e)
-        }
-    }
-
-    async getWriting(req, res, next) {
-        try {
-            const { id } = req.params
-            const response = await this.communityService.getWriting({ id })
+            console.log(response)
             res.json(response)
         } catch (e) {
             next(e)

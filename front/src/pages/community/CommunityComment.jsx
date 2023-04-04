@@ -1,4 +1,4 @@
-import { CommentForm, CommentList, CommentInput, ContentInput, CommentButton, Txt, TotalComments, ButtonMD, Img, MDButtons, ModifyInput } from './styled'
+import { CommentForm, CommentInput, ContentInput, CommentButton, Txt, TotalComments, ButtonMD, Img, MDButtons, ModifyInput } from './styled'
 import { useParams } from 'react-router-dom'
 import { useTimeStamp, useInput } from '../../hooks'
 import { useEffect, useState } from 'react'
@@ -15,14 +15,12 @@ const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, use
     const { id } = useParams()
     const {user} = useSelector(state => state.user)
     const isAuthor = (user.email === email)
-    console.log(comments[idx])
 
     const handleDelete = async () => {
         try {
             const confirmed = window.confirm('정말 삭제하시겠습니까?')
             if(confirmed){
                 const response = await request.delete(`/community/comment/${id}/${idx}`)
-                console.log(response)
                 setComments(comments.filter(comment => comment.id !== idx))}
         } catch (error) {
             console.error(error)
@@ -35,11 +33,9 @@ const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, use
             const response = await request.put(`/community/comment/${id}/${idx}`, {
                 content: modify.value,
             })
-            console.log('response :::', response.data)
             if (response.data === 1) {
                 setModified(modify.value)
             }
-            console.log(modified)
         } catch (error) {
             console.error(error)
         }
@@ -64,13 +60,12 @@ const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, use
                 <>
                     <Txt idx={idx}>
                         <Img />
-                        <div>{user.username}</div>
+                        <div>{username}</div>
                         <div>{timeAgo}</div>
                     </Txt>
                     <ModifyInput idx={idx} value={modify.value} onChange={modify.onChange} />
                 </>
             )}
-            {comments.map(comment => comment.email === user.email)}
             {isAuthor && (
                 <MDButtons>
                 {!isInput ? (
@@ -100,12 +95,11 @@ const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, use
     )
 }
 
-export const Comment = ({ comments, setComments, username }) => {
+export const Comment = ({ comments, setComments, username}) => {
     const { id } = useParams()
     const [commentValue, setCommentValue] = useState()
     const inputRef = useRef()
     const {user} = useSelector(state => state.user)
-    console.log(user.email)
 
     const submitHandler = async (e) => {
         e.preventDefault()
@@ -113,7 +107,7 @@ export const Comment = ({ comments, setComments, username }) => {
             content: commentValue,
             email: user.email
         })
-
+        console.log(response)
         if (response.status >= 400 || response.data.isError) {
             alert(response.data.message)
         } else {
@@ -122,10 +116,11 @@ export const Comment = ({ comments, setComments, username }) => {
             setCommentValue("")
         }
     }
-    console.log(comments)
+
     return (
         <CommentForm onSubmit={submitHandler}>
-            <TotalComments><Icon icon="mdi:comment-outline" /> 댓글 {comments.length}</TotalComments>
+            {comments ? <TotalComments><Icon icon="mdi:comment-outline" /> 댓글 {comments.length}</TotalComments> : 
+            <TotalComments><Icon icon="mdi:comment-outline" /> 댓글 </TotalComments>}
             {comments ? (
                 comments.map((comment) => (
                     <CommentTxT
