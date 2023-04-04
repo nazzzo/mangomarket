@@ -4,7 +4,7 @@ const config = {
     REDIRECT_HOST: 'mgmarket.store',
     PORT: 3000,
     BACKEND_PORT: 443,
-    IMG_PORT: 3005,
+    IMG_PORT: 443,
 }
 export default config
 
