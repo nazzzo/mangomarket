@@ -1,29 +1,27 @@
 import { useEffect, useState, useRef } from "react";
 
-export const GetAddress = (lat, lng) => {
+export const GetAddress = ({ lat, lng }) => {
   const [address, setAddress] = useState(null);
 
-    // const handleGetAddress= () => {
-    //     const geocoder = new kakao.maps.services.Geocoder(); // 좌표 -> 주소로 변환해주는 객체
-    //     const coord = new kakao.maps.LatLng(lat, lng); // 주소로 변환할 좌표 입력
-    //     const callback = function (result, status) {
-    //       if (status === kakao.maps.services.Status.OK) {
-    //         setAddress(result[0].address);
-    //       }
-    //     };
-    //     geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
-    // }
-
+    const handleGetAddress= () => {
+        const geocoder = new window.kakao.maps.services.Geocoder(); // 좌표 -> 주소로 변환해주는 객체
+        const coord = new window.kakao.maps.LatLng(lat, lng); // 주소로 변환할 좌표 입력
+        const callback = function (result, status) {
+          if (status === window.kakao.maps.services.Status.OK) {
+            console.log(result[0].address)
+            const depth2 = result[0].address['region_2depth_name']
+            const depth3 = result[0].address['region_3depth_name']
+            setAddress(depth2 + " " + depth3);
+          }
+        };
+        geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+      }
   return (
     <>
-      <button>현재 좌표의 주소 얻기</button>
+      <button onClick={handleGetAddress}>현재 좌표의 주소 얻기</button>
       {address && (
         <div>
-          현재 좌표의 주소는
-          <p>address_name: {address.address_name}</p>
-          <p>region_1depth_name: {address.region_1depth_name}</p>
-          <p>region_2depth_name: {address.region_2depth_name}</p>
-          <p>region_3depth_name: {address.region_3depth_name}</p>
+          현재 좌표의 주소는 <p>{address}</p>
         </div>
       )}
     </>
