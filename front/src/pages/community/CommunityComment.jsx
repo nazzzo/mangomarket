@@ -7,7 +7,7 @@ import { Icon } from '@iconify/react'
 import { useRef } from 'react'
 import { useSelector } from 'react-redux'
 
-const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, username}) => {
+const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, username, img}) => {
     const [isInput, setIsInput] = useState(false)
     const [modified, setModified] = useState()
     const timeAgo = useTimeStamp(createdAt)
@@ -51,7 +51,7 @@ const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, use
         <>
             {createdAt && !isInput ? (
                 <Txt idx={idx}>
-                    <Img />
+                    <Img src={img}/>
                     <div>{username}</div>
                     <div>{timeAgo}</div>
                     <div>{modify.value}</div>
@@ -95,11 +95,12 @@ const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, use
     )
 }
 
-export const Comment = ({ comments, setComments, username}) => {
+export const Comment = ({ comments, setComments}) => {
     const { id } = useParams()
     const [commentValue, setCommentValue] = useState()
     const inputRef = useRef()
     const {user} = useSelector(state => state.user)
+
 
     const submitHandler = async (e) => {
         e.preventDefault()
@@ -132,6 +133,7 @@ export const Comment = ({ comments, setComments, username}) => {
                         setComments={setComments}
                         email={comment.email}
                         username={comment.username}
+                        img={comment.userImg}
                     />
                 ))
             ) : (

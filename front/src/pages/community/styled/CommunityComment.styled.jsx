@@ -37,7 +37,7 @@ export const CommentList = styled.div`
 `
 
 export const Txt = styled.div`
-    margin-top:0.2rem;
+    margin-top:0.5rem;
     word-break: break-all;
     position: relative;
     div:nth-child(2){
@@ -47,11 +47,12 @@ export const Txt = styled.div`
     div:nth-child(3) {
     display: inline-block;
     font-size: 0.8rem; 
+    font-weight:bold;
     color: gray;
-    margin-left: 0.8rem;
   }
     div:nth-child(4){
       margin-top:0.3rem;
+      margin-left:3rem;
     }
 `
 
