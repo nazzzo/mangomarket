@@ -8,26 +8,37 @@ class CommunityRepository {
 
     async findOne({ id }) {
         try {
-            console.log('findoneid:::', id)
-            const boardView = await this.Community.findOne({ raw: true, where: { id } })
-            let commentList = await this.Comment.findAll({
-                raw: true,
-                where: { communityid: id },
-            })
-            console.log(`commentList:::`, commentList)
-            const email = commentList.map((comment) => comment.email)
-            const username = email.map((email)=>{
-                return this.User.findOne({raw: true, where: {email}})
-            }) 
+            // const boardView = await this.Community.findOne({ raw: true, where: { id } })
 
-            const nickname = ( await Promise.all(username)).map((user) => user.username)
-            commentList = commentList.map((comment, index)=> {
-                comment.username = nickname[index]
-                return comment
-            })
-            console.log(commentList)
-
-            return { boardView, commentList, email }
+            const sql = `
+            SELECT 
+            A.id,A.email,A.subject,A.content,A.createdAt,A.updatedAt,A.category,B.username,B.userImg,
+            (SELECT COUNT(communityid) FROM Comment WHERE communityid = A.id) AS CommentCount
+            FROM Community AS A JOIN User AS B ON A.email = B.email
+            WHERE A.id = ${id};
+        `
+            const [[boardView]] = await this.sequelize.query(sql)
+            console.log(`view::::`, boardView)
+            
+            const commentSql = `
+            select A.id,A.content,A.createdAt,A.email,A.parentId,B.username,B.userImg from Comment as A join User as B on A.email = B.email
+            `
+            const [commentList] = await this.sequelize.query(commentSql)
+            console.log('commentinfo::', commentList)
+            // let commentList = await this.Comment.findAll({
+            //     raw: true,
+            //     where: { communityid: id },
+            // })
+            // const email = commentList.map((comment) => comment.email)
+            // const username = email.map((email)=>{
+            //     return this.User.findOne({raw: true, where: {email}})
+            // }) 
+            // const nickname = ( await Promise.all(username)).map((user) => user.username)
+            // commentList = commentList.map((comment, index)=> {
+            //     comment.username = nickname[index]
+            //     return comment
+            // })
+            return { boardView, commentList}
         } catch (e) {
             throw new Error(e)
         }
@@ -84,15 +95,29 @@ class CommunityRepository {
                 raw: true,
                 communityid: commentData.id,
                 content: commentData.content,
-                email: commentData.email
+                email: commentData.email,
+                parentId: commentData.parentId
             })
-            console.log('create:', create)
-            const findAll = await this.Comment.findAll({
-                raw: true,
-                where: { communityid: commentData.id },
-            })
-            console.log(findAll)
-            return findAll
+            // const findAll = await this.Comment.findAll({
+            //     raw: true,
+            //     where: { communityid: commentData.id },
+            // })
+            // const email = findAll.map((comment) => comment.email)
+            // const username = email.map((email)=>{
+            //     return this.User.findOne({raw: true, where: {email}})
+            // }) 
+            // const nickname = ( await Promise.all(username)).map((user) => user.username)
+            // const commentList = findAll.map((comment, index)=> {
+            //     comment.username = nickname[index]
+            //     return comment
+            // })
+
+            const commentSql = `
+            select A.id,A.content,A.createdAt,A.email,A.parentId,B.username,B.userImg from Comment as A join User as B on A.email = B.email
+            `
+            const [commentList] = await this.sequelize.query(commentSql)
+            console.log('commentinfo22::', commentList)
+            return commentList
         } catch (e) {
             throw new Error(e)
         }

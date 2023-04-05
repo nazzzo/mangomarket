@@ -6,35 +6,22 @@ class CommunityService {
         this.userRepository = userRepository
     }
 
-    async postComment({ id, content, email }) {
+    async postComment({ id, content, email, parentId }) {
         try {
-            const response = await this.communityRepository.create({ id, content, email })
-            console.log('postComment', response)
-            return response
+            const commentList = await this.communityRepository.create({ id, content, email, parentId })
+            console.log('commentList::', commentList)
+            
+            return commentList
         } catch (e) {
             throw new this.BadRequest(e)
         }
     }
 
-    /**get Writing 합치기 */
-    // async getWriting({ id }) {
-    //     try {
-    //         const view = await this.communityRepository.findOne({ id })
-    //         const { subject, content, email, createdAt } = view
-    //         const { username } = await this.userRepository.getUserById(email)
-    //         return { username, subject, content, createdAt, email, id }
-    //     } catch (e) {
-    //         throw new this.BadRequest(e)
-    //     }
-    // }
-
     async getWriting({ id }) {
         try {
-            console.log('service', id)
             const view = await this.communityRepository.findOne({ id })
             const { username } = await this.userRepository.getUserById(view.boardView.email)
             view.boardView.username = username
-            console.log(`view:::`, view)
             return view
         } catch (e) {
             throw new this.BadRequest(e)

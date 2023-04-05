@@ -12,6 +12,7 @@ export const CommentForm = styled.form`
 `
 
 export const CommentInput = styled.div`
+  margin-top: 1rem;
   display: flex;
   align-items: center;
   background: #D9D9D9;
@@ -36,8 +37,24 @@ export const CommentList = styled.div`
   width: 100%;
 `
 
+const CommentWrapStyled = styled.div``
+
+const ReplyWrapStyled = styled.div`
+  margin-left: 10%;
+`
+
+export const CommentWrapper = ({parendId, children}) => {
+  
+  return (
+    <>
+      { !parendId ? <CommentWrapStyled>{children}</CommentWrapStyled>:<ReplyWrapStyled>{children}</ReplyWrapStyled>}
+    </>
+    
+  ) 
+}
+
 export const Txt = styled.div`
-    margin-top:0.2rem;
+    margin-top:0.5rem;
     word-break: break-all;
     position: relative;
     div:nth-child(2){
@@ -47,11 +64,12 @@ export const Txt = styled.div`
     div:nth-child(3) {
     display: inline-block;
     font-size: 0.8rem; 
+    font-weight:bold;
     color: gray;
-    margin-left: 0.8rem;
   }
     div:nth-child(4){
       margin-top:0.3rem;
+      margin-left:3rem;
     }
 `
 
@@ -80,4 +98,12 @@ export const ModifyInput = styled.input`
   width:100%;
   outline: none;
 
+`
+export const ReplyButton = styled.button`
+  margin-left: 3rem;
+  margin-top:0.2rem;
+  cursor: pointer;
+  background: white;
+  border:1px solid;
+  padding:0.2rem;
 `
