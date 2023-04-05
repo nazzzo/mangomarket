@@ -3,15 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useInput } from "../../hooks"
 import io from "socket.io-client"
 import config from "../../config"
-import { ReceiverChat } from "./ReceiverChat"
 
 
-export const Chat = ({ receiver, boardId }) => {
+export const ReceiverChat = ({ receiver, boardId }) => {
     const content = useInput("")
     const { user } = useSelector((state) => state.user);
     // console.log(`sender:::`, user) // 구매자
     // console.log(`writer(receiver):::`, receiver) // 판매자
-    // console.log(boardId) // 판매글번호
+    console.log(boardId) // 판매글번호
 
     useEffect(() => {
         // back-server 주소
@@ -27,34 +26,21 @@ export const Chat = ({ receiver, boardId }) => {
     
     const handleSubmit = (e) => {
         e.preventDefault()
+        console.log(content.value)
         const socket = io(`${config.PT}://${config.HOST}:${config.BACKEND_PORT}/`)
-
-        socket.emit('join', {
-            namespace: boardId,
-            room: user.email,
-            username: user.username
-        })
+        socket.emit('join', { namespace: boardId, room: user.email, username: user.username })
 
         socket.on(`${user.email}`, (data) => {
             console.log(data)
         })
-        socket.emit(`${user.email}`, {
-            content: content.value,
-            sender: user.email,
-            receiver: receiver.email,
-            email: receiver.email,
-            seller: "",
-            customer: "",
-        })
+        socket.emit(`${user.email}`, { content: content.value })
 
     }
 
     return (
-        <>
-            <form onSubmit={handleSubmit}>
-                <input onChange={content.onChange} value={content.value} type="text" name="content" id="content"/>
-                <button type='submit'>채팅</button>
-            </form>
-        </>
+        <form onSubmit={handleSubmit}>
+            <input onChange={content.onChange} value={content.value} type="text" name="content" id="content"/>
+            <button type='submit'>채팅</button>
+        </form>
     )
 }
