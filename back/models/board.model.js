@@ -55,7 +55,11 @@ module.exports = (sequelize, Sequelize) => {
             this.belongsToMany(models.Keyword, {
                 through: 'BoardKeyword',
                 foreignKey: 'boardId'
-              });
+            })
+            this.hasMany(models.Chat, {
+                foreignKey: 'boardid',
+                as: "boardid"
+            })
         }
     }
     Board.createTable()

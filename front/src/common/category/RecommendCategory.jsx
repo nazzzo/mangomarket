@@ -27,7 +27,7 @@ export const RecommendCategory = ({ width, height, category }) => {
         fetchData();
       }, [count]);
 
-      console.log(`boardList:::`, category, boardList)
+    //   console.log(`boardList:::`, category, boardList)
 
 
     return (

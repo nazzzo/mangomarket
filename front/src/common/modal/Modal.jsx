@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { ModalWrapper, ModalContent } from "./styled";
+import { ModalWrapper, ModalContent, ModalCloser } from "./styled";
 
 export const Modal = ({ isOpen, setIsOpen, children, width, height }) => {
   const modalRef = useRef(null);
@@ -34,10 +34,10 @@ export const Modal = ({ isOpen, setIsOpen, children, width, height }) => {
 
   return isOpen ? (
     <ModalWrapper>
-    {/* <ModalWrapper onClick={(handleClose)}> */}
       <ModalContent ref={modalRef} width={width} height={height}>
         {children}
       </ModalContent>
+      {/* <ModalCloser onClick={setIsOpen(false)} /> */}
     </ModalWrapper>
   ) : null;
 };

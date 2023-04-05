@@ -1,20 +1,33 @@
 class CommunityRepository {
-    constructor({ Community, Comment, sequelize }) {
+    constructor({ Community, Comment, sequelize, User }) {
         this.Community = Community
         this.Comment = Comment
         this.sequelize = sequelize
+        this.User = User
     }
 
     async findOne({ id }) {
         try {
             console.log('findoneid:::', id)
             const boardView = await this.Community.findOne({ raw: true, where: { id } })
-            const commentList = await this.Comment.findAll({
+            let commentList = await this.Comment.findAll({
                 raw: true,
                 where: { communityid: id },
             })
             console.log(`commentList:::`, commentList)
-            return { boardView, commentList }
+            const email = commentList.map((comment) => comment.email)
+            const username = email.map((email)=>{
+                return this.User.findOne({raw: true, where: {email}})
+            }) 
+
+            const nickname = ( await Promise.all(username)).map((user) => user.username)
+            commentList = commentList.map((comment, index)=> {
+                comment.username = nickname[index]
+                return comment
+            })
+            console.log(commentList)
+
+            return { boardView, commentList, email }
         } catch (e) {
             throw new Error(e)
         }
@@ -71,6 +84,7 @@ class CommunityRepository {
                 raw: true,
                 communityid: commentData.id,
                 content: commentData.content,
+                email: commentData.email
             })
             console.log('create:', create)
             const findAll = await this.Comment.findAll({

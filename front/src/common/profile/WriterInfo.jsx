@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { WriterInfoWrap, UserProfile, UserImg, UserName } from "./styled";
+import { WriterInfoWrap, UserProfile, UserInfoLabel, UserImg, UserName, Address } from "./styled";
 import { Modal } from "../modal";
 import { UserHistory, UserPoint } from "./";
 import request from "../../utils/request";
 
-export const WriterInfo = ({ email, username, userImg, width, height, imgSize, fontSize, navigate }) => {
+export const WriterInfo = ({ email, username, userImg, address, width, height, imgSize, fontSize, navigate }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [chart, setChart] = useState()
     const [sum, setSum] = useState()
@@ -12,20 +12,23 @@ export const WriterInfo = ({ email, username, userImg, width, height, imgSize, f
   useEffect(() => {
     const getPoint = async () => {
         const response = await request.get(`/users/point/${email}`)
-        console.log(`response:::`, response.data)
+        // console.log(`response:::`, response.data)
         setChart(response.data.chart)
         setSum(response.data.sum)
     }
     getPoint()
   },[])
-  console.log(`sum:::`, sum, `chart::::`, chart)
+  // console.log(`sum:::`, sum, `chart::::`, chart)
 
   return (
     <>
       <WriterInfoWrap width={width} height={height}>
         <UserProfile onClick={()=>{setIsOpen(true)}}>
           <UserImg imgSize={imgSize} src={userImg} />
-          <UserName fontSize={fontSize}>{username}</UserName>
+          <UserInfoLabel>
+              <UserName fontSize={fontSize}>{username}</UserName>
+              <Address fontSize={fontSize}>{address}</Address>
+          </UserInfoLabel>
         </UserProfile>
         { sum && chart ? <UserPoint username={username} email={email} chart={chart} sum={sum} /> : <></> }
       </WriterInfoWrap>

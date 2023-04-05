@@ -69,6 +69,7 @@ export const RecommendWrap = styled.div`
 const TextHeaderWrap = styled.div`
   height: 15%;
   padding-bottom: 2%;
+  padding-left: 2%;
   margin-bottom: 10%;
   border-bottom: 1px solid #ececec;
 

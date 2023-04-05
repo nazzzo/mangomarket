@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { useTimeStamp } from '../../../hooks'
 
 export const HomeWrapper = styled.div`
     background-color: #fff;
@@ -24,6 +25,18 @@ const ItemImageWrap = styled.div`
     width: 10rem;
     height: 9rem;
     border-radius: 8px;
+    position: relative;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: ${({ backgroundColor }) => backgroundColor};
+        border-radius: 8px;
+    }
 
     & img {
         object-fit: cover;
@@ -33,9 +46,21 @@ const ItemImageWrap = styled.div`
     }
 `
 
-export const ItemImage = ({ size, src }) => {
+export const ItemImage = ({ size, src, state }) => {
+    let color;
+    let backgroundColor;
+    if (state === 'reserved') {
+        state = '예약중';
+        color = 'green';
+    } else if (state === 'sold') {
+        state = '교환완료';
+        color = 'grey';
+        backgroundColor = 'rgba(0,0,0,0.4)'
+    }
+
     return (
-        <ItemImageWrap siez={size}>
+        <ItemImageWrap siez={size} backgroundColor={backgroundColor}>
+            {state !== 'public' ? <State color={color}>{state}</State> : <></>}
             <img src={src} alt="" />
         </ItemImageWrap>
     )
@@ -46,6 +71,18 @@ const RecommendImageWrap = styled.div`
     width: 12rem;
     height: 10rem;
     border-radius: 8px;
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: ${({ backgroundColor }) => backgroundColor};
+        border-radius: 8px;
+    }
 
     & img {
         object-fit: cover;
@@ -54,10 +91,32 @@ const RecommendImageWrap = styled.div`
         height: 100%;
     }
 `
+const State = styled.span`
+    background: ${({ theme, color }) => theme[color].color};
+    color: #fff;
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    padding: 4% 6%;
+    font-size: 0.9rem;
+    border-radius: 6px;
+`
 
-export const RecommendItemImage = ({ size, src }) => {
+export const RecommendItemImage = ({ size, src, state }) => {
+    let color;
+    let backgroundColor;
+    if (state === 'reserved') {
+        state = '예약중';
+        color = 'green';
+    } else if (state === 'sold') {
+        state = '교환완료';
+        color = 'grey';
+        backgroundColor = 'rgba(0,0,0,0.4)'
+    }
+
     return (
-        <RecommendImageWrap siez={size}>
+        <RecommendImageWrap siez={size} backgroundColor={backgroundColor}>
+            {state !== 'public' ? <State color={color}>{state}</State> : <></>}
             <img src={src} alt="" />
         </RecommendImageWrap>
     )
@@ -71,9 +130,12 @@ export const ItemContent = styled.div`
 
 const TextBoxAStyled = styled.div`
     height: 20%;
-    width: 100%;
+    width: 10rem;
     margin-top: 8%;
     margin-bottom: 20%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
     & > span {
         border-radius: 4px;
@@ -84,23 +146,28 @@ const TextBoxAStyled = styled.div`
         padding: 2% 3%;
     }
 `
-const State = styled.span`
-    background-color: ${(props) => props.color};
-`
 
 const Subject = styled.h2`
-    font-size: 1.2rem;
+    font-size: 1rem;
+    font-weight: bold;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
 `
 
+const Date = styled.p`
+    min-width: 30%;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #666;
+`
 
-export const TextBoxA = ({ state, subject }) => {
+
+export const TextBoxA = ({ subject, createdAt }) => {
     return (
         <TextBoxAStyled>
-            {state !== 'public' ? <State color="yellow">{state}</State> : <></>}
             <Subject>{subject}</Subject>
+            <Date>{useTimeStamp(createdAt)}</Date>
         </TextBoxAStyled>
     )
 }

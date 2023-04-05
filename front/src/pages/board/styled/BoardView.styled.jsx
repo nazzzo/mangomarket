@@ -12,6 +12,15 @@ const Subject = styled.h2`
   text-overflow: ellipsis;
   overflow: hidden;
 `;
+const State = styled.span`
+  background-color: ${({ theme, color }) => theme[color].color};
+  padding: 1.5% 2.5%;
+  margin-right: 2%;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  color: #fff;
+`
+
 const Category = styled.span`
   color: #999;
   height: 2rem;
@@ -41,10 +50,17 @@ const HitCount = styled.div`
   display: flex;
 `;
 
-export const TextBoxA = ({ category, subject, date }) => {
+export const TextBoxA = ({ category, subject, state, date }) => {
+    let color;
+    if (state === '예약중') {
+      color = 'green';
+    } else if (state === '교환완료' || state === '숨기기') {
+      color = 'grey';
+    }
   return (
     <TextBoxWrapper>
       <Subject>{subject}</Subject>
+        {(state!=="교환가능") ? <State color={color}>{state}</State> : <></>}
       <Category>
         {category} ᐧ {date}
       </Category>

@@ -50,6 +50,7 @@ class BoardRepository {
             A.state,
             B.userImg,
             B.username,
+            B.address,
             D.image,
             (SELECT GROUP_CONCAT(D.email SEPARATOR ', ') FROM Liked AS D WHERE A.id = D.boardid) AS likeidlist,
             GROUP_CONCAT(C.tagname SEPARATOR ', ') AS tagname,
@@ -84,6 +85,7 @@ class BoardRepository {
       A.state,
       B.userImg,
       B.username,
+      B.address,
       (SELECT GROUP_CONCAT(D.email SEPARATOR ', ') FROM Liked AS D WHERE A.id = D.boardid) AS likeidlist,
       GROUP_CONCAT(C.tagname SEPARATOR ', ') AS tagname,
       (SELECT COUNT(boardid) FROM Comment WHERE boardid = A.id) AS commentCount, 
@@ -116,6 +118,7 @@ class BoardRepository {
             A.state,
             B.userImg,
             B.username,
+            B.address,
             GROUP_CONCAT(D.image SEPARATOR ', ') AS images,
             (SELECT GROUP_CONCAT(D.email SEPARATOR ', ') FROM Liked AS D WHERE A.id = D.boardid) AS likeidlist,
             GROUP_CONCAT(C.tagname SEPARATOR ', ') AS tagname,
@@ -158,18 +161,27 @@ class BoardRepository {
             const tagResult = await Promise.all(addHash);
             await createBoard.addHashes(tagResult.map((v) => v[0]));
 
-            const findKeys = await this.Keyword.findAll({ where: { keyword: { [this.Op.like]: `%${payload.subject}%` } } });
+            const findKeys = await this.Keyword.findAll({
+                where: {
+                    [this.Op.or]: [
+                        { keyword: { [this.Op.like]: payload.subject } },
+                        { keyword: { [this.Op.in]: payload.hashtag } }
+                    ]
+                }
+            });
             console.log(`findKeys:::`, findKeys)
+            if (findKeys.length > 0) {
             const boardKeywords = findKeys.map((key) => ({ boardId: createBoard.id, keywordId: key.id }));
             await this.BoardKeyword.bulkCreate(boardKeywords);
-            
+            // console.log(`boardKeywords:::`, boardKeywords)
+            }
             return createBoard.dataValues;
         } catch (e) {
             throw new Error(e);
         }
     }
     async uploadImage(images) {
-        console.log(`images:::`, images)
+        // console.log(`images:::`, images)
         try {
             const imageData = images.map(img => 
                 this.BoardImage.create(img)
@@ -192,9 +204,7 @@ class BoardRepository {
     async updateState(id, state) {
         try {
             let result = await this.Board.update(
-                {
-                    state: state,
-                },
+                { state: state },
                 { where: { id: id } }
             );
             return result;
@@ -304,6 +314,23 @@ class BoardRepository {
         }
     }
 
+    async getKeywordId(keywordIds) {
+        try {
+            const boardIds = await this.BoardKeyword.findAll({
+                where: {
+                    keywordId: {
+                        [this.Op.in]: keywordIds.split(',')
+                    }
+                },
+                attributes: ['boardId'],
+                raw: true
+            });
+            return boardIds;
+        } catch (e) {
+            throw new Error(e);
+        }
+    }
+
     async getMyAttention(email) {
         const sql = `SELECT 
             (SELECT COUNT(*) 
@@ -378,7 +405,7 @@ class BoardRepository {
     async createPoint(data) {
         try {
              const response = await this.PointUp.create(data);
-             console.log(response);
+            //  console.log(response);
         } catch (e) {
             throw new Error(e);
         }

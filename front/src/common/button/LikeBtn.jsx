@@ -24,8 +24,7 @@ export const LikeBtn = ({ isLogin, user, size }) => {
     }
   };
 
-    // console.log(`dddd:::`, user, id)
-    // console.log(`eee::`, userLikes)
+    console.log(`eee::`, userLikes)
   return (
     <>
       <LikeBtnStyled size={size} onClick={handleClick} disabled={!isLogin}>

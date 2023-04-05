@@ -120,19 +120,12 @@ class BoardService {
             throw new this.BadRequest(e);
         }
     }
-    async postState(id) {
+    async putState(id , {state}) {
         try {
-            let state = "";
-            const currentState = await this.boardRepository.getState(id);
-            if (currentState === "blind") {
-                state = "public";
-            } else {
-                state = "blind";
-            }
             await this.boardRepository.updateState(id, state);
             return state;
         } catch (e) {
-            // throw new this.BadRequest(e);
+            throw new this.BadRequest(e);
         }
     }
     async putView(putdata) {
@@ -250,6 +243,21 @@ class BoardService {
             throw new this.BadRequest(e);
         }
     }
+
+    async getKeywords(keywordId, email) {
+        try {
+            if (!keywordId) throw "알림 키워드가 없습니다";
+            const boardIds = await this.boardRepository.getKeywordId(keywordId);
+            const boards = await Promise.all(
+                boardIds.map(async ({ boardId }) => await this.boardRepository.findOne(boardId))
+            );
+            const filtered = boards.filter(board => board.email !== email);
+            return filtered;
+        } catch (e) {
+            throw new this.BadRequest(e);
+        }
+    }
+
     async decoded(payload) {
         try {
             const user = this.jwt.decode(payload);

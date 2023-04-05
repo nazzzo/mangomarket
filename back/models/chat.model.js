@@ -1,28 +1,40 @@
 module.exports = (sequelize, Sequelize) => {
-    class Chat extends Sequelize.Model {
-      static createTable() {
-        return this.init(
-          {
-            content: {
-              type: Sequelize.TEXT(),
-              allowNull: false,
+  class Chat extends Sequelize.Model {
+    static createTable() {
+      return this.init(
+        {
+          content: {
+            type: Sequelize.TEXT(),
+            allowNull: false,
+          },
+          sender: {
+            type: Sequelize.STRING(30),
+            allowNull: false,
+            references: {
+              model: "User",
+              key: "email",
             },
-            touser: {
-              type: Sequelize.STRING(16),
-              defaultValue: 'all'
-            }
           },
-          {
-            sequelize,
-            timestamp: true
+          receiver: {
+            type: Sequelize.STRING(30),
+            allowNull: false,
+            references: {
+              model: "User",
+              key: "email",
+            },
           },
-        );
-      }
-      static associate(models) {
-          this.belongsTo(models.User, {
-              foreignKey: "nickname"
-          })
-      }
+        },
+        {
+          sequelize,
+          timestamps: true
+        },
+      );
     }
-    Chat.createTable();
-  };
+    static associate(models) {
+      this.belongsTo(models.Board, {
+        foreignKey: "boardid",
+      });
+    }
+  }
+  Chat.createTable();
+};

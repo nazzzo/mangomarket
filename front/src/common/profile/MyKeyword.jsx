@@ -15,7 +15,6 @@ export const MyKeyword = ({ email, width, height, color }) => {
     const handleKeyDown = useCallback(async (e) => {
       if (e.keyCode === 13) {
         const newKey = keyword.value;
-        // if (newKey && !userKeywords.map(v => v.keyword.includes(newKey) && userKeywords.length < 3)) {
         if (newKey && !keys.includes(newKey) && keys.length < 3) {
           const response = await request.post(`/users/keyword`, {
             email: email,
@@ -27,7 +26,6 @@ export const MyKeyword = ({ email, width, height, color }) => {
         }
       }
     },[keyword, userKeywords, dispatch]);
-  
   
     const handleDeleteKeys = async (key) => {
         const response = await request.delete(`/users/keyword/${email}`, {

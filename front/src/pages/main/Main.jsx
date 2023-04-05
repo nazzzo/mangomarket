@@ -3,20 +3,7 @@ import { useRef, useState, useEffect } from 'react'
 import { Modal } from '../../common/modal'
 import { RefreshBtn } from '../../common/button'
 import { CategoryOpener, CategorySelector } from '../../common/category'
-import {
-    HomeWrapper,
-    BtnBox,
-    List,
-    ItemWrapper,
-    ItemImage,
-    ItemContent,
-    TextBoxA,
-    TextBoxB,
-    TextBoxC,
-    TextBoxD,
-    Count,
-    PageCounter,
-} from './styled'
+import { HomeWrapper, BtnBox, List, ItemWrapper, ItemImage, ItemContent, TextBoxA, TextBoxB, TextBoxC, TextBoxD, Count, PageCounter, } from './styled'
 import { Icon } from '@iconify/react'
 import { useNavigate } from 'react-router-dom'
 
@@ -27,7 +14,6 @@ export const Main = () => {
     const [boardList, setBoardList] = useState([])
     const [selectedCategory, setSelectedCategory] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -89,7 +75,7 @@ export const Main = () => {
         hidden: { opacity: 0, y: 50 },
         visible: { opacity: 1, y: 0 },
     }
-    console.log(count)
+    // console.log(count)
 
     return (
         <HomeWrapper>
@@ -127,10 +113,9 @@ export const Main = () => {
                         }}
                         variants={TextItem}
                     >
-                        <ItemImage size="220px" src={board.image} />
+                        <ItemImage size="220px" src={board.image} state={board.state} />
                         <ItemContent key={board.id}>
                             <TextBoxA
-                                state={board.state}
                                 category={board.category}
                                 subject={board.subject}
                             />
