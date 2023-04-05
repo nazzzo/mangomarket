@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useInput } from "../../hooks"
 import io from "socket.io-client"
 import config from "../../config"
-import { ReceiverChat } from "./ReceiverChat"
 
 
 export const Chat = ({ receiver, boardId }) => {
@@ -38,15 +37,14 @@ export const Chat = ({ receiver, boardId }) => {
         socket.on(`${user.email}`, (data) => {
             console.log(data)
         })
+
         socket.emit(`${user.email}`, {
             content: content.value,
-            sender: user.email,
-            receiver: receiver.email,
-            email: receiver.email,
-            seller: "",
-            customer: "",
+            seller: `${user.email}`,
+            customer: `${receiver.email}`,
+            type: `sender`,
+            boardid: boardId,
         })
-
     }
 
     return (
