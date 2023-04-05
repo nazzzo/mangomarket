@@ -21,7 +21,11 @@ export const CommunityView = () => {
         const getWriting = async () => {
             try {
                 const response = await request.get(`/community/${id}`)
-                console.log(response.data)
+                console.log('response::', response.data)
+                if(response.data.isError === true){
+                    alert('잘못된 요청입니다.')
+                    navigate('/')
+                }
                 setView(response.data.boardView)
                 setComments(response.data.commentList)
             } catch (e) {

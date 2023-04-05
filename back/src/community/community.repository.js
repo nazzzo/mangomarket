@@ -21,7 +21,7 @@ class CommunityRepository {
             console.log(`view::::`, boardView)
             
             const commentSql = `
-            select A.id,A.content,A.createdAt,A.email,B.username,B.userImg from Comment as A join User as B on A.email = B.email
+            select A.id,A.content,A.createdAt,A.email,A.parentId,B.username,B.userImg from Comment as A join User as B on A.email = B.email
             `
             const [commentList] = await this.sequelize.query(commentSql)
             console.log('commentinfo::', commentList)
@@ -82,7 +82,8 @@ class CommunityRepository {
                 raw: true,
                 communityid: commentData.id,
                 content: commentData.content,
-                email: commentData.email
+                email: commentData.email,
+                parentId: commentData.parentId
             })
             // const findAll = await this.Comment.findAll({
             //     raw: true,
@@ -97,8 +98,9 @@ class CommunityRepository {
             //     comment.username = nickname[index]
             //     return comment
             // })
+
             const commentSql = `
-            select A.id,A.content,A.createdAt,A.email,B.username,B.userImg from Comment as A join User as B on A.email = B.email
+            select A.id,A.content,A.createdAt,A.email,A.parentId,B.username,B.userImg from Comment as A join User as B on A.email = B.email
             `
             const [commentList] = await this.sequelize.query(commentSql)
             console.log('commentinfo22::', commentList)
