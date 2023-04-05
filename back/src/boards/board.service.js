@@ -10,12 +10,12 @@ class BoardService {
 
     async getList({ sort, category }, { count, searchType, search, sort: pagingsort, category: pagingcategory }) {
         try {
-            console.log("scht, sch, srt", searchType, search, sort, count, pagingsort, pagingcategory);
+            // console.log("scht, sch, srt", searchType, search, sort, count, pagingsort, pagingcategory);
             if (category === `default`) category = ``;
             if (searchType === "email") searchType = "A.email";
             const views = 8;
             let limitval = views * count;
-            console.log(`limitval:::`, limitval);
+            // console.log(`limitval:::`, limitval);
             if (!count || Number(count) === 1) limitval = views;
             const limit = {
                 limit: limitval,
@@ -41,7 +41,7 @@ class BoardService {
                     acc[tag] = (acc[tag] || 0) + 1;
                     return acc;
                 }, {});
-                console.log(`main:::`, { main: main, tagnames: countTags });
+                // console.log(`main:::`, { main: main, tagnames: countTags });
 
                 return { main: main, tagnames: countTags };
             }
@@ -50,12 +50,12 @@ class BoardService {
         }
     }
     async getFavor(id) {
-        console.log(`id:::`, id);
+        // console.log(`id:::`, id);
         try {
             const data = { id: `D.userid = '${id}'`, sql: `JOIN Liked AS D ON A.id = D.boardid `, order: `D.createdAt` };
-            console.log(`data ::::`, data);
+            // console.log(`data ::::`, data);
             const favor = await this.boardRepository.findMain(data);
-            console.log(`favor ::::`, favor);
+            // console.log(`favor ::::`, favor);
             return favor;
         } catch (e) {
             throw new this.BadRequest(e);
@@ -64,9 +64,9 @@ class BoardService {
     async getHistory(id) {
         try {
             const data = { id: `D.userid = '${id}'`, sql: `JOIN History AS D ON A.id = D.boardid`, order: `D.createdAt` };
-            console.log(`data ::::`, data);
+            // console.log(`data ::::`, data);
             const history = await this.boardRepository.findMain(data);
-            console.log(`history ::::`, history);
+            // console.log(`history ::::`, history);
             return history;
         } catch (e) {
             throw new this.BadRequest(e);
@@ -75,24 +75,24 @@ class BoardService {
     async getView(id, email) {
         try {
             const currentState = await this.boardRepository.getState(id);
-            console.log("current state:::", currentState);
+            // console.log("current state:::", currentState);
             if (currentState === "blind") {
                 throw new Error("차단된 게시글입니다");
             }
             const view = await this.boardRepository.findOne(id)
             if (email !== "guest") await this.boardRepository.updatehit(id, email)
-            console.log(view)
+            // console.log(view)
             return view
         } catch (e) {
             console.error(e);
         }
     }
     async postWrite({ email, subject, content, hashtag, category, images, thumbnail }) {
-        console.log(`serv :`, { email, subject, content, hashtag, category, images, thumbnail });
+        // console.log(`serv :`, { email, subject, content, hashtag, category, images, thumbnail });
         try {
             if (!email || !subject || !content) throw "내용이 없습니다";
             const { username } = await this.userRepository.getUserById(email)
-            console.log(`username::::`, username)
+            // console.log(`username::::`, username)
             const boarddata = {
                 email,
                 subject,
@@ -102,7 +102,7 @@ class BoardService {
             };
             const write = await this.boardRepository.createBoard(boarddata);
             write.username = username
-            console.log(write.id)
+            // console.log(write.id)
             // images []
             // thumbnail num
             const arr = []
@@ -129,10 +129,10 @@ class BoardService {
         }
     }
     async putView(putdata) {
-        console.log(`serv :`, putdata);
+        // console.log(`serv :`, putdata);
         try {
             const { id, subject, content, hashtag, category, userid } = putdata;
-            console.log(id === "temp");
+            // console.log(id === "temp");
             if (id === "temp") {
                 if (!userid || !subject || !content) throw "내용이 없습니다";
                 const imgs = content
@@ -173,7 +173,7 @@ class BoardService {
     }
 
     async postComment(boardid, comment) {
-        console.log(`serv :`, { boardid, comment });
+        // console.log(`serv :`, { boardid, comment });
         try {
             let { userid, parentid, content, boardWirterid } = comment;
             if (!boardid || !comment.userid || !comment.content) throw "내용이 없습니다";
@@ -185,7 +185,7 @@ class BoardService {
                 content,
             };
             const write = await this.boardRepository.createComment(data);
-            console.log("write", write);
+            // console.log("write", write);
 
             if (parentid === 0 && userid !== boardWirterid) {
                 let point = { boardid, userid: boardWirterid, comment: "1", commentid: write.id };
@@ -203,7 +203,7 @@ class BoardService {
         }
     }
     async putComment(id, content) {
-        console.log(`serv :`, { id, content });
+        // console.log(`serv :`, { id, content });
         try {
             const comment = await this.boardRepository.updateComment({ id, content });
             if (comment < 1) throw "수정할 댓글이 없습니다";
