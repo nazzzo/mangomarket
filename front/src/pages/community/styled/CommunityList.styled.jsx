@@ -11,7 +11,7 @@ export const CommunityWrapper = styled.div`
 
 export const ItemContent = styled.div`
     width: 70%;
-    height: 85%;
+    height: 90%;
     display: flex;
     flex-direction: column;
     padding-left: 3%;
@@ -36,8 +36,11 @@ const TextBoxASubject = styled.h2`
     height: 2rem;
     line-height: 0.9rem;
     color: gray;
-    padding: 2% 3%;
+    padding: 0 3%;
     margin-right: 0.8rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 `
 const TextBoxAContent = styled.div`
     font-size: 1.2rem;
@@ -103,7 +106,7 @@ const TextBoxACategory = styled.span`
                   background-color: gray;
               `
             : css`
-                  background-color: orange;
+                  background-color: #333;
               `};
 `
 const TextBoxProfile = styled.div`
@@ -148,6 +151,33 @@ export const ItemWrapper = styled(motion.li)`
     justify-content: center;
     border-bottom: 1px solid #ececec;
 `
+
+export const TextBoxB = ({ subject, content, date, category }) => {
+    return (
+        <TextBoxAStyled>
+            <TextBoxASubject style={{ textAlign: 'center', color: '#333', fontSize: '1.02rem' }}>
+                {subject}
+            </TextBoxASubject>
+            <TextBoxProfile>
+                <TextBoxACategory
+                    category={category}
+                    style={{
+                        width: '6rem',
+                        height: '3rem',
+                        padding: '3.5% 0',
+                        boxSizing: 'border-box',
+                    }}
+                >
+                    {category}
+                </TextBoxACategory>
+            </TextBoxProfile>
+            <TextBoxAContent>
+                <TextBoxASpan>{content}</TextBoxASpan>
+                <TextBoxADate>{useTimeStamp(date)}</TextBoxADate>
+            </TextBoxAContent>
+        </TextBoxAStyled>
+    )
+}
 
 export const TextBoxA = ({ subject, content, date, commentCount, category, username, userImg }) => {
     return (

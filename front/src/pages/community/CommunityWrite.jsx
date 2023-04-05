@@ -24,8 +24,6 @@ export const CommunityWrite = () => {
             category: categoryState,
         })
 
-        console.log(response.data)
-
         if (response.status >= 400 || response.data.isError) {
             alert(response.data.message)
         }

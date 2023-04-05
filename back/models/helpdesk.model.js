@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    class Community extends Sequelize.Model {
+    class HelpDesk extends Sequelize.Model {
         static createTable() {
             return this.init(
                 {
@@ -12,7 +12,10 @@ module.exports = (sequelize, Sequelize) => {
                         allowNull: false,
                     },
                     category: {
-                        type: Sequelize.ENUM('잡담', '질문', '정보공유', '요청', '공지사항'),
+                        type: Sequelize.ENUM('계정/인증', '동네생활', '기타'),
+                    },
+                    pageState: {
+                        type: Sequelize.ENUM('문의하기', '신고하기'),
                     },
                 },
                 {
@@ -25,13 +28,7 @@ module.exports = (sequelize, Sequelize) => {
             this.belongsTo(models.User, {
                 foreignKey: 'email',
             })
-            this.hasMany(models.Comment, {
-                foreignKey: 'communityid',
-            })
-            this.hasMany(models.PointUp, {
-                foreignKey: 'communityid',
-            })
         }
     }
-    Community.createTable()
+    HelpDesk.createTable()
 }
