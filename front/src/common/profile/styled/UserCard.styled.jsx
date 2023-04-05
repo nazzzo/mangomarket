@@ -41,6 +41,7 @@ export const WriterInfoWrap = styled.div`
   align-items: center;
   justify-content:space-between;
   padding: 3% 1.5% 4%;
+  margin-bottom: 5%;
   background-color: #f3f3f3;
   border-radius: 8px;
   cursor: pointer;
@@ -58,29 +59,53 @@ export const UserImg = styled.img`
   border-radius: 50%;
 `
 
+
+export const UserInfoLabel =styled.div`
+    margin-left: 3%;
+`
+
 export const UserName = styled.span`
   font-size: ${(props) => props.fontSize};
-  margin-left: 9%;
 `
 
+export const Address = styled.p`
+  padding-top: 5%;
+  font-size: 0.8rem;
+  color: #666;
+`
 
-export const ProfileEdit = styled.button`
-  outline: none;
-  border: none;
+export const ButtonBox = styled.div`
   margin-left: auto;
-  margin-right: 5%;
-  padding: 1.5%;
-  border-radius: 6px;
-  font-size: ${(props) => props.fontSize};
-  background:  ${({ theme, color }) => theme[color].color};
-  cursor: pointer;
-  transition: all 0.3s ease-out;
+  display: flex;
 
-  &:hover {
-    background: ${({ theme, color }) => theme[color].hover};
-    transition: all 0.3s ease-out;
+  & button {
+    border-radius: 6px;
+    margin-left: 5%;
+    height: 2rem;
+    width: 6rem;
+    font-size: 0.8rem;
+    color: #fff;
   }
 `
+
+
+// export const ProfileEdit = styled.button`
+//   outline: none;
+//   border: none;
+//   margin-left: auto;
+//   margin-right: 5%;
+//   padding: 1.5%;
+//   border-radius: 6px;
+//   font-size: ${(props) => props.fontSize};
+//   background:  ${({ theme, color }) => theme[color].color};
+//   cursor: pointer;
+//   transition: all 0.3s ease-out;
+
+//   &:hover {
+//     background: ${({ theme, color }) => theme[color].hover};
+//     transition: all 0.3s ease-out;
+//   }
+// `
 
 
 

@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Map, MapMarker, ZoomControl } from "react-kakao-maps-sdk";
 import { GetAddress } from "./GetAddress"
+import { GuideText, MarkerImg } from "./styled"
 
-export const MapAPI = () => {
+export const MapAPI = ({ setIsOpen }) => {
   const [state, setState] = useState({
     center: {
       lat: 33.450701,
@@ -12,8 +13,6 @@ export const MapAPI = () => {
     isLoading: true,
   });
   const [level, setLevel] = useState();
-  const [address, setAddress] = useState(null);
-
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -47,39 +46,19 @@ export const MapAPI = () => {
     }
   }, []);
 
-  console.log(`마커 위치::`, state.center)
-
-  // useEffect(() => {
-  //   const waitForKakao = setInterval(() => {
-  //     if (window.kakao && window.kakao.maps) {
-  //       clearInterval(waitForKakao)
-  //       const geocoder = new window.kakao.maps.services.Geocoder()
-  //       geocoder.coord2Address(
-  //         state.center.lng,
-  //         state.center.lat,
-  //         (result, status) => {
-  //           if (status === window.kakao.maps.services.Status.OK) {
-  //             const address = result[0].address
-  //             console.log(
-  //               address.region_1depth_name + " " + address.region_2depth_name
-  //             )
-  //           }
-  //         }
-  //       )
-  //     }
-  //   }, 10000)
-  //   return () => clearInterval(waitForKakao)
-  // }, [state.center])
-
 
   return (
     <>
+      <GuideText>
+        <MarkerImg src="https://cdn1.iconfinder.com/data/icons/vibrancie-map/30/map_016-location-marker-pin-paper-512.png" />
+        마커를 움직여서 주소를 찾아주세요
+      </GuideText>  
       <Map // 지도를 표시할 Container
         center={state.center}
         style={{
           // 지도의 크기
-          width: "25rem",
-          height: "25rem",
+          width: "20rem",
+          height: "20rem",
         }}
         level={3} // 지도의 확대 레벨
         onZoomChanged={(map) => setLevel(map.getLevel())}
@@ -111,13 +90,13 @@ export const MapAPI = () => {
               },
             }}
           >
-            <div style={{ padding: "5px", color: "#000", fontSize: "1rem" }}>
-              {state.errMsg ? state.errMsg : "여기에 계신가요?"}
+            <div style={{ padding: "5px 10px", color: "#000", fontSize: "1rem" }}>
+              {state.errMsg ? state.errMsg : "이 위치로 할래요?"}
             </div>
           </MapMarker>
         )}
       </Map>
-      { state.center && <GetAddress lat={state.center.lat} lng={state.center.lng}/>}
+      { state.center && <GetAddress lat={state.center.lat} lng={state.center.lng} setIsOpen={setIsOpen} />}
     </>
   );
 };

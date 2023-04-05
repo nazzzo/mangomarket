@@ -1,5 +1,5 @@
-import request from "../../utils/request"
-
+import { InvalidInputAlert } from "./styled"
+import request from "../../utils/request";
 
 export const validCheck = (input, setIsValid) => {
     const inputId = input.id
@@ -30,14 +30,10 @@ export const passwordCheck = ({userpw, pwcheck, setIsValid}) => {
     userpw === pwcheck ?  setIsValid(true) : setIsValid(false);
 }
 
-
-export const InputCheck = ({id, isFocused, isValid, isDuplicated, duplicated, enable, invalid }) => {
-    return id === isFocused 
-    ? (isValid
-        ? <span>{isDuplicated 
-        ? duplicated 
-        : enable }</span> 
-        : <span>{invalid}</span>) 
+export const InputCheck = ({id, isFocused, isValid, isDuplicated, duplicated, invalid }) => {
+  return id === isFocused 
+    ? isValid
+      ? (isDuplicated ? <InvalidInputAlert color="red">{duplicated}</InvalidInputAlert> : <></>)
+      : <InvalidInputAlert color="red">{invalid}</InvalidInputAlert>
     : <></>
 }
-

@@ -19,6 +19,7 @@ const initialState = {
     email: "",
     username: "",
     userImg: "",
+    address: "",
   },
   auth: {
     email: "",
@@ -50,6 +51,7 @@ export const user = (state = initialState, action) => {
           email: "",
           username: "",
           userImg: "",
+          address: "",
         },
       };
     case USER_REQUEST_ERROR:
@@ -68,6 +70,7 @@ export const user = (state = initialState, action) => {
           email: "",
           userpw: "",
           userImg: "",
+          address: "",
         },
       };
     case USER_LIKE_ADD:

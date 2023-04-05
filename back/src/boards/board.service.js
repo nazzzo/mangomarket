@@ -120,19 +120,12 @@ class BoardService {
             throw new this.BadRequest(e);
         }
     }
-    async postState(id) {
+    async putState(id , {state}) {
         try {
-            let state = "";
-            const currentState = await this.boardRepository.getState(id);
-            if (currentState === "blind") {
-                state = "public";
-            } else {
-                state = "blind";
-            }
             await this.boardRepository.updateState(id, state);
             return state;
         } catch (e) {
-            // throw new this.BadRequest(e);
+            throw new this.BadRequest(e);
         }
     }
     async putView(putdata) {

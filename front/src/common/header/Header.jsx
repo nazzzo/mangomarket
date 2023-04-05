@@ -3,6 +3,7 @@ import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import { HeaderWrapper, HeaderWrap, HeaderLogoWrap, HeaderLogoImgWrap, HeaderLogoImg, HeaderMenuWrap, HeaderMenuul, HeaderMenuli, HeaderFunctionWrap, HeaderSearchWrap, HeaderSearchBox, HeaderSearchInput, HeaderAlarmWrap, HeaderUserWrap, HeaderUser, HeaderAlarmMenu } from "./styled"
 import { Hamburger, SearchPopUp, MenuPopUp } from '../index';
 import { Modal } from "../../common/modal";
+import { AlarmDot } from "../../common/button"
 import { KeywordAlarm } from "../../common/profile"
 import { Icon } from '@iconify/react';
 import request from "../../utils/request"
@@ -31,7 +32,7 @@ export const Header = (({ categories, isLogin, user, keywords }) => {
     useEffect(() => {
         if (alarmData.length > 0) setNewAlarm(true);
     }, [alarmData]);
-    console.log(newAlarm)
+    console.log(`newAlarm:::`, newAlarm)
 
     useEffect(() => {
         if (isOpen) setNewAlarm(false);
@@ -80,7 +81,7 @@ export const Header = (({ categories, isLogin, user, keywords }) => {
                         {/*  */}
                         <HeaderLogoWrap>
                             <HeaderLogoImgWrap onClick={() => {navigate("/")}}>
-                                <HeaderLogoImg src='https://i.ibb.co/rZ92vMS/001.png'/>
+                                <HeaderLogoImg src='https://i.ibb.co/BNxzrWN/mangomarket3.png'/>
                             </HeaderLogoImgWrap>
                         </HeaderLogoWrap>
                         {/*  */}
@@ -99,10 +100,17 @@ export const Header = (({ categories, isLogin, user, keywords }) => {
                             </HeaderSearchWrap>
                             <HeaderAlarmWrap onClick={()=>{setIsActive(!isActive)}} className={isActive ? 'on' : ''}>
                                 <Icon icon="mdi:bell" />
-                                <HeaderAlarmMenu onClick={()=>{setIsOpen(true)}} className="snb" />
+                                {newAlarm && <AlarmDot setNewAlarm={setNewAlarm} top="27%" right="27%" />}
+                                <HeaderAlarmMenu onClick={
+                                     ()=> {setIsOpen(true)
+                                     setNewAlarm(false)}} 
+                                     className="snb"
+                                >
+                                    {newAlarm && <AlarmDot top="20%" left="14%" />}
+                                </HeaderAlarmMenu>
                             </HeaderAlarmWrap>
                             <HeaderUserWrap onClick={handleMenuClick}>
-                                { user.userImg ? <HeaderUser src={user.userImg}/> : <></>}
+                                { user.userImg ? <HeaderUser src={user.userImg} onClick={() => {navigate("/profile")}}/> : <></>}
                                 <Hamburger />
                             </HeaderUserWrap>
                         </HeaderFunctionWrap>

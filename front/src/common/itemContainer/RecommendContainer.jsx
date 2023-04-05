@@ -20,10 +20,9 @@ export const RecommendContainer = ({ boardList, width, height, navigate }) => {
                             window.scrollTo(0, 0);
                         }}
                     >
-                        <RecommendItemImage src={board.image} />
+                        <RecommendItemImage src={board.image} state={board.state} />
                         <ItemContent key={board.id}>
                             <TextBoxA
-                                state={board.state}
                                 subject={board.subject}
                             />
                         </ItemContent>

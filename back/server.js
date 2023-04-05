@@ -6,12 +6,13 @@ const PORT = config.port
 app.listen(PORT, async () => {
     await sequelize.sync({ force: false })
 
-    // await sequelize.models.Category.create({ path: '/', name: 'Home' })
-    // await sequelize.models.Category.create({ path: '/signup', name: 'Signup', isLogin: false })
-    // await sequelize.models.Category.create({ path: '/login', name: 'Login', isLogin: false })
-    // await sequelize.models.Category.create({ path: '/logout', name: 'Logout', isLogin: true })
-    // await sequelize.models.Category.create({ path: '/profile', name: 'Profile', isLogin: true })
-    // await sequelize.models.Category.create({ path: '/board/write', name: '글쓰기', isLogin: true })
+    // await sequelize.models.Category.create({ path: '/', name: '홈' })
+    // await sequelize.models.Category.create({ path: '/signup', name: '회원가입', isLogin: false })
+    // await sequelize.models.Category.create({ path: '/login', name: '로그인', isLogin: false })
+    // await sequelize.models.Category.create({ path: '/logout', name: '로그아웃', isLogin: true })
+    // await sequelize.models.Category.create({ path: '/profile', name: '프로필', isLogin: true })
+    // await sequelize.models.Category.create({ path: '/community', name: '커뮤니티', isLogin: true })
+    // await sequelize.models.Category.create({ path: '/board/write', name: '장터등록', isLogin: true })
 
     // await sequelize.models.BoardCategory.create({ id: 1, category: "생활가전" });
     // await sequelize.models.BoardCategory.create({ id: 2, category: "디지털기기" });

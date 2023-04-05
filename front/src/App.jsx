@@ -23,6 +23,7 @@ const App = () => {
               email: response.data.email,
               username: response.data.username,
               userImg: response.data.userImg,
+              address: response.data.address,
             })
           );
         }

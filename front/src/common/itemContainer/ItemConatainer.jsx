@@ -23,9 +23,9 @@ export const ItemContainer = forwardRef(({ boardList, width, height, setIsOpen, 
                 setIsOpen(false);
               }}
             >
-              {(!board.images)? <ItemImage src={board.image} /> : <ItemImage src={board.images.split(',')[0]} />}
+              {(!board.images)? <ItemImage src={board.image} state={board.state} /> : <ItemImage src={board.images.split(',')[0]} state={board.state} />}
               <ItemContent key={board.id}>
-                <TextBoxA state={board.state} subject={board.subject} createdAt={board.createdAt} />
+                <TextBoxA subject={board.subject} createdAt={board.createdAt} />
               </ItemContent>
             </ItemWrapper>
           ))

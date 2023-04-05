@@ -13,6 +13,10 @@ export const ModalWrapper = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
 `;
 
+export const ModalCloser = styled.span`
+  
+`
+
 export const ModalContent = styled.div`
   position: relative;
   background-color: #fff;

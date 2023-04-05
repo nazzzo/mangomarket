@@ -13,7 +13,7 @@ router.get("/:id/histories", (req, res, next) => controller.getHistory(req, res,
 router.get("/keywords", (req, res, next) => controller.getKeywords(req, res, next));
 
 router.delete("/:id/temp", (req, res, next) => controller.delTemp(req, res, next));
-router.post("/:id/blind", (req, res, next) => controller.postBlind(req, res, next));
+router.put("/:id/state", (req, res, next) => controller.putState(req, res, next));
 router.post("/", (req, res, next) => controller.postWrite(req, res, next));
 router.post("/array", upload.fields([{ name: "images" }, { name: "thumbnail" }]), (req, res) => {
     const { files } = req;
