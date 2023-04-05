@@ -11,10 +11,10 @@ module.exports = (server, app) => {
             // namespace === receiver
             const { namespace, room } = data
 
-            // namespace 생성
+            // 생성
             socket.join(namespace)
 
-            // event === sender
+            // customer
             socket.on(`${room}`, async (data) => {
                 io.of(namespace).in(room).emit(`${room}`, data.content)
                 data.boardid = namespace
@@ -22,7 +22,6 @@ module.exports = (server, app) => {
                 console.log(result)
                 // socket.broadcast.to(namespace).emit(`${room}`, `${data.content} 브로드캐스트 실험`)
             })
-
         })
     })
 }

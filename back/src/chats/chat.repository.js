@@ -4,9 +4,11 @@ class ChatRepository {
     this.User = User;
     this.Board = Board;
   }
-  async findAll() {
+  async findAll(seller) {
     try {
-      const findAll = await this.Chat.findAll();
+      console.log("rep", seller.seller)
+      const findAll = await this.Chat.findAll({ where:{ seller:`${seller.seller}`}, raw: true, nest: true});
+      console.log(findAll)
       return findAll;
     } catch (e) {
       throw new Error(e);

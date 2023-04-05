@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { Modal } from "../modal"
 import { useState } from 'react'
+import { GlobalChat } from "../../pages/chat"
 
 const ChatBtnStyled = styled.button`
     width: 5rem;
@@ -20,7 +21,7 @@ export const ChatBtn = () => {
     return(
         <>
             <ChatBtnStyled onClick={() => {setIsOpen(true)}}>채팅 버튼</ChatBtnStyled>
-            <Modal isOpen={isOpen} setIsOpen={setIsOpen}>가나다라</Modal>
+            <Modal isOpen={isOpen} setIsOpen={setIsOpen}>{<GlobalChat></GlobalChat>}</Modal>
         </>
     )
 }
