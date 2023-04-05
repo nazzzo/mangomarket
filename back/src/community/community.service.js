@@ -22,6 +22,7 @@ class CommunityService {
             const view = await this.communityRepository.findOne({ id })
             const { username } = await this.userRepository.getUserById(view.boardView.email)
             view.boardView.username = username
+            console.log('view.commentList', view.commentList)
             return view
         } catch (e) {
             throw new this.BadRequest(e)
