@@ -49,7 +49,7 @@ export const BoardView = () => {
             const response = await request.put(`boards/${id}/state`, {
                 state : selectedOption?.value
             })
-            console.log(response.data)
+            // console.log(response.data)
         } catch (error) {
             console.log(error);
         }
