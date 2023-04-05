@@ -24,7 +24,8 @@ module.exports = (sequelize, Sequelize) => {
             },
           },
           type: {
-            type: Sequelize.ENUM('sender', 'recciver'),
+            type: Sequelize.ENUM('0', '1'),
+            defaultValue: '0',
           }
         },
         {
