@@ -7,7 +7,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.TEXT(),
             allowNull: false,
           },
-          sender: {
+          seller: {
             type: Sequelize.STRING(30),
             allowNull: false,
             references: {
@@ -15,7 +15,7 @@ module.exports = (sequelize, Sequelize) => {
               key: "email",
             },
           },
-          receiver: {
+          customer: {
             type: Sequelize.STRING(30),
             allowNull: false,
             references: {
@@ -23,6 +23,9 @@ module.exports = (sequelize, Sequelize) => {
               key: "email",
             },
           },
+          type: {
+            type: Sequelize.ENUM('sender', 'recciver'),
+          }
         },
         {
           sequelize,
