@@ -24,6 +24,7 @@ export const GetAddress = ({ lat, lng, setIsOpen }) => {
         geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
       }
 
+      console.log(lat, lng)
       const handleSubmit = async (e) => {
         e.preventDefault()
         try {

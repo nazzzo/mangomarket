@@ -124,6 +124,7 @@ export const Submit = styled.button`
   border-radius: 6px;
   font-size: ${(props) => props.fontSize};
   background: ${({ theme, color }) => theme[color].color};
+  color: #fff;
   cursor: pointer;
   transition: all 0.3s ease-out;
 
