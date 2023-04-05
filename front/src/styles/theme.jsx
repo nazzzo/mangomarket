@@ -27,11 +27,6 @@ export const GlobalTheme = ({ children }) => {
       hover: "#f5deb3",
       active: "#d7cda0",
     },
-    grey: {
-      color: "#5a5c69",
-      hover: "#6c757d",
-      active: "#484a55",
-    },
     pink: {
       color: "#d6336c",
       hover: "#e64980",
