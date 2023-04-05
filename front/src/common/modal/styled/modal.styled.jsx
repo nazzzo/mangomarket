@@ -13,10 +13,6 @@ export const ModalWrapper = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
 `;
 
-export const ModalCloser = styled.span`
-  
-`
-
 export const ModalContent = styled.div`
   position: relative;
   background-color: #fff;
@@ -25,4 +21,14 @@ export const ModalContent = styled.div`
   z-index: 9;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
+
+  & .iconify {
+    width: 2.2rem;
+    height: 2.2rem;
+    position: absolute;
+    top: 2%;
+    right: 3%;
+    cursor: pointer;    
+  }
 `;
+
