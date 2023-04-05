@@ -24,8 +24,8 @@ module.exports = (sequelize, Sequelize) => {
             },
           },
           type: {
-            type: Sequelize.ENUM('0', '1'),
-            defaultValue: '0',
+            type: Sequelize.ENUM('sender', 'receiver'),
+            allowNull: false,
           }
         },
         {
