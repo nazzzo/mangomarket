@@ -49,14 +49,27 @@ class CommunityRepository {
             // })
             const sql = `
                 SELECT 
+                A.id, A.email, A.subject, A.content, A.createdAt, A.updatedAt, A.category, B.username, B.userImg,
+                (SELECT COUNT(communityid) FROM Comment WHERE communityid = A.id) AS CommentCount,
+                    CASE 
+                        WHEN A.category = '공지사항' THEN 0 
+                        ELSE 1 
+                    END AS category_order
+                FROM Community AS A 
+                JOIN User AS B 
+                ON A.email = B.email
+                ORDER BY category_order ASC, A.id DESC;
+            `
+            /**
+             *  SELECT 
                 A.id,A.email,A.subject,A.content,A.createdAt,A.updatedAt,A.category,B.username,B.userImg,
                 (SELECT COUNT(communityid) FROM Comment WHERE communityid = A.id) AS CommentCount
                 FROM Community AS A JOIN User AS B ON A.email = B.email
                 ORDER BY A.id DESC;
-            `
+             */
 
             const findComment = await this.sequelize.query(sql)
-            console.log(findComment)
+            console.log('findComment ::: ', findComment)
 
             return findComment
         } catch (e) {

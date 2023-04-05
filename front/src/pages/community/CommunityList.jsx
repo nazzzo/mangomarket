@@ -1,5 +1,5 @@
 import request from '../../utils/request'
-import { CommunityWrapper, List, ItemWrapper, ItemContent, TextBoxA } from './styled'
+import { CommunityWrapper, List, ItemWrapper, ItemContent, TextBoxA, TextBoxB } from './styled'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -51,15 +51,25 @@ export const CommunityList = () => {
                             variants={TextItem}
                         >
                             <ItemContent key={board.id}>
-                                <TextBoxA
-                                    subject={board.subject}
-                                    content={board.content}
-                                    username={board.username}
-                                    userImg={board.userImg}
-                                    date={board.createdAt}
-                                    commentCount={board.CommentCount}
-                                    category={board.category}
-                                ></TextBoxA>
+                                {board.category !== '공지사항' ? (
+                                    <TextBoxA
+                                        subject={board.subject}
+                                        content={board.content}
+                                        username={board.username}
+                                        userImg={board.userImg}
+                                        date={board.createdAt}
+                                        commentCount={board.CommentCount}
+                                        category={board.category}
+                                    ></TextBoxA>
+                                ) : (
+                                    <TextBoxB
+                                        subject={board.subject}
+                                        content={board.content}
+                                        date={board.createdAt}
+                                        commentCount={board.CommentCount}
+                                        category={board.category}
+                                    ></TextBoxB>
+                                )}
                             </ItemContent>
                         </ItemWrapper>
                     </List>

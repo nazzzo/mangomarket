@@ -35,6 +35,7 @@ const selectOptions = [
     { value: 'question', label: '질문' },
     { value: 'infomation', label: '정보공유' },
     { value: 'request', label: '요청' },
+    { value: 'notice', label: '공지사항' },
 ]
 
 export const CategorySelect = ({ onChange }) => {
