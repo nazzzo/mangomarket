@@ -14,7 +14,6 @@ export const Main = () => {
     const [boardList, setBoardList] = useState([])
     const [selectedCategory, setSelectedCategory] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -114,10 +113,9 @@ export const Main = () => {
                         }}
                         variants={TextItem}
                     >
-                        <ItemImage size="220px" src={board.image} />
+                        <ItemImage size="220px" src={board.image} state={board.state} />
                         <ItemContent key={board.id}>
                             <TextBoxA
-                                state={board.state}
                                 category={board.category}
                                 subject={board.subject}
                             />

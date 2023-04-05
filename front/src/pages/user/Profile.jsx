@@ -28,7 +28,7 @@ export const Profile = () => {
 
   return (
     <>
-      {user? <MyInfo user={user} width="100%" height="12rem" imgSize="7rem" fontSize="1.1rem" /> : <></>}
+      {user? <MyInfo user={user} width="95%" height="12rem" imgSize="7rem" fontSize="1.1rem" /> : <></>}
       {sum && chart ? (
         <MyPoint username={user.username} email={user.email} chart={chart} sum={sum} navigate={navigate} />
       ) : (

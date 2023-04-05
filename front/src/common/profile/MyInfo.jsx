@@ -4,7 +4,10 @@ import { userLogin } from "../../store/user";
 import { ProfileImgUpload } from "../upload/ProfileImgUpload";
 import { Input } from "../input";
 import { useInput } from "../../hooks";
-import { UserInfoWrap, UserImg, UserName, ProfileEdit } from "./styled";
+import { Button } from "../../common/button"
+import { Modal } from "../../common/modal"
+import { MapAPI } from "../../pages"
+import { UserInfoWrap, UserImg, UserInfoLabel, UserName, Address, ButtonBox } from "./styled";
 import request from "../../utils/request";
 
 export const MyInfo = ({ user, width, height, imgSize, fontSize }) => {
@@ -12,6 +15,7 @@ export const MyInfo = ({ user, width, height, imgSize, fontSize }) => {
   // const { isLoading, isError, isLogin, user } = useSelector((state) => state.user);
   const [isEdit, setIsEdit] = useState(false);
   const [profileImage, setProfileImage] = useState(user.userImg);
+  const [isOpen, setIsOpen] = useState(false)
   const username = useInput(user.username);
 
   const handleMode = () => {
@@ -24,7 +28,8 @@ export const MyInfo = ({ user, width, height, imgSize, fontSize }) => {
         const response = await request.put("/users", {
             username: username.value,
             userImg: profileImage,
-            email: user.email
+            email: user.email,
+            address: user.address,
           });
           console.log(`response:::`, response.data);
           dispatch(
@@ -32,6 +37,7 @@ export const MyInfo = ({ user, width, height, imgSize, fontSize }) => {
               email: response.data.user.email,
               username: response.data.user.username,
               userImg: response.data.user.userImg,
+              address: response.data.address,
             })
           );
     } catch (e) {
@@ -64,14 +70,23 @@ export const MyInfo = ({ user, width, height, imgSize, fontSize }) => {
               icon="mdi:user-edit"
             />
           ) : (
-            <UserName fontSize={fontSize}>{user.username}</UserName>
+            <UserInfoLabel>
+              <UserName fontSize={fontSize}>{user.username}</UserName>
+              <Address fontSize={fontSize}>{user.address}</Address>
+            </UserInfoLabel>
           )}
-          <ProfileEdit color="yellow" onClick={handleMode}>
-            {" "}
-            {isEdit ? "완료" : "프로필 수정"}
-          </ProfileEdit>
+            <ButtonBox>
+              {!isEdit && <Button color="yellow" onClick={()=>{setIsOpen(true)}} type="button">동네 인증</Button>}
+              <Button color="gray" onClick={handleMode}>
+              {" "}
+              {isEdit ? "완료" : "프로필 수정"}
+              </Button>
+            </ButtonBox>
         </form>
       </UserInfoWrap>
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+            <MapAPI setIsOpen={setIsOpen} />
+      </Modal>
     </>
   );
 };

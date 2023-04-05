@@ -8,7 +8,7 @@ export const GlobalTheme = ({ children }) => {
       active: "#005cbf",
     },
     red: {
-      color: "#c82333",
+      color: "#d51f31",
       hover: "#dc3545",
       active: "#a71d2a",
     },
@@ -27,7 +27,7 @@ export const GlobalTheme = ({ children }) => {
       hover: "#f5deb3",
       active: "#d7cda0",
     },
-    gray: {
+    grey: {
       color: "#5a5c69",
       hover: "#6c757d",
       active: "#484a55",
@@ -41,6 +41,11 @@ export const GlobalTheme = ({ children }) => {
       color: "#8257e5",
       hover: "#9b4dca",
       active: "#6c40bb",
+    },
+    grey: {
+      color: "#8b8b8b",
+      hover: "#cbcbcb",
+      active: "#4f4f4f",
     },
     header: {
       color: "#ececec"

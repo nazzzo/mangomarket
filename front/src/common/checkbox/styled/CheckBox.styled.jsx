@@ -44,3 +44,34 @@ export const InputStyled = styled.input`
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E %3Cpath d='M15.88 8.29L10 14.17l-1.88-1.88a.996.996 0 1 0-1.41 1.41l2.59 2.59c.39.39 1.02.39 1.41 0L17.3 9.7a.996.996 0 0 0 0-1.41c-.39-.39-1.03-.39-1.42 0z' fill='%23fff'/%3E %3C/svg%3E");
   }
 `;
+
+
+export const CheckMarkerStyled =styled.span`
+display: inline-block;
+width: ${({ size }) => size};
+height: ${({ size }) => size};
+background-color: ${({ theme, color }) => theme[color].color};
+color: ${({ theme, color }) => theme[color].hover};
+vertical-align: middle;
+margin-left: 2%;
+flex-grow: 0;
+border-radius: 50%;
+opacity: 0;
+transition: all 0.3s ease-out;
+
+&::before {
+  content: "";
+  display: block;
+  width: inherit;
+  height: inherit;
+  border-radius: inherit;
+  border: 0;
+  background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E %3Cpath d='M15.88 8.29L10 14.17l-1.88-1.88a.996.996 0 1 0-1.41 1.41l2.59 2.59c.39.39 1.02.39 1.41 0L17.3 9.7a.996.996 0 0 0 0-1.41c-.39-.39-1.03-.39-1.42 0z' fill='%23fff'/%3E %3C/svg%3E");
+}
+
+&.on {
+  opacity: 1;
+  transition: all 0.3s ease-out;
+}
+`

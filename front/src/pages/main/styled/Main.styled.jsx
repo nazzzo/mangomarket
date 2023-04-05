@@ -47,6 +47,19 @@ const ItemImageWrap = styled.div`
     height: 85%;
     display: flex;
     border-radius: 8px;
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        width: 95%;
+        height: 100%;
+        margin-left: 5%;
+        top: 0;
+        left: 0;
+        background-color: ${({ backgroundColor }) => backgroundColor};
+        border-radius: 8px;
+    }
 
     & img {
         object-fit: cover;
@@ -56,9 +69,32 @@ const ItemImageWrap = styled.div`
     }
 `
 
-export const ItemImage = ({ size, src }) => {
+const State = styled.span`
+    background: ${({ theme, color }) => theme[color].color};
+    color: #fff;
+    position: absolute;
+    top: 5%;
+    left: 10%;
+    padding: 4% 6%;
+    font-size: 0.9rem;
+    border-radius: 6px;
+`
+
+export const ItemImage = ({ size, src, state }) => {
+        let color;
+        let backgroundColor;
+        if (state === 'reserved') {
+            state = '예약중';
+            color = 'green';
+        } else if (state === 'sold') {
+            state = '교환완료';
+            color = 'grey';
+            backgroundColor = 'rgba(0,0,0,0.4)'
+        }
+
     return (
-        <ItemImageWrap siez={size}>
+        <ItemImageWrap siez={size} backgroundColor={backgroundColor} >
+            {state !== 'public' ? <State color={color}>{state}</State> : <></>}
             <img src={src} alt="" />
         </ItemImageWrap>
     )
@@ -97,9 +133,6 @@ const TextBoxAStyled = styled.div`
         overflow: hidden;
     }
 `
-const State = styled.span`
-    background-color: ${(props) => props.color};
-`
 
 const Category = styled.span`
     background-color: ${(props) => props.color};
@@ -107,7 +140,7 @@ const Category = styled.span`
 
 const TextBoxBStyled = styled.span`
     height: 20%;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     color: #999;
 `
 
@@ -129,10 +162,10 @@ export const Count = styled.span`
     }
 `
 
-export const TextBoxA = ({ state, category, subject }) => {
+export const TextBoxA = ({ category, subject }) => {
+
     return (
         <TextBoxAStyled>
-            {state !== 'public' ? <State color="yellow">{state}</State> : <></>}
             <Category color="orange">{category}</Category>
             <h2>{subject}</h2>
         </TextBoxAStyled>

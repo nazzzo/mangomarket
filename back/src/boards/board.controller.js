@@ -78,12 +78,11 @@ class BoardController {
             next(e);
         }
     }
-    async postBlind(req, res, next) {
-        console.log("postBlind:", req.body.id);
+    async putState(req, res, next) {
         try {
-            const response = await this.boardService.postState(req.body.id);
-            console.log(response);
-            res.status(201).json(response);
+            const result = await this.boardService.putState(req.params.id, req.body);
+            console.log(result);
+            res.status(201).json(result);
         } catch (e) {
             next(e);
         }

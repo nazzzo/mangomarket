@@ -46,8 +46,8 @@ export const HeaderLogoWrap = styled.div`
 
 export const HeaderLogoImgWrap = styled.div`
     display: inline-block;
-    width: 4rem;
-    height: 4rem;
+    width: 90px;
+    height: 60px;
 `
 
 export const HeaderLogoImg = styled.img`
@@ -170,6 +170,7 @@ export const HeaderAlarmWrap = styled.div`
     align-items: center;
     width: 4rem;
     height: 100%;
+    position: relative;
 
     &.on .snb {
         opacity: 0.8;
@@ -198,8 +199,8 @@ export const HeaderUserWrap = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 5rem;
-    min-height: 5rem;
+    min-width: 60px;
+    height: 60px;
     
     @media screen and (max-width: 480px){
         width: 2.5rem;
@@ -211,6 +212,7 @@ export const HeaderUser = styled.img`
     height: 60%;
     width: 60%;
     border-radius: 50%;
+    cursor: pointer;
 
     @media screen and (max-width: 480px){
         display: none;
@@ -235,8 +237,9 @@ const HeaderAlarmMenuWrapper = styled.div`
     cursor: pointer;
 `
 
-export const HeaderAlarmMenu = ({onClick, className}) => {
+export const HeaderAlarmMenu = ({onClick, className, children}) => {
     return <HeaderAlarmMenuWrapper className={className}>
+        {children}
         <div onClick={onClick}>알람 키워드</div>
         <div>채팅 내역</div>
     </HeaderAlarmMenuWrapper>

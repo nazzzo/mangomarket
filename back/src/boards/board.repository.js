@@ -50,6 +50,7 @@ class BoardRepository {
             A.state,
             B.userImg,
             B.username,
+            B.address,
             D.image,
             (SELECT GROUP_CONCAT(D.email SEPARATOR ', ') FROM Liked AS D WHERE A.id = D.boardid) AS likeidlist,
             GROUP_CONCAT(C.tagname SEPARATOR ', ') AS tagname,
@@ -84,6 +85,7 @@ class BoardRepository {
       A.state,
       B.userImg,
       B.username,
+      B.address,
       (SELECT GROUP_CONCAT(D.email SEPARATOR ', ') FROM Liked AS D WHERE A.id = D.boardid) AS likeidlist,
       GROUP_CONCAT(C.tagname SEPARATOR ', ') AS tagname,
       (SELECT COUNT(boardid) FROM Comment WHERE boardid = A.id) AS commentCount, 
@@ -116,6 +118,7 @@ class BoardRepository {
             A.state,
             B.userImg,
             B.username,
+            B.address,
             GROUP_CONCAT(D.image SEPARATOR ', ') AS images,
             (SELECT GROUP_CONCAT(D.email SEPARATOR ', ') FROM Liked AS D WHERE A.id = D.boardid) AS likeidlist,
             GROUP_CONCAT(C.tagname SEPARATOR ', ') AS tagname,
@@ -201,9 +204,7 @@ class BoardRepository {
     async updateState(id, state) {
         try {
             let result = await this.Board.update(
-                {
-                    state: state,
-                },
+                { state: state },
                 { where: { id: id } }
             );
             return result;
