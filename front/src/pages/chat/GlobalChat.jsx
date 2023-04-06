@@ -6,7 +6,7 @@ import io from "socket.io-client"
 import config from "../../config"
 
 
-export const GlobalChat = ({ }) => {
+export const GlobalChat = () => {
     const [ chatData ,setChatData ] = useState()
     const [ customer ,setCustomer ] = useState()
     const content = useInput("")
@@ -20,7 +20,7 @@ export const GlobalChat = ({ }) => {
         const getSellChat = async () => {
             // const response = await request.get(`/chat/sell/${user.email}`)
             const response = await request.get(`/chats?seller=${user.email}`)
-            setChatData(response.data)
+            {!response.data.isError && setChatData(response.data)}
             const customerList = [...new Set(response.data.map(v => v.customer))]
             setCustomer(customerList)
         }
