@@ -24,7 +24,6 @@ export const GetAddress = ({ lat, lng, setIsOpen }) => {
         geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
       }
 
-      console.log(lat, lng)
       const handleSubmit = async (e) => {
         e.preventDefault()
         try {
@@ -32,7 +31,9 @@ export const GetAddress = ({ lat, lng, setIsOpen }) => {
                 email: user.email,
                 username: user.username,
                 userImg: user.userImg,
-                address: address
+                address: address,
+                latitude : lat, 
+                longitude : lng,
               });
               if (response.data.user) {
                 dispatch(

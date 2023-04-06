@@ -8,7 +8,7 @@ class BoardService {
         this.viewObj = new Object();
     }
 
-    async getList({ sort, category }, { count, searchType, search, sort: pagingsort, category: pagingcategory }) {
+    async getList({ sort, category }, { count, searchType, search, email, sort: pagingsort, category: pagingcategory }) {
         try {
             console.log("scht, sch, srt", searchType, search, sort, count, pagingsort, pagingcategory);
             if (category === `default`) category = ``;
@@ -21,7 +21,7 @@ class BoardService {
                 limit: limitval,
                 views,
             };
-            const data = await this.boardRepository.findAll({ searchType, search, sort, category, limit, pagingsort, pagingcategory });
+            const data = await this.boardRepository.findAll({ searchType, search, email, sort, category, limit, pagingsort, pagingcategory });
             // console.log("serv", data);
             return data;
         } catch (e) {

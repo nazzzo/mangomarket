@@ -57,6 +57,14 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING(50),
             allouwNull: true,
           },
+          latitude: {
+            type: Sequelize.FLOAT(10,6),
+            allouwNull: true,
+          },
+          longitude: {
+            type: Sequelize.FLOAT(10,6),
+            allouwNull: true,
+          },
           alarm : {
             type: Sequelize.BOOLEAN(),
             defaultValue: false,
