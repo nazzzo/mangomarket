@@ -20,7 +20,7 @@ export const GlobalChat = ({ }) => {
         const getSellChat = async () => {
             // const response = await request.get(`/chat/sell/${user.email}`)
             const response = await request.get(`/chats?seller=${user.email}`)
-            setChatData(response.data)
+            !response.data.isError && setChatData(response.data)
             const customerList = [...new Set(response.data.map(v => v.customer))]
             setCustomer(customerList)
         }
