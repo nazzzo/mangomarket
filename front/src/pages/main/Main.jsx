@@ -1,5 +1,6 @@
 import request from '../../utils/request'
 import { useRef, useState, useEffect } from 'react'
+import { useSelector } from "react-redux";
 import { Modal } from '../../common/modal'
 import { RefreshBtn } from '../../common/button'
 import { CategoryOpener, CategorySelector } from '../../common/category'
@@ -7,7 +8,10 @@ import { HomeWrapper, BtnBox, List, ItemWrapper, ItemImage, ItemContent, TextBox
 import { Icon } from '@iconify/react'
 import { useNavigate } from 'react-router-dom'
 
+
+
 export const Main = () => {
+  const { isLogin, user } = useSelector((state) => state.user);
     const pageCountRef = useRef(null)
     const [count, setCount] = useState(0)
     const [isOpen, setIsOpen] = useState(false)
@@ -20,7 +24,7 @@ export const Main = () => {
         const fetchData = async () => {
             try {
                 const response = await request.get(
-                    `boards/?count=${count}&category=${selectedCategory}`
+                    `boards/?count=${count}&category=${selectedCategory}&email=${user.email}`
                 )
                 const newBoardList = response.data
                 if (count === 0 || selectedCategory !== '') {
