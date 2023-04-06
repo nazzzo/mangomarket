@@ -21,7 +21,7 @@ app.use(express.static('uploads'))
 app.use(router)
 
 app.use((error, req, res, next) => {
-  console.log(error.message)
+  // console.log(error.message)
     if (error instanceof BadRequest) {
       res.json({
         isError: true,
