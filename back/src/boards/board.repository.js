@@ -17,7 +17,7 @@ class BoardRepository {
         this.BoardKeyword = BoardKeyword;
     }
 
-    async findAll({ searchType, search, sort, category, limit, pagingsort, pagingcategory }) {
+    async findAll({ searchType, search, sort, email, category, limit, pagingsort, pagingcategory }) {
         try {
             const check = (post, query) => {
                 if (!post && query) {
@@ -40,6 +40,17 @@ class BoardRepository {
             (`category:::`, categoryKey, where)
             const limitquery = !limit ? `` : `Limit ${limit.limit}, ${limit.views}`;
 
+            let userLatitude = 37.715133;
+            let userLongitude = 126.734086;
+            if (email) {
+                const user = await this.User.findOne({
+                    attributes: ['latitude', 'longitude'],
+                    where: { email: email }
+                });
+                userLatitude = user.latitude;
+                userLongitude = user.longitude;
+            }
+
             const query = `SELECT 
             A.id,
             A.email, 
@@ -56,11 +67,13 @@ class BoardRepository {
             GROUP_CONCAT(C.tagname SEPARATOR ', ') AS tagname,
             (SELECT COUNT(Chat.id) FROM Chat WHERE Chat.id = A.id) AS messageCount, 
             (SELECT COUNT(Liked.BoardId) FROM Liked WHERE Liked.BoardId = A.id) AS likeCount,
-            (SELECT COUNT(Hit.BoardId) FROM Hit WHERE Hit.BoardId = A.id) AS hit
+            (SELECT COUNT(Hit.BoardId) FROM Hit WHERE Hit.BoardId = A.id) AS hit,
+            ST_Distance_Sphere(POINT(${userLongitude}, ${userLatitude}), POINT(B.longitude, B.latitude)) / 1000 AS distance
             FROM Board AS A 
             LEFT JOIN User AS B ON A.email = B.email
             LEFT JOIN Hashtag AS C ON A.id = C.boardid
             LEFT JOIN BoardImage AS D ON A.id = D.boardid WHERE D.thumbnail = 1
+            AND ST_Distance_Sphere(POINT(${userLongitude}, ${userLatitude}), POINT(B.longitude, B.latitude)) / 1000 <= 10
             ${where}${categoryKey}
             GROUP BY A.id, D.id
             ${sortKey}
@@ -72,6 +85,8 @@ class BoardRepository {
             throw new Error(e);
         }
     }
+
+    
     async findMain({ id, sql, order }) {
         console.log(`repository :::`, id, sql, order);
         try {
