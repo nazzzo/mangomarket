@@ -1,9 +1,10 @@
 const app = require('./app.js')
+// const socketIO = require("./socket.js")
 const { sequelize } = require('./models')
 const config = require('./config')
 const PORT = config.port
 
-app.listen(PORT, async () => {
+const http = app.listen(PORT, async () => {
     await sequelize.sync({ force: false })
 
 
@@ -30,3 +31,5 @@ app.listen(PORT, async () => {
 
     console.log(`backend server listening on port ${PORT}`)
 })
+
+// socketIO(http, app)
