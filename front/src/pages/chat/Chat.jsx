@@ -10,6 +10,7 @@ export const Chat = ({ receiver, boardId }) => {
     const { user } = useSelector((state) => state.user);
     const [ socketOn, setSocketOn ] = useState()
     const [ text, setText ] = useState("")
+    console.log(receiver)
     // console.log(`sender:::`, user) // 구매자
     // console.log(`writer(receiver):::`, receiver) // 판매자
     // console.log(boardId) // 판매글번호
