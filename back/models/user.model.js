@@ -13,9 +13,6 @@ module.exports = (sequelize, Sequelize) => {
           username: {
             type: Sequelize.STRING(16),
             allowNull: false,
-            validate: {
-              is: /^[A-Za-z가-힣0-9]{2,16}$/,
-            },
           },
           userpw: {
             type: Sequelize.STRING(64),

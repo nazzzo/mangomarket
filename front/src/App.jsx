@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useLocation } from 'react-router-dom';
 import { AppRouter } from "./routes";
 import { Header } from "./common";
 import { ChatBtn } from "./common/button"
@@ -10,8 +11,11 @@ import request from "./utils/request";
 
 const App = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const { loading, error, data } = useSelector((state) => state.category);
   const { isLogin, user, keyword } = useSelector((state) => state.user);
+  const [isAllowChat, setIsAllowChat] = useState(false);
+
 
   useEffect(() => {
     if (document.cookie.split("=")[0] === "token") {
@@ -36,6 +40,11 @@ const App = () => {
     dispatch(CategoryRequest());
   }, [dispatch]);
 
+
+  useEffect(() => {
+    setIsAllowChat(location.pathname.startsWith('/board'));
+  }, [location.pathname]);
+
   if (loading) return <>로딩중...</>;
   if (error) return <>{error}</>;
 
@@ -43,7 +52,7 @@ const App = () => {
     <>
       <Header categories={data} isLogin={isLogin} user={user} keywords={keyword} />
       <AppWrapper><AppRouter /></AppWrapper>
-      <ChatBtn />
+      {isLogin && !isAllowChat && <ChatBtn />}
     </>
   );
 };

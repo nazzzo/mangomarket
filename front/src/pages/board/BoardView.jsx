@@ -92,7 +92,7 @@ export const BoardView = () => {
             width="25rem"
             category={viewData.category}
       />
-      {isLogin 
+      {isLogin && (user.email !== viewData.email)
         ? <ViewFooter 
             isLogin={isLogin} 
             user={user}

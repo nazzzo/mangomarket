@@ -26,6 +26,7 @@ export const Main = () => {
                 const response = await request.get(
                     `boards/?count=${count}&category=${selectedCategory}&email=${user.email}`
                 )
+                if (!response.data.isError) {
                 const newBoardList = response.data
                 if (count === 0 || selectedCategory !== '') {
                     setBoardList(newBoardList)
@@ -34,6 +35,7 @@ export const Main = () => {
                 }
                 setIsLoading(false)
                 if (newBoardList.length === 0) setIsLoading(true)
+              }
             } catch (error) {
                 console.log(error)
             }
