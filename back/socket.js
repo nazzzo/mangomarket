@@ -10,10 +10,11 @@ module.exports = (server, app) => {
             console.log(`Socket 사용자가 접속했습니다`)
 
             socket.on('init', (data) => {
+                console.log(data)
                 const { namespace, room, username } = data
-
                 const server = io.of(`/${namespace}`)
                 
+                socket.emit("namespace", { namespace })
                 // socket.emit("senderInfo", { senderId: `${room}`})
 
                 server.on("connection", (socket) => {
