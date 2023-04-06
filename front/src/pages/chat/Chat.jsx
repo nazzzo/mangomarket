@@ -14,12 +14,16 @@ export const Chat = ({ receiver, boardId }) => {
     // console.log(`writer(receiver):::`, receiver) // 판매자
     // console.log(boardId) // 판매글번호
 
+    const socket = io(`${config.PT}://${config.HOST}:${config.BACKEND_PORT}/`)
+    socket.emit("init", { namespace: boardId, room: user.email, username: user.username })
+    
     useEffect(() => {
         // back-server 주소
-        const socket = io(`${config.PT}://${config.HOST}:${config.BACKEND_PORT}/`)
+        const namespace = io(`${config.PT}://${config.HOST}:${config.BACKEND_PORT}/${boardId}`)
         // setSocketOn(socket)
+        // setSocketOn(namespace)
+        // namespace.emit('join', { data: `${user.email}`})
         
-
         return () => {
             socket.disconnect();
         }
@@ -27,25 +31,14 @@ export const Chat = ({ receiver, boardId }) => {
     
     const handleSubmit = (e) => {
         e.preventDefault()
-        
-        socketOn.emit('init', {
-            namespace: boardId,
-            room: user.email,
-            username: user.username
-        })
-        
-        const namespace = io(`${config.PT}://${config.HOST}:${config.BACKEND_PORT}/${boardId}`)
-
-        namespace.emit('join', { data: `${user.email}`})
-        namespace.emit(`${user.email}`, { message: content.value} )
-        namespace.on("message", (data) => {
+        console.log(socketOn)
+        socketOn.emit(`${user.email}`, { message: content.value} )
+        socketOn.on("message", (data) => {
             console.log(data)
             setText(data.message)
         })
 
-        namespace.on('disconnect', () => {
-            console.log('접속종료')
-        })
+
         // namespace.on(`${user.email}`, (data) => {
         //     console.log(data)
         // })

@@ -13,12 +13,11 @@ module.exports = (server, app) => {
                 const { namespace, room, username } = data
 
                 const server = io.of(`/${namespace}`)
+                
+                // socket.emit("senderInfo", { senderId: `${room}`})
 
                 server.on("connection", (socket) => {
                     console.log("New Connection")
-
-                    socket.emit("senderInfo", { senderId: `${room}`})
-
                     socket.on('join', (room) => {
                         console.log(room.data)
                         socket.join(room.data)
@@ -29,15 +28,16 @@ module.exports = (server, app) => {
                         console.log(data)
                         server.to(`${room}`).emit("message", data)
                     })
+
                 })
-    
-                // socket.on(`${room}`, async (data) => {
-                //     io.of(namespace).in(room).emit(`${room}`, data.content)
-                //     data.boardid = namespace
-                //     const result = await repository.postChat(data)
-                //     // socket.broadcast.to(namespace).emit(`${room}`, `${data.content} 브로드캐스트 실험`)
-                // })
             })
+            
+            // socket.on(`${room}`, async (data) => {
+            //     io.of(namespace).in(room).emit(`${room}`, data.content)
+            //     data.boardid = namespace
+            //     const result = await repository.postChat(data)
+            //     // socket.broadcast.to(namespace).emit(`${room}`, `${data.content} 브로드캐스트 실험`)
+            // })
 
             socket.on('disconnect', () => {
                 console.log(`Socket disconnected`)
