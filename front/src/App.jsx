@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { AppRouter } from "./routes";
 import { Header } from "./common";
+import { ChatBtn } from "./common/button"
 import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from "./store/user";
 import { CategoryRequest } from "./store";
@@ -42,6 +43,7 @@ const App = () => {
     <>
       <Header categories={data} isLogin={isLogin} user={user} keywords={keyword} />
       <AppWrapper><AppRouter /></AppWrapper>
+      <ChatBtn />
     </>
   );
 };

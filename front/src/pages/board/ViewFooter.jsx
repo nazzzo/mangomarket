@@ -5,9 +5,9 @@ import { Modal } from "../../common/modal"
 import { Chat } from "../../pages/chat"
 
 
-export const ViewFooter = ({ isLogin, user, writerEmail, writerName, writerImg, size, footerHeight, footerWidth }) => {
+export const ViewFooter = ({ isLogin, user, writerEmail, writerName, writerImg, size, footerHeight, footerWidth, boardId }) => {
     const [isOpen, setIsOpen] = useState(false)
-    const opponent = {
+    const receiver = {
         email: writerEmail,
         username: writerName,
         userImg: writerImg,
@@ -20,7 +20,7 @@ export const ViewFooter = ({ isLogin, user, writerEmail, writerName, writerImg, 
                 <ChatBtn isLogin={isLogin} user={user.email} size={size} color="yellow" fontSize="1rem" onClick={() => {setIsOpen(true)}}>채팅하기</ChatBtn>
             </Footer>
             <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-                <Chat opponent={opponent} />
+                <Chat receiver={receiver} boardId={boardId}/>
             </Modal>
         </>
     )
