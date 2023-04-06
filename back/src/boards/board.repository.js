@@ -37,7 +37,7 @@ class BoardRepository {
             }
             const sortKey = !sortvalue ? `ORDER BY A.id DESC` : `ORDER BY ${sortvalue} DESC`;
             const categoryKey = !categoryvalue ? `` : `AND A.category="${categoryvalue}"`;
-            console.log(`category:::`, categoryKey, where)
+            (`category:::`, categoryKey, where)
             const limitquery = !limit ? `` : `Limit ${limit.limit}, ${limit.views}`;
 
             let userLatitude = 37.715133;
@@ -79,7 +79,7 @@ class BoardRepository {
             ${sortKey}
             ${limitquery};`;
             const [findAll] = await this.sequelize.query(query);
-            console.log(findAll);
+            // console.log(findAll);
             return findAll;
         } catch (e) {
             throw new Error(e);
@@ -147,7 +147,7 @@ class BoardRepository {
         WHERE A.id = ${id}
         GROUP BY A.id`;
         const [[findOne]] = await this.sequelize.query(query);
-        console.log(findOne);
+        // console.log(findOne);
         return findOne
         } catch (e) {
             throw new Error(e);
@@ -184,7 +184,7 @@ class BoardRepository {
                     ]
                 }
             });
-            console.log(`findKeys:::`, findKeys)
+            // console.log(`findKeys:::`, findKeys)
             if (findKeys.length > 0) {
             const boardKeywords = findKeys.map((key) => ({ boardId: createBoard.id, keywordId: key.id }));
             await this.BoardKeyword.bulkCreate(boardKeywords);
@@ -202,7 +202,7 @@ class BoardRepository {
                 this.BoardImage.create(img)
                 )
             const promise = await Promise.all(imageData)
-            console.log(promise)
+            // console.log(promise)
         } catch (e) {
             throw new Error(e)
         }
@@ -228,7 +228,7 @@ class BoardRepository {
         }
     }
     async updateBoard({ id, subject, content, hashtag, category }) {
-        console.log("update :", id, subject, content, hashtag, category );
+        // console.log("update :", id, subject, content, hashtag, category );
         try {
             const updateBoard = await this.Board.update(
                 {
@@ -250,7 +250,7 @@ class BoardRepository {
         }
     }
     async destroyBoard(id) {
-        console.log("repo :", id);
+        // console.log("repo :", id);
         try {
             const destroy = await this.Board.destroy({
                 where: { id: id },
@@ -262,7 +262,7 @@ class BoardRepository {
     }
 
     async createComment(commentData) {
-        console.log("repo :", commentData);
+        // console.log("repo :", commentData);
         try {
             const create = await this.Comment.create(commentData);
             return create.dataValues;
@@ -271,7 +271,7 @@ class BoardRepository {
         }
     }
     async updateComment({ id, content }) {
-        console.log("update :", id, content);
+        // console.log("update :", id, content);
         try {
             const update = await this.Comment.update(
                 {
@@ -285,7 +285,7 @@ class BoardRepository {
         }
     }
     async destroyComment(id) {
-        console.log("repo :", id);
+        // console.log("repo :", id);
         try {
             const destroy = await this.Comment.destroy({
                 where: { id: id },
@@ -297,7 +297,7 @@ class BoardRepository {
     }
 
     async createLike({ boardid, email }) {
-        console.log("repo :", boardid, email);
+        // console.log("repo :", boardid, email);
         try {
             const check = await this.Liked.findOne({ where: { boardid, email } });
             if (check === null) {
@@ -315,7 +315,7 @@ class BoardRepository {
         }
     }
     async destroyLike({ boardid, email }) {
-        console.log("repo :", { boardid, email });
+        // console.log("repo :", { boardid, email });
         try {
             const destroy = await this.Liked.destroy({
                 where: {
@@ -362,7 +362,7 @@ class BoardRepository {
             where email='${email}';`;
 
         const result = await this.sequelize.query(sql);
-        console.log("result:::::", result);
+        // console.log("result:::::", result);
         return result;
     }
 
@@ -374,7 +374,7 @@ class BoardRepository {
         }
     }
     async updatehistory(email, idx) {
-        console.log("repo history :::", email, idx);
+        // console.log("repo history :::", email, idx);
         try {
             const check = await this.History.findOne({ raw: true, where: { email, boardid: idx } });
             if (!check) {

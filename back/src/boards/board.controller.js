@@ -4,8 +4,8 @@ class BoardController {
     }
     async getList(req, res, next) {
         try {
-            console.log("req.query", req.query);
-            console.log("req.body", req.body);
+            // console.log("req.query", req.query);
+            // console.log("req.body", req.body);
             const response = await this.boardService.getList(req.body, req.query);
             res.json(response);
         } catch (e) {
@@ -33,7 +33,7 @@ class BoardController {
     async getHistory(req, res, next) {
         try {
             const { id } = req.params;
-            console.log(`getHistory :::`, id);
+            // console.log(`getHistory :::`, id);
             const response = await this.boardService.getHistory(id);
             res.json(response);
         } catch (e) {
@@ -51,7 +51,7 @@ class BoardController {
         }
     }
     async postWrite(req, res, next) {
-        console.log(req.body)
+        // console.log(req.body)
         try {
             if (!req.body.subject) throw new Error("제목이 없습니다");
             if (!req.body.content) throw new Error("내용이 없습니다");
