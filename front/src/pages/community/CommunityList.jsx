@@ -1,7 +1,17 @@
 import request from '../../utils/request'
-import { CommunityWrapper, List, ItemWrapper, ItemContent, TextBoxA, TextBoxB } from './styled'
+import {
+    CommunityWrapper,
+    List,
+    ItemWrapper,
+    ItemContent,
+    TextBoxA,
+    TextBoxB,
+    TextBoxSpaceDiv,
+    TextBoxSpaceH2,
+} from './styled'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Button } from '../../common/button'
 
 export const CommunityList = () => {
     const navigate = useNavigate()
@@ -41,6 +51,24 @@ export const CommunityList = () => {
 
     return (
         <CommunityWrapper>
+            <TextBoxSpaceDiv>
+                <TextBoxSpaceH2>
+                    커뮤니티 게시판에서는 상대방을 배려하는 예의 있는 대화를 부탁드립니다.
+                </TextBoxSpaceH2>
+                <TextBoxSpaceH2>함께 즐겁게 활동합시다 :)</TextBoxSpaceH2>
+                <Button
+                    color="yellow"
+                    fontColor="#fff"
+                    fontSize="1.1rem"
+                    height="3rem"
+                    width="7rem"
+                    onClick={() => {
+                        navigate('/community/write')
+                    }}
+                >
+                    글작성
+                </Button>
+            </TextBoxSpaceDiv>
             {boardList.length ? (
                 boardList.map((board) => (
                     <List variants={TextList} initial="hidden" animate="visible">

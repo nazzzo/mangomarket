@@ -3,5 +3,7 @@ const router = express.Router()
 const { controller } = require('./helpdesk.module')
 
 router.post('/', (req, res, next) => controller.postReport(req, res, next))
-
-module.export = router
+router.get('/board', (req, res, next) => controller.getList(req, res, next))
+router.get('/board/:id', (req, res, next) => controller.getListOne(req, res, next))
+router.post('/board/:id', (req, res, next) => controller.postAnswerOne(req, res, next))
+module.exports = router

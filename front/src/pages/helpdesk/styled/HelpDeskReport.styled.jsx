@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { useState } from 'react'
 import request from '../../../utils/request'
+import { useNavigate } from 'react-router-dom'
 
 const ReportWrapper = styled.div`
     width: 100%;
@@ -53,20 +54,23 @@ const SubmitButton = styled.button`
 export const Report = (reportInfo, setReportInfo) => {
     const [subject, setSubject] = useState('')
     const [content, setContent] = useState('')
+    const [pageState, setPageState] = useState('신고하기')
+    const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         setSubject(e.target.reportSubject.value)
         setContent(e.target.reportContent.value)
 
-        console.log('subject ::: ', subject)
-        console.log('content ::: ', content)
         const response = await request.post('/helpdesk', {
-            subject,
-            content,
+            subject: e.target.reportSubject.value,
+            content: e.target.reportContent.value,
+            pageState,
         })
-    }
 
+        alert('신고접수가 완료되었습니다')
+        navigate('/helpdesk')
+    }
     return (
         <ReportWrapper>
             <ReportForm onSubmit={handleSubmit}>

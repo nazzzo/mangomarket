@@ -136,6 +136,29 @@ const TextBoxAUserImg = styled.img`
     border-radius: 50%;
 `
 
+export const TextBoxSpaceDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    margin: 0 auto;
+    height: 5rem;
+    margin-top: 1%;
+
+    & > :last-child {
+        margin-left: auto;
+    }
+`
+
+export const TextBoxSpaceH2 = styled.h2`
+    font-size: 0.9rem;
+    height: 2rem;
+    line-height: 0.9rem;
+    color: gray;
+    padding: 0 3%;
+    margin-left: 17%;
+`
+
 const TextBoxAUserName = styled.h2`
     font-size: 0.85rem;
 `

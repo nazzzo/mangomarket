@@ -17,6 +17,14 @@ module.exports = (sequelize, Sequelize) => {
                     pageState: {
                         type: Sequelize.ENUM('문의하기', '신고하기'),
                     },
+                    answer: {
+                        type: Sequelize.TEXT(),
+                        allowNull: true,
+                    },
+                    answerBoolean: {
+                        type: Sequelize.BOOLEAN(),
+                        defaultValue: false,
+                    },
                 },
                 {
                     sequelize,
