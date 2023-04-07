@@ -29,11 +29,17 @@ const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, use
         if (parentId === 0) toUser = ''
         else toUser = `@${username}`
 
+        const toReply = `${toUser} ${replyComment}`
+
+        if(!replyComment){
+            return alert('내용을입력해주세요')
+        }
+
         try {
             const response = await request.post(`/community/${id}`, {
                 // content: toUser + " " + replyComment,
                 // content: `${toUser.outerHTML} ${replyComment}`
-                content: `${toUser} ${replyComment}`,
+                content: toReply,
                 email:user.email,
                 parentId: parentIdx                                                                            
             })
