@@ -35,7 +35,7 @@ export const ChatBtn = () => {
     return(
         <>
             <ChatBtnStyled onClick={() => {setIsOpen(true)}} color="green"><Icon icon="mdi:chat-processing" /></ChatBtnStyled>
-            <Modal isOpen={isOpen} setIsOpen={setIsOpen}>{<SellerChat />}</Modal>
+            <Modal isOpen={isOpen} setIsOpen={setIsOpen}>{<GlobalChat />}</Modal>
         </>
     )
 }
