@@ -24,10 +24,6 @@ class CommunityController {
             console.log('req.query getWrite :: ', req.query)
             console.log('req.query getWrite :: ', id)
             const response = await this.communityService.getWriting({ id })
-
-            const response = await this.communityService.postComment({ id, content, email, parentId })
-            console.log(response)
-
             res.json(response)
         } catch (e) {
             next(e)
