@@ -22,7 +22,7 @@ export const ImageBox = styled.div`
   width: 100%;
   height: 25%;
   border-radius: 6px 6px 0 0;
-  background-color: #f3ad22;
+  background-color: #ffba0c;
   display: flex;
   justify-content: center;
   align-items: center;

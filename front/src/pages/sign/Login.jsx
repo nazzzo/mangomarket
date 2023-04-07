@@ -36,7 +36,6 @@ export const Login = () => {
       email: email.value,
       userpw: userpw.value,
     });
-    console.log(response.data);
     if (response.status >= 400 || response.data.isError) {
       alert(response.data.message);
     } else if (response.status === 200 && response.data.email) {

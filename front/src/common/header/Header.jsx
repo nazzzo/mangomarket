@@ -32,7 +32,7 @@ export const Header = (({ categories, isLogin, user, keywords }) => {
     useEffect(() => {
         if (alarmData.length > 0) setNewAlarm(true);
     }, [alarmData]);
-    console.log(`newAlarm:::`, newAlarm)
+    // console.log(`newAlarm:::`, newAlarm)
 
     useEffect(() => {
         if (isOpen) setNewAlarm(false);

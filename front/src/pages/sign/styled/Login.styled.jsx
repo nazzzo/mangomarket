@@ -13,10 +13,10 @@ const ImageBox = styled.div`
   width: 100%;
   height: 30%;
   border-radius: 6px 6px 0 0;
-  background: url(https://i.ibb.co/JR82YJf/mango-logo3.png)
+  background: url(https://i.ibb.co/GC1rNtJ/mangomarket4.png)
     no-repeat;
-  background-color: #f3ad22;
-  background-size: 70%;
+  background-color: #fff;
+  background-size: 100%;
   background-position: center 40%;
 `;
 

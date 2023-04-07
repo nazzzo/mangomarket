@@ -6,35 +6,22 @@ class CommunityService {
         this.userRepository = userRepository
     }
 
-    async postComment({ id, content, email }) {
+    async postComment({ id, content, email, parentId }) {
         try {
-            const response = await this.communityRepository.create({ id, content, email })
-            console.log('postComment', response)
-            return response
+            const commentList = await this.communityRepository.create({ id, content, email, parentId })
+            console.log('commentList::', commentList)
+            return commentList
         } catch (e) {
             throw new this.BadRequest(e)
         }
     }
 
-    /**get Writing 합치기 */
-    // async getWriting({ id }) {
-    //     try {
-    //         const view = await this.communityRepository.findOne({ id })
-    //         const { subject, content, email, createdAt } = view
-    //         const { username } = await this.userRepository.getUserById(email)
-    //         return { username, subject, content, createdAt, email, id }
-    //     } catch (e) {
-    //         throw new this.BadRequest(e)
-    //     }
-    // }
-
     async getWriting({ id }) {
         try {
-            console.log('service', id)
             const view = await this.communityRepository.findOne({ id })
             const { username } = await this.userRepository.getUserById(view.boardView.email)
             view.boardView.username = username
-            console.log(`view:::`, view)
+            console.log('view.commentList', view.commentList)
             return view
         } catch (e) {
             throw new this.BadRequest(e)
@@ -102,9 +89,9 @@ class CommunityService {
         }
     }
 
-    async putComment(id, idx, content) {
+    async putComment(id, idx, content, isDeleted) {
         try {
-            const comment = await this.communityRepository.updateComment({ id, idx, content })
+            const comment = await this.communityRepository.updateComment({ id, idx, content, isDeleted })
             if (comment < 1) throw '수정할 댓글이 없습니다'
             return comment
         } catch (e) {

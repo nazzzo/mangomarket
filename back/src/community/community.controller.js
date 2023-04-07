@@ -7,8 +7,10 @@ class CommunityController {
         try {
             console.log('body::', req.body)
             const { id } = req.params
-            const { content, email } = req.body
+            const { content, email, parentId } = req.body
+            if (!email) throw new Error('로그인이 필요합니다.')
             if (!content) throw new Error('내용을 입력해주세요')
+
             const response = await this.communityService.postComment({ id, content, email })
             res.json(response)
         } catch (e) {
@@ -22,6 +24,10 @@ class CommunityController {
             console.log('req.query getWrite :: ', req.query)
             console.log('req.query getWrite :: ', id)
             const response = await this.communityService.getWriting({ id })
+
+            const response = await this.communityService.postComment({ id, content, email, parentId })
+            console.log(response)
+
             res.json(response)
         } catch (e) {
             next(e)
@@ -94,7 +100,8 @@ class CommunityController {
             const response = await this.communityService.putComment(
                 req.params.id,
                 req.params.idx,
-                req.body.content
+                req.body.content,
+                req.body.isDeleted,
             )
             res.status(201).json(response)
         } catch (e) {
@@ -116,12 +123,10 @@ class CommunityController {
     async deleteComment(req, res, next) {
         try {
             // if (!req.params.id) throw new Error("삭제할 댓글이 없습니다");
-            console.log(req.params.id, req.params.idx)
             const response = await this.communityService.deleteComment(
                 req.params.id,
                 req.params.idx
             )
-
             res.status(201).json(response)
         } catch (e) {
             next(e)
