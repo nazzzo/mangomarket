@@ -1,44 +1,47 @@
-import { useState, useEffect } from 'react'
-import { useSelector } from "react-redux"
-import { useInput } from "../../hooks"
-import io from "socket.io-client"
-import config from "../../config"
-import request from '../../utils/request'
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useInput } from "../../hooks";
+import io from "socket.io-client";
+import config from "../../config";
+import request from "../../utils/request";
 
 const EndPoint = `${config.PT}://${config.HOST}:${config.BACKEND_PORT}/`;
 let socket;
 
 export const Chat = ({ seller, customer, boardId }) => {
-  const [messages, setMessages] = useState([]);
+  const [logs, setLogs] = useState([]);
+  const [chats, setChats] = useState([]);
   const { user } = useSelector((state) => state.user);
-  const [ a, setA ] = useState([])
-  const content = useInput("")
+
+  const content = useInput("");
 
   useEffect(() => {
     const getCustomerChat = async () => {
-      const response = await request.get(`/chats?seller=asdf1387@t.com`)
-      console.log(response.data)
-      if( !response.data.isError ) setMessages(response.data)
-    }
-    getCustomerChat()
-  }, [])
+      const response = await request.get(`/chats?customer=${customer.email}`);
+      console.log(response.data);
+      if (!response.data.isError) setLogs(response.data);
+    };
+    getCustomerChat();
+  }, []);
 
   useEffect(() => {
     socket = io(EndPoint);
-    socket.emit("joinRoom", { boardId, customer: customer.email, seller: seller.email, username: user.username });
+    socket.emit("joinRoom", {
+      boardId,
+      customer: customer.email,
+      seller: seller.email,
+      username: user.username,
+    });
 
     socket.on("receiveMessage", (newMessage) => {
       // setMessages([...messages, newMessage]);
-      console.log(newMessage)
-      setA([...a, newMessage.message])
+      setChats([...chats, newMessage]);
     });
 
     return () => {
       socket.disconnect();
     };
-  }, [messages]);
-
-
+  }, [chats]);
 
   const handleSendMessage = (e) => {
     e.preventDefault();
@@ -49,29 +52,37 @@ export const Chat = ({ seller, customer, boardId }) => {
       message: content.value,
       type: user.email === seller.email ? "receiver" : "sender",
     });
-    content.clear()
+    content.clear();
   };
 
   return (
     <>
       <div>
-        {messages.map((msg, index) => (
-          <div key={index}>
-            {msg.customer}: {msg.content}
-          </div>
-        ))}
-        {a.map((msg, index) => (
-          <div key={index}>
-            {msg.customer}: {msg.content}
-          </div>
-        ))}
+        {logs ? (
+          <ul>
+            {logs.map((v) => (
+              <div>
+                <li>{v.content}</li>
+              </div>
+            ))}
+          </ul>
+        ) : (
+          <></>
+        )}
+        {chats ? (
+          <ul>
+            {chats.map((v, index) => (
+              <div>
+                <li>{v.content}</li>
+              </div>
+            ))}
+          </ul>
+        ) : (
+          <></>
+        )}
       </div>
       <form onSubmit={handleSendMessage}>
-        <input
-          type="text"
-          value={content.value}
-          onChange={content.onChange}
-        />
+        <input type="text" value={content.value} onChange={content.onChange} />
         <button type="submit">전송</button>
       </form>
     </>

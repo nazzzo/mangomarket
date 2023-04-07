@@ -9,10 +9,10 @@ const EndPoint = `${config.PT}://${config.HOST}:${config.BACKEND_PORT}/`;
 let socket
 
 export const GlobalChat = () => {
-    const [messages, setMessages] = useState([])
+    const [logs, setLogs] = useState([])
+    const [chats, setChats] = useState([])
     const [namespace, setNamespace] = useState([])
     const [customer, setCustomer] = useState([])
-    const [ a, setA] = useState([])
     const content = useInput("")
     const { user } = useSelector((state) => state.user);
 
@@ -20,7 +20,7 @@ export const GlobalChat = () => {
         const getSellerChat = async () => {
             const response = await request.get(`/chats?seller=${user.email}`)
             if (!response.data.isError) {
-                setMessages(response.data);
+                setLogs(response.data);
                 const customerList = [...new Set(response.data.map(v => v.customer))]
                 const namespaceList = [...new Set(response.data.map(v => v.boardid))]
                 setCustomer(customerList)
@@ -34,34 +34,41 @@ export const GlobalChat = () => {
 
     useEffect(() => {
         socket = io(EndPoint);
-        socket.emit("joinRoom", { boardId: 5, customer: "ckstn410@naver.com", seller: user.email, username: user.username });
-        socket.on("receiveMessage", (newMessage) => {
-            setMessages((prevMessages) => [...prevMessages, newMessage]);
+        socket.emit("joinRoom", { boardId: 38, customer: "avin1107@naver.com", seller: user.email });
+        socket.on("receiveMessage", (newChat) => {
+            console.log(`newChat: ${newChat}`)
+            setChats((prevChats) => [...prevChats, newChat]);
         });
 
         return () => {
             socket.disconnect();
         };
-    }, []);
+    }, [chats]);
 
     const handleSendMessage = (e) => {
         e.preventDefault()
         socket.emit("sendMessage", {
-            boardId: namespace[0],
-            customer: customer[0],
+            boardId: 38,
+            customer: "avin1107@naver.com",
             seller: user.email,
             type: "sender",
-            message: content.value
+            content: content.value
         })
         content.clear()
     }
 
     return (
         <form onSubmit={handleSendMessage}>
-            {messages ? <ul>
-                {messages.map((v) => (
-                    <div key={v.id}>
-                        <li>{v.id}</li>
+            {logs ? <ul>
+                {logs.map((v) => (
+                    <div>
+                        <li>{v.content}</li>
+                    </div>
+                ))}
+            </ul> : <></>}
+            {chats ? <ul>
+                {chats.map((v) => (
+                    <div>
                         <li>{v.content}</li>
                     </div>
                 ))}

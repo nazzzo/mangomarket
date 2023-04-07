@@ -17,12 +17,12 @@ module.exports = (server, app) => {
                 console.log(`room:::`, room);
                 data = {boardId, seller, customer, username}
               });
-              socket.on("sendMessage", ({ boardId, seller, customer, message, type }) => {
+              socket.on("sendMessage", ({ boardId, seller, customer, content, type }) => {
                 io.to(room).emit("receiveMessage", {
                   boardId: boardId,
                   seller: seller,
                   customer: customer,
-                  message: message,
+                  content: content,
                   type: type,
                 })
         
@@ -31,7 +31,7 @@ module.exports = (server, app) => {
                 boardid: data.boardId,
                 seller: data.seller,
                 customer: data.customer,
-                content: message,
+                content: content,
                 type: type,
                 });
             });
