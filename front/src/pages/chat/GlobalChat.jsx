@@ -23,7 +23,6 @@ export const GlobalChat = () => {
     
     useEffect(() => {
         const getSellerChat = async () => {
-            // const response = await request.get(`/chat/sell/${user.email}`)
             const response = await request.get(`/chats?seller=${user.email}`)
             if (!response.data.isError) {
                 setMessages(response.data);
