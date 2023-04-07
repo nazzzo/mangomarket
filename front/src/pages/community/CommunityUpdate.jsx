@@ -31,7 +31,6 @@ export const CommunityUpdate = ({ view, setView, setEditMode }) => {
             setEditMode(false)
         }
     }
-    // console.log(subject, content)
 
     return (
         <UpdateWrapper>
