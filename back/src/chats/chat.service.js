@@ -27,9 +27,10 @@ class ChatService {
     async getUsers( data ) {
       try {
         const type = Object.keys(data)[0]
-        const username = Object.values(data)[0]
+        const useremail = Object.values(data)[0]
         
-        const result = await this.chatRepository.getUsers( data )
+        const result = await this.chatRepository.getUsers( { type, useremail } )
+        return result
       } catch (e) {
         throw new Error(e)
       }

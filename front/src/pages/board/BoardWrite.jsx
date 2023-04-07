@@ -32,7 +32,6 @@ export const BoardWrite = () => {
             images: uploadedImages,
             thumbnail: thumbnailIndex,
         })
-        console.log(response.data)
     }
 
   return (

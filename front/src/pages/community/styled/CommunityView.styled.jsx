@@ -1,13 +1,23 @@
 import styled from 'styled-components'
 import { useTimeStamp } from '../../../hooks'
 
-const LocalTime = styled.ul``
+const Info = styled.div`
+    margin-left: 1rem;
+`
+
+const LocalTime = styled.ul`
+    display: flex;
+    transform: translateY(200%);
+    & > li {margin-right: 10px;};
+    &:nth-child(2){color: grey;} 
+`
 
 const Nickname = styled.span``
 
 const Img = styled.img`
     width: 5rem;
     height: 5rem;
+    border-radius: 50%;
 `
 
 const ProfileWrapper = styled.div`
@@ -21,7 +31,7 @@ const Content = styled.div`
     word-break: break-all;
 `
 
-const Subject = styled.h3`
+const Subject = styled.h2`
     margin-top: 4rem;
     word-break: break-all;
 `
@@ -59,18 +69,6 @@ export const ViewWrapper = styled.div`
     width: 100%;
 `
 
-// export const Comment = () => {
-//     return (
-//         <CommentWrapper>
-//             <>같이가요</>
-//             <CommentInput>
-//                 <ContentInput />
-//                 <CommentButton>button</CommentButton>
-//             </CommentInput>
-//         </CommentWrapper>
-//     )
-// }
-
 export const ViewContent = ({ children, subject, content }) => {
     return (
         <ContentWrapper>
@@ -81,16 +79,18 @@ export const ViewContent = ({ children, subject, content }) => {
     )
 }
 
-export const Profile = ({ username, date }) => {
+export const Profile = ({ username, date, img }) => {
     console.log(`date:::`, username, date)
     return (
         <ProfileWrapper>
-            <Img />
-            <Nickname>{username}</Nickname>
-            <LocalTime>
-                <li>논현 고잔동</li>
-                <li>{useTimeStamp(date)}</li>
-            </LocalTime>
+            <Img src={img}/>
+            <Info>
+                <Nickname>{username}</Nickname>
+                <LocalTime>
+                    <li>논현 고잔동</li>
+                    <li>{useTimeStamp(date)}</li>
+                </LocalTime>
+            </Info>
         </ProfileWrapper>
     )
 }
