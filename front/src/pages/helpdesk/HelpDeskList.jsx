@@ -1,16 +1,8 @@
 import { HelpDeskWraaper } from './styled'
-import request from '../../utils/request'
-import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
 export const HelpDeskList = () => {
     const { user } = useSelector((state) => state.user)
-    // const [isActive, setIsActive] = useState(false)
-    // const [isOpen, setIsOpen] = useState()
-    // const clickHandler = (e) => {
-    //     setIsActive(!isActive)
-    //     setIsOpen(true)
-    // }
 
     const textArr = [
         {

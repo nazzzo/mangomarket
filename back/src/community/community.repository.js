@@ -57,11 +57,12 @@ class CommunityRepository {
         }
     }
 
-    async findAll() {
+    async findAll({ limit }) {
         try {
             // const findAll = await this.Community.findAll({
             //     order: [['id', 'DESC']],
             // })
+            const limitquery = !limit ? `` : `Limit ${limit.limit}, ${limit.views}`
             const sql = `
                 SELECT 
                 A.id, A.email, A.subject, A.content, A.createdAt, A.updatedAt, A.category, B.username, B.userImg,
@@ -73,7 +74,9 @@ class CommunityRepository {
                 FROM Community AS A 
                 JOIN User AS B 
                 ON A.email = B.email
-                ORDER BY category_order ASC, A.id DESC;
+                ORDER BY category_order ASC, A.id DESC
+                ${limitquery}
+                ;
             `
             /**
              *  SELECT 
@@ -92,6 +95,18 @@ class CommunityRepository {
         }
     }
 
+    async findProfilListAll({ email }) {
+        try {
+            const findAll = await this.Community.findAll({ raw: true, where: { email } })
+
+            console.log('comu repository :: ', findAll)
+
+            return findAll
+        } catch (e) {
+            throw new Error(e)
+        }
+    }
+
     async create(commentData) {
         console.log('commentData', commentData)
         try {
@@ -100,6 +115,12 @@ class CommunityRepository {
                 communityid: commentData.id,
                 content: commentData.content,
                 email: commentData.email,
+
+            })
+            console.log('create:', create)
+            const findAll = await this.Comment.findAll({
+                raw: true,
+                where: { communityid: commentData.id },
                 parentId: commentData.parentId,
             })
             // const findAll = await this.Comment.findAll({

@@ -10,8 +10,8 @@ class CommunityController {
             const { content, email, parentId } = req.body
             if (!email) throw new Error('로그인이 필요합니다.')
             if (!content) throw new Error('내용을 입력해주세요')
-            const response = await this.communityService.postComment({ id, content, email, parentId })
-            console.log(response)
+
+            const response = await this.communityService.postComment({ id, content, email })
             res.json(response)
         } catch (e) {
             next(e)
@@ -21,7 +21,24 @@ class CommunityController {
     async getWriting(req, res, next) {
         try {
             const { id } = req.params
+            console.log('req.query getWrite :: ', req.query)
+            console.log('req.query getWrite :: ', id)
             const response = await this.communityService.getWriting({ id })
+
+            const response = await this.communityService.postComment({ id, content, email, parentId })
+            console.log(response)
+
+            res.json(response)
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async getCommunityList(req, res, next) {
+        try {
+            const { email } = req.query
+            console.log('email ::: ', email)
+            const response = await this.communityService.getProfileList({ email })
             res.json(response)
         } catch (e) {
             next(e)
@@ -31,7 +48,8 @@ class CommunityController {
     async getList(req, res, next) {
         try {
             console.log('요청?')
-            const response = await this.communityService.getList()
+            const { count } = req.query
+            const response = await this.communityService.getList({ count })
             res.json(response)
         } catch (e) {
             next(e)
