@@ -21,9 +21,9 @@ export const BoardWrite = () => {
 
     console.log(`tags:::`, tags, `category:::`, selectedCategory)
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        const response = request.post(`/boards`, {
+        const response = await request.post(`/boards`, {
             email: user.email,
             subject: subject.value,
             content: contentRef.current.value,
