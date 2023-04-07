@@ -19,7 +19,6 @@ export const BoardView = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-
   const selectOptions = [
     { value: 'public', label: '교환가능' },
     { value: 'reserved', label: '예약중' },
@@ -93,7 +92,7 @@ export const BoardView = () => {
             width="25rem"
             category={viewData.category}
       />
-      {isLogin 
+      {isLogin && (user.email !== viewData.email)
         ? <ViewFooter 
             isLogin={isLogin} 
             user={user}
@@ -101,6 +100,7 @@ export const BoardView = () => {
             writerName={viewData.username}
             writerImg={viewData.userImg}              
             size="3rem" 
+            boardId={id}
             footerHeight="4.5rem" 
             footerWidth="30rem" /> 
         : <></>} 

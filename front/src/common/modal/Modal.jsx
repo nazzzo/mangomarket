@@ -1,14 +1,10 @@
 import { useEffect, useRef } from "react";
-import { ModalWrapper, ModalContent, ModalCloser } from "./styled";
+import { ModalWrapper, ModalContent } from "./styled";
+import { Icon } from '@iconify/react';
+
 
 export const Modal = ({ isOpen, setIsOpen, children, width, height }) => {
   const modalRef = useRef(null);
-
-    // const handleClose = (e) => {
-    //   if (modalRef.current && !modalRef.current.contains(e.target)) {
-    //     setIsOpen();
-    //   }
-    // };
 
   useEffect(() => {
     const handleClose = (e) => {
@@ -35,9 +31,9 @@ export const Modal = ({ isOpen, setIsOpen, children, width, height }) => {
   return isOpen ? (
     <ModalWrapper>
       <ModalContent ref={modalRef} width={width} height={height}>
+        <Icon icon="ph:x" onClick={() => setIsOpen(false)} />
         {children}
       </ModalContent>
-      {/* <ModalCloser onClick={setIsOpen(false)} /> */}
     </ModalWrapper>
   ) : null;
 };

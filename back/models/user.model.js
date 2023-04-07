@@ -13,9 +13,6 @@ module.exports = (sequelize, Sequelize) => {
           username: {
             type: Sequelize.STRING(16),
             allowNull: false,
-            validate: {
-              is: /^[A-Za-z가-힣0-9]{2,16}$/,
-            },
           },
           userpw: {
             type: Sequelize.STRING(64),
@@ -55,6 +52,14 @@ module.exports = (sequelize, Sequelize) => {
           },
           address: {
             type: Sequelize.STRING(50),
+            allouwNull: true,
+          },
+          latitude: {
+            type: Sequelize.FLOAT(10,6),
+            allouwNull: true,
+          },
+          longitude: {
+            type: Sequelize.FLOAT(10,6),
             allouwNull: true,
           },
           alarm : {

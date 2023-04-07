@@ -31,7 +31,9 @@ export const GetAddress = ({ lat, lng, setIsOpen }) => {
                 email: user.email,
                 username: user.username,
                 userImg: user.userImg,
-                address: address
+                address: address,
+                latitude : lat, 
+                longitude : lng,
               });
               if (response.data.user) {
                 dispatch(

@@ -17,5 +17,6 @@ const {
   
   module.exports = {
     controller,
+    repository
   };
   
