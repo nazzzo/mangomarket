@@ -2,26 +2,33 @@ const SocketIO = require("socket.io")
 const { repository } = require("./src/chats/chat.module")
 
 module.exports = (server, app) => {
-    const io = SocketIO(server, { cors: { origin: '*' } })
-    
-    io.on('connection', (socket) => {
-        console.log(`사용자가 접속했습니다`)
-        socket.on('join', (data) => {
-            console.log(`${data.username}님이 보냈습니다`)
-            // namespace === receiver
-            const { namespace, room } = data
+    try {
+        const io = SocketIO(server, { cors: { origin: '*' } })
+        io.on("connection", (socket) => {
+            console.log("user connected");
 
-            // 생성
-            socket.join(namespace)
-
-            // customer
-            socket.on(`${room}`, async (data) => {
-                io.of(namespace).in(room).emit(`${room}`, data.content)
-                data.boardid = namespace
-                const result = await repository.postChat(data)
-                console.log(result)
-                // socket.broadcast.to(namespace).emit(`${room}`, `${data.content} 브로드캐스트 실험`)
+            let roomname
+            socket.on("joinRoom", ({ room }) => {
+                socket.join(room);
+                roomname = room
+                console.log(`room:::`, room);
+              });
+              socket.on("sendMessage", ({ data }) => {
+                console.log(data.boardid, data.seller, data.customer, data.content, data.type)
+                io.to(roomname).emit("receiveMessage", {
+                  boardid: data.boardid,
+                  seller: data.seller,
+                  customer: data.customer,
+                  content: data.content,
+                  type: data.type,
+                })
             })
+
+            socket.on("disconnect", () => {
+                console.log(`disconnected`)
+              })
         })
-    })
+    } catch (e) {
+            console.log(e)
+    }
 }

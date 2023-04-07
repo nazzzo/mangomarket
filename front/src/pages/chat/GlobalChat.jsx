@@ -1,61 +1,50 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from "react-redux";
-import { useInput } from "../../hooks"
-import request from "../../utils/request"
-import io from "socket.io-client"
-import config from "../../config"
-
+import { useState, useEffect } from "react";
+import { useSelector } from 'react-redux';
+import { SwitchBox, Switch } from "../../common/switch";
+import { GlobalChatWrap } from "./styled"
+import request from "../../utils/request";
+import { SellerChat, CustomerChat } from './index';
 
 export const GlobalChat = () => {
-    const [ chatData ,setChatData ] = useState()
-    const [ customer ,setCustomer ] = useState()
-    const content = useInput("")
-    const { user } = useSelector((state) => state.user);
-    // console.log(`sender:::`, user) // 구매자
-    // console.log(`writer(receiver):::`, receiver) // 판매자
-    // console.log(boardId) // 판매글번호
-    // console.log(customer) [ "", "", "", ""]
+    const [ isSeller, setIsSeller ] = useState(false);
+    const [ customerList, setCustomerList ]  = useState([])
+    const [ sellerList, setSellerList ]  = useState([])
+    const { user } = useSelector((state) => state.user)
+
+    const handleSwitch = () => {
+        setIsSeller(!isSeller);
+    };
+
+    const getCustomerList = async () => {
+        const response = await request.get(`/chats/customers?seller=${user.email}`)
+        setCustomerList(response.data)
+    }
 
     useEffect(() => {
-        const getSellChat = async () => {
-            // const response = await request.get(`/chat/sell/${user.email}`)
-            const response = await request.get(`/chats?seller=${user.email}`)
-            if (!response.data.isError) setChatData(response.data);
-            const customerList = [...new Set(response.data.map(v => v.customer))]
-            setCustomer(customerList)
-        }
+        getCustomerList()
+        getSellerList()
+    }, [])
 
-        const getBuyChat = async () => {
-            // const response = await request.get(`/chat/buy/${user.email}`)
-            const response = await request.get(`/chats?customer=${user.email}`)
-        }
-
-        getSellChat()
-    },[])
-
-    
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        const socket = io(`${config.PT}://${config.HOST}:${config.BACKEND_PORT}/`)
-        socket.emit('join', { namespace: "", room: user.email, username: user.username })
-        socket.on(`${user.email}`, (data) => {
-            console.log(data)
-        })
-        socket.emit(`${user.email}`, { content: content.value })
+    const getSellerList = async () => {
+        const response = await request.get(`/chats/sellers?customer=${user.email}`)
+        setSellerList(response.data)
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input onChange={content.onChange} value={content.value} type="text" name="content" id="content"/>
-            <button type='submit'>채팅</button>
-            { chatData ? <ul>
-                {chatData.map((v) => (
-                    <div key={v.id}>
-                        <li>{v.id}</li>
-                        <li>{v.content}</li>
-                    </div>
-                ))}
-            </ul> : <></>}
-        </form>
-    )
-}
+        <GlobalChatWrap>
+            <SwitchBox height="3.5rem">
+                <Switch onClick={handleSwitch} isActive={!isSeller} fontSize="0.9rem">
+                    나의 판매목록
+                </Switch>
+                <Switch onClick={handleSwitch} isActive={isSeller} fontSize="0.9rem">
+                    구매자
+                </Switch>
+            </SwitchBox>
+            {/* {isSeller ? <SellerChat /> : <CustomerChat seller={"1"} customer={123} boardid={1234} />} */}
+            <div>{ !isSeller ?
+            customerList.map((v) => <div>{Object.values(v)}</div> )
+            :
+            sellerList.map((v) => <div>{Object.values(v)}</div> ) }</div>
+        </GlobalChatWrap>
+    );
+};
