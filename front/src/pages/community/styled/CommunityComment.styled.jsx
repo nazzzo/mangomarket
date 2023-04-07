@@ -5,10 +5,12 @@ export const TotalComments = styled.div`
   border-bottom: 1px solid #000000;
   font-size:1.5rem;
   padding: 0.5rem;
+  align-items: center;
 `
 
 export const CommentForm = styled.form`
   /* margin-top: 2rem; */
+  
 `
 
 export const CommentInput = styled.div`
@@ -38,16 +40,23 @@ export const CommentList = styled.div`
 
 const CommentWrapStyled = styled.div``
 
+const DeleteInfo = styled.div`
+  height: 5rem;
+  display: flex;
+  align-items: center;
+`
+
 const ReplyWrapStyled = styled.div`
   margin-left: 10%
 `
+
 
 export const CommentWrapper = ({parentId, children, isDeleted, deleteRender}) => {
 
   return (
     <>
       { !parentId ? 
-        <CommentWrapStyled>{!deleteRender && !isDeleted ? children : <>삭제된 댓글입니다.</>}</CommentWrapStyled>
+        <CommentWrapStyled>{!deleteRender && !isDeleted ? children : <DeleteInfo>삭제된 댓글입니다.</DeleteInfo>}</CommentWrapStyled>
         : <ReplyWrapStyled>{children}</ReplyWrapStyled>
       }
     </>

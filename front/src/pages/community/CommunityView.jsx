@@ -16,6 +16,7 @@ export const CommunityView = () => {
     const [deleteMode, setDeleteMode] = useState(false)
     const [comments, setComments] = useState([])
     const navigate = useNavigate()
+    console.log('view', view)
 
     useEffect(() => {
         const getWriting = async () => {
@@ -48,7 +49,7 @@ export const CommunityView = () => {
         <ViewWrapper>
             {view && !editMode ? (
                 <>
-                    <Profile username={view.username} date={view.createdAt} img={view.userImg}/>
+                    <Profile username={view.username} date={view.createdAt} img={view.userImg} address={view.address}/>
                     <ViewContent subject={view.subject} content={view.content}>
                         {user.email === view.email ? (
                             <Buttons>

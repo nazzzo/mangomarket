@@ -11,12 +11,13 @@ class CommunityRepository {
             // const boardView = await this.Community.findOne({ raw: true, where: { id } })
             const sql = `
             SELECT 
-            A.id,A.email,A.subject,A.content,A.createdAt,A.updatedAt,A.category,B.username,B.userImg,
+            A.id,A.email,A.subject,A.content,A.createdAt,A.updatedAt,A.category,B.username,B.userImg,B.address,
             (SELECT COUNT(communityid) FROM Comment WHERE communityid = A.id) AS CommentCount
             FROM Community AS A JOIN User AS B ON A.email = B.email
             WHERE A.id = ${id};
         `
             const [[boardView]] = await this.sequelize.query(sql)
+            console.log('boardView::' , boardView)
             
             // const commentSql = `
             // select A.id,A.content,A.createdAt,A.email,A.parentId,B.username,B.userImg from Comment as A join User as B on A.email = B.email
