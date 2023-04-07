@@ -1,85 +1,27 @@
-import { useEffect, useState, useCallback } from 'react';
-import { useSelector } from "react-redux";
-import { useInput } from "../../hooks"
-import request from "../../utils/request"
-import io from "socket.io-client"
-import config from "../../config"
-
-const EndPoint = `${config.PT}://${config.HOST}:${config.BACKEND_PORT}/`;
-let socket
+import { useState } from "react";
+import { Button } from "../../common/button";
+import { SwitchBox, Switch } from "../../common/switch";
+import { GlobalChatWrap } from "./styled"
+import request from "../../utils/request";
 
 export const GlobalChat = () => {
-    const [logs, setLogs] = useState([])
-    const [chats, setChats] = useState([])
-    const [namespace, setNamespace] = useState([])
-    const [customer, setCustomer] = useState([])
-    const content = useInput("")
-    const { user } = useSelector((state) => state.user);
+  const [isSeller, setIsSeller] = useState(false);
 
-    useEffect(() => {
-        const getSellerChat = async () => {
-            const response = await request.get(`/chats?seller=${user.email}`)
-            if (!response.data.isError) {
-                setLogs(response.data);
-                const customerList = [...new Set(response.data.map(v => v.customer))]
-                const namespaceList = [...new Set(response.data.map(v => v.boardid))]
-                setCustomer(customerList)
-                setNamespace(namespaceList)
-            }
-        }
-        
-        getSellerChat()
-    }, [])
+  const handleSwitch = () => {
+    setIsSeller(!isSeller);
+  };
 
-
-    useEffect(() => {
-        socket = io(EndPoint);
-        socket.emit("joinRoom", { boardId: 38, customer: "avin1107@naver.com", seller: user.email });
-        socket.on("receiveMessage", (newChat) => {
-            console.log(`newChat: ${newChat}`)
-            setChats((prevChats) => [...prevChats, newChat]);
-        });
-
-        return () => {
-            socket.disconnect();
-        };
-    }, [chats]);
-
-    const handleSendMessage = (e) => {
-        e.preventDefault()
-        let data
-        socket.emit("sendMessage", data = {
-            boardId: 38,
-            customer: "avin1107@naver.com",
-            seller: user.email,
-            type: "sender",
-            content: content.value
-        })
-        const response = request.post(`/chats`, {data})
-        console.log(response.data)
-        if (response.status === 201) content.clear()
-    }
-
-    return (
-        <form onSubmit={handleSendMessage}>
-            {logs ? <ul>
-                {logs.map((v) => (
-                    <div key={v.id}>
-                        <li>{v.seller || v.customer}</li>
-                        <li>{v.content}</li>
-                    </div>
-                ))}
-            </ul> : <></>}
-            {chats ? <ul>
-                {chats.map((v, idx) => (
-                    <div key={idx}>
-                        <li>{v.seller || v.customer}</li>
-                        <li>{v.content}</li>
-                    </div>
-                ))}
-            </ul> : <></>}
-            <input onChange={content.onChange} value={content.value} type="text" name="content" id="content" />
-            <button type='submit'>채팅</button>
-        </form>
-    )
-}
+  return (
+    <GlobalChatWrap>
+      <SwitchBox height="3.5rem">
+        <Switch onClick={handleSwitch} isActive={!isSeller} fontSize="0.9rem">
+          판매자
+        </Switch>
+        <Switch onClick={handleSwitch} isActive={isSeller} fontSize="0.9rem">
+          구매자
+        </Switch>
+      </SwitchBox>
+      {isSeller ? <div></div> : <div></div>}
+    </GlobalChatWrap>
+  );
+};
