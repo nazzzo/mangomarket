@@ -5,10 +5,10 @@ import request from "../../utils/request"
 import io from "socket.io-client"
 import config from "../../config"
 
-const EndPoint = `${config.PT}://${config.HOST}:${config.BACKEND_PORT}/`;
+const ENDPOINT = `${config.PT}://${config.HOST}:${config.BACKEND_PORT}/`;
 let socket
 
-export const GlobalChat = () => {
+export const SellerChat = () => {
     const [logs, setLogs] = useState([])
     const [chats, setChats] = useState([])
     const [namespace, setNamespace] = useState([])
@@ -27,17 +27,16 @@ export const GlobalChat = () => {
                 setNamespace(namespaceList)
             }
         }
-        
         getSellerChat()
     }, [])
 
-
     useEffect(() => {
-        socket = io(EndPoint);
-        socket.emit("joinRoom", { boardId: 38, customer: "avin1107@naver.com", seller: user.email });
+        socket = io(ENDPOINT);
+        socket.emit("joinRoom", { room: "5-ckstn410@naver.com" });
+        
         socket.on("receiveMessage", (newChat) => {
             console.log(`newChat: ${newChat}`)
-            setChats((prevChats) => [...prevChats, newChat]);
+            setChats([...chats, newChat]);
         });
 
         return () => {
@@ -45,17 +44,17 @@ export const GlobalChat = () => {
         };
     }, [chats]);
 
-    const handleSendMessage = (e) => {
+    const handleSendMessage = async (e) => {
         e.preventDefault()
-        let data
-        socket.emit("sendMessage", data = {
-            boardId: 38,
-            customer: "avin1107@naver.com",
+        let data = {
+            boardid: 5,
+            customer: "ckstn410@naver.com",
             seller: user.email,
             type: "sender",
             content: content.value
-        })
-        const response = request.post(`/chats`, {data})
+        }
+        socket.emit("sendMessage", { data } )
+        const response = await request.post(`/chats`, {data})
         console.log(response.data)
         if (response.status === 201) content.clear()
     }

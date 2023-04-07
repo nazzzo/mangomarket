@@ -27,6 +27,15 @@ class ChatRepository {
       throw new Error(e)
     }
   }
+
+  async getUsers(data) {
+    try {
+      console.log(data)
+      const result = await this.Chat.findAll()
+    } catch (e) {
+      throw new Error(e)
+    }
+  }
 }
 
 module.exports = ChatRepository;

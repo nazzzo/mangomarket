@@ -5,35 +5,28 @@ import io from "socket.io-client";
 import config from "../../config";
 import request from "../../utils/request";
 
-const EndPoint = `${config.PT}://${config.HOST}:${config.BACKEND_PORT}/`;
+const ENDPOINT = `${config.PT}://${config.HOST}:${config.BACKEND_PORT}/`;
 let socket;
 
-export const Chat = ({ seller, customer, boardId }) => {
-  const [logs, setLogs] = useState([]);
-  const [chats, setChats] = useState([]);
-  const { user } = useSelector((state) => state.user);
-
+export const CustomerChat = ({ seller, customer, boardid }) => {
+  const [ logs, setLogs ] = useState([]);
+  const [ chats, setChats ] = useState([]);
   const content = useInput("");
 
   useEffect(() => {
     const getCustomerChat = async () => {
       const response = await request.get(`/chats?customer=${customer.email}`);
-      console.log(response.data);
       if (!response.data.isError) setLogs(response.data);
     };
     getCustomerChat();
-  }, []);
+  }, [])
 
   useEffect(() => {
-    socket = io(EndPoint);
-    socket.emit("joinRoom", {
-      boardId,
-      customer: customer.email,
-      seller: seller.email,
-    });
+    socket = io(ENDPOINT);
+    socket.emit("joinRoom", { room: `${boardid}-${customer.email}`});
 
     socket.on("receiveMessage", (newMessage) => {
-      // setMessages([...messages, newMessage]);
+      console.log(newMessage)
       setChats([...chats, newMessage]);
     });
 
@@ -42,15 +35,18 @@ export const Chat = ({ seller, customer, boardId }) => {
     };
   }, [chats]);
 
-  const handleSendMessage = (e) => {
+  const handleSendMessage = async (e) => {
     e.preventDefault();
-    socket.emit("sendMessage", {
-      boardId: boardId,
+    let data = {
+      boardid: boardid,
       seller: seller.email,
       customer: customer.email,
-      message: content.value,
-      type: user.email === seller.email ? "receiver" : "sender",
-    });
+      content: content.value,
+      type: "sender",
+    }
+    socket.emit("sendMessage", { data });
+    const response = await request.post(`/chats`, { data })
+    if (response.status === 201) content.clear()
     content.clear();
   };
 

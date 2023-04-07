@@ -3,29 +3,27 @@ const { repository } = require("./src/chats/chat.module")
 
 module.exports = (server, app) => {
     try {
-
-
         const io = SocketIO(server, { cors: { origin: '*' } })
         io.on("connection", (socket) => {
             console.log("user connected");
 
-            let data;
-            let room;
-            socket.on("joinRoom", ({ boardId, customer, seller }) => {
-                room = `${boardId}-${customer}`;
+            let roomname
+            socket.on("joinRoom", ({ room }) => {
                 socket.join(room);
+                roomname = room
                 console.log(`room:::`, room);
-                data = {boardId, seller, customer}
               });
-              socket.on("sendMessage", ({ boardId, seller, customer, content, type }) => {
-                io.to(room).emit("receiveMessage", {
-                  boardId: boardId,
-                  seller: seller,
-                  customer: customer,
-                  content: content,
-                  type: type,
+              socket.on("sendMessage", ({ data }) => {
+                console.log(data.boardid, data.seller, data.customer, data.content, data.type)
+                io.to(roomname).emit("receiveMessage", {
+                  boardid: data.boardid,
+                  seller: data.seller,
+                  customer: data.customer,
+                  content: data.content,
+                  type: data.type,
                 })
-            });
+            })
+
             socket.on("disconnect", () => {
                 console.log(`disconnected`)
               })

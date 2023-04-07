@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Modal } from "../modal"
 import { useState } from 'react'
-import { GlobalChat } from "../../pages/chat"
+import { SellerChat } from "../../pages/chat"
 import { Icon } from '@iconify/react';
 
 
@@ -35,7 +35,7 @@ export const ChatBtn = () => {
     return(
         <>
             <ChatBtnStyled onClick={() => {setIsOpen(true)}} color="green"><Icon icon="mdi:chat-processing" /></ChatBtnStyled>
-            <Modal isOpen={isOpen} setIsOpen={setIsOpen}>{<GlobalChat></GlobalChat>}</Modal>
+            <Modal isOpen={isOpen} setIsOpen={setIsOpen}>{<SellerChat />}</Modal>
         </>
     )
 }

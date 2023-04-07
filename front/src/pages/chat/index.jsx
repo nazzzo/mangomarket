@@ -1,2 +1,2 @@
-export * from "./Chat"
-export * from "./GlobalChat"
+export * from "./CustomerChat"
+export * from "./SellerChat"

@@ -23,6 +23,17 @@ class ChatService {
             throw new this.BadRequest(e);
           }        
     }
+
+    async getUsers( data ) {
+      try {
+        const type = Object.keys(data)[0]
+        const username = Object.values(data)[0]
+        
+        const result = await this.chatRepository.getUsers( data )
+      } catch (e) {
+        throw new Error(e)
+      }
+    }
 }
   
 module.exports = ChatService;
