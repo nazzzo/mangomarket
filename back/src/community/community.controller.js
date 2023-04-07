@@ -82,7 +82,8 @@ class CommunityController {
             const response = await this.communityService.putComment(
                 req.params.id,
                 req.params.idx,
-                req.body.content
+                req.body.content,
+                req.body.isDeleted,
             )
             res.status(201).json(response)
         } catch (e) {
@@ -104,12 +105,10 @@ class CommunityController {
     async deleteComment(req, res, next) {
         try {
             // if (!req.params.id) throw new Error("삭제할 댓글이 없습니다");
-            console.log(req.params.id, req.params.idx)
             const response = await this.communityService.deleteComment(
                 req.params.id,
                 req.params.idx
             )
-
             res.status(201).json(response)
         } catch (e) {
             next(e)

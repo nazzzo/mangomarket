@@ -10,7 +10,6 @@ class CommunityService {
         try {
             const commentList = await this.communityRepository.create({ id, content, email, parentId })
             console.log('commentList::', commentList)
-            
             return commentList
         } catch (e) {
             throw new this.BadRequest(e)
@@ -66,9 +65,9 @@ class CommunityService {
         }
     }
 
-    async putComment(id, idx, content) {
+    async putComment(id, idx, content, isDeleted) {
         try {
-            const comment = await this.communityRepository.updateComment({ id, idx, content })
+            const comment = await this.communityRepository.updateComment({ id, idx, content, isDeleted })
             if (comment < 1) throw '수정할 댓글이 없습니다'
             return comment
         } catch (e) {

@@ -9,7 +9,6 @@ class CommunityRepository {
     async findOne({ id }) {
         try {
             // const boardView = await this.Community.findOne({ raw: true, where: { id } })
-
             const sql = `
             SELECT 
             A.id,A.email,A.subject,A.content,A.createdAt,A.updatedAt,A.category,B.username,B.userImg,
@@ -18,11 +17,15 @@ class CommunityRepository {
             WHERE A.id = ${id};
         `
             const [[boardView]] = await this.sequelize.query(sql)
-            console.log(`view::::`, boardView)
             
+            // const commentSql = `
+            // select A.id,A.content,A.createdAt,A.email,A.parentId,B.username,B.userImg from Comment as A join User as B on A.email = B.email
+            // `
             const commentSql = `
-            select A.id,A.content,A.createdAt,A.email,A.parentId,B.username,B.userImg from Comment as A join User as B on A.email = B.email
-            `
+                SELECT A.id, A.content, A.createdAt, A.email, A.parentId, A.isDeleted, B.username, B.userImg
+                FROM Comment AS A
+                JOIN User AS B ON A.email = B.email
+                ORDER BY CASE WHEN parentId = 0 THEN id ELSE parentId END, A.createdAt ASC;`
             const [commentList] = await this.sequelize.query(commentSql)
             console.log('commentinfo::', commentList)
             // let commentList = await this.Comment.findAll({
@@ -38,7 +41,7 @@ class CommunityRepository {
             //     comment.username = nickname[index]
             //     return comment
             // })
-            return { boardView, commentList}
+            return { boardView, commentList }
         } catch (e) {
             throw new Error(e)
         }
@@ -96,7 +99,7 @@ class CommunityRepository {
                 communityid: commentData.id,
                 content: commentData.content,
                 email: commentData.email,
-                parentId: commentData.parentId
+                parentId: commentData.parentId,
             })
             // const findAll = await this.Comment.findAll({
             //     raw: true,
@@ -113,10 +116,12 @@ class CommunityRepository {
             // })
 
             const commentSql = `
-            select A.id,A.content,A.createdAt,A.email,A.parentId,B.username,B.userImg from Comment as A join User as B on A.email = B.email
+            SELECT A.id, A.content, A.createdAt, A.email, A.parentId, A.isDeleted, B.username, B.userImg
+                FROM Comment AS A
+                JOIN User AS B ON A.email = B.email
+                ORDER BY CASE WHEN parentId = 0 THEN id ELSE parentId END, A.createdAt ASC;
             `
             const [commentList] = await this.sequelize.query(commentSql)
-            console.log('commentinfo22::', commentList)
             return commentList
         } catch (e) {
             throw new Error(e)
@@ -135,10 +140,11 @@ class CommunityRepository {
         }
     }
 
-    async updateComment({ id, idx, content }) {
+    async updateComment({ id, idx, content, isDeleted }) {
         try {
             const [updateComment] = await this.Comment.update(
-                { content: content },
+                { content , isDeleted
+                },
                 { where: { communityid: id, id: idx } }
             )
             return updateComment

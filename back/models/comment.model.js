@@ -12,6 +12,11 @@ module.exports = (sequelize, Sequelize) => {
                         defaultValue: 0,
                         allowNull: true,
                     },
+                    isDeleted: {
+                        type: Sequelize.BOOLEAN(),
+                        defaultValue: false,
+                        allowNull: true,
+                    }
                 },
                 {
                     sequelize,

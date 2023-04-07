@@ -1,5 +1,5 @@
 import { CommentForm, CommentInput, ContentInput, CommentButton, CommentWrapper, Txt, TotalComments, ButtonMD, Img, MDButtons, ModifyInput, ReplyButton } from './styled'
-import { useParams } from 'react-router-dom'
+import { useParams,NavLink } from 'react-router-dom'
 import { useTimeStamp, useInput } from '../../hooks'
 import { useEffect, useState } from 'react'
 import request from '../../utils/request'
@@ -7,28 +7,43 @@ import { Icon } from '@iconify/react'
 import { useRef } from 'react'
 import { useSelector } from 'react-redux'
 
-const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, username, img, parentId}) => {
+
+const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, username, img, parentId, isDeleted}) => {
     const [isInput, setIsInput] = useState(false)
     const [modified, setModified] = useState()
     const [reply, setReply] = useState(true)
     const [replyComment, setReplyComment] = useState()
     const timeAgo = useTimeStamp(createdAt)
-    const modify = useInput(content)
+    const comment = useInput(content)
     const { id } = useParams()
     const {user} = useSelector(state => state.user)
     const isAuthor = (user.email === email)
-    console.log(idx)
-    
+    const [deleteRender, setDeleteRender] = useState(0)
+
     const submitReply = async () => {
+        let parentIdx;
+        if (parentId === 0) parentIdx = idx
+        else parentIdx = parentId
+
+        let toUser;
+        if (parentId === 0) toUser = ''
+        else toUser = `@${username}`
+
         try {
             const response = await request.post(`/community/${id}`, {
-                content: replyComment,
+                // content: toUser + " " + replyComment,
+                // content: `${toUser.outerHTML} ${replyComment}`
+                content: `${toUser} ${replyComment}`,
                 email:user.email,
-                parentId: idx                                                                              
+                parentId: parentIdx                                                                            
             })
             console.log(response.data)
-            setComments(response.data)
-            setReply(!reply)
+            if (response.status >= 400 || response.data.isError) {
+                alert(response.data.message)
+            } else {
+                setComments(response.data)
+                setReply(!reply)
+            }
         } catch(error){
             console.error(error)
         }
@@ -38,21 +53,30 @@ const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, use
         try {
             const confirmed = window.confirm('정말 삭제하시겠습니까?')
             if(confirmed){
+                if(!parentId){
+                    const response = await request.put(`/community/comment/${id}/${idx}`, {
+                        isDeleted: 1,
+                        content
+                    })
+                    const bool = response.data
+                    setDeleteRender(bool)
+                } else {
                 const response = await request.delete(`/community/comment/${id}/${idx}`)
                 setComments(comments.filter(comment => comment.id !== idx))}
+                }
         } catch (error) {
             console.error(error)
         }
     }
 
     const handleModify = async () => {
-        if (content === modify.value) setIsInput(false)
+        if (content === comment.value) setIsInput(false)
         try {
             const response = await request.put(`/community/comment/${id}/${idx}`, {
-                content: modify.value,
+                content: comment.value,
             })
             if (response.data === 1) {
-                setModified(modify.value)
+                setModified(comment.value)
             }
         } catch (error) {
             console.error(error)
@@ -66,44 +90,55 @@ const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, use
     }, [modified])
 
     return (
-        <CommentWrapper >
+        <CommentWrapper parentId={parentId} isDeleted={isDeleted} deleteRender={deleteRender}>
             {createdAt && !isInput ? (
                 <>
                 <Txt idx={idx}>
-                    {}
                     <Img src={img}/>
                     <div>{username}</div>
                     <div>{timeAgo}</div>
-                    <div>{modify.value}</div>
+                    <div>
+                        {!comment.value.indexOf('@') ? 
+                            <>
+                                <NavLink to='/community'>{comment.value.split(" ")[0]}</NavLink>
+                                {/* <span> {comment.value.replace(/^@\w+\s/, '')}</span> */}
+                                <span> {comment.value.replace(/@.+?\s/, '')}</span>
+                            </> 
+                            : 
+                            <>{comment.value}</>
+                        }
+                    </div>
                 </Txt>
                     {reply ? <ReplyButton type="button" onClick={()=>{setReply(!reply)}}>답글</ReplyButton> : 
                         <>  
                             <ReplyButton type='button' onClick={()=>{setReply(!reply)}}>답글</ReplyButton>
                             <Txt idx={idx}>
-                                <Img src={img}/>
-                                <div>{username}</div>
+                                <Img src={user.userImg}/>
+                                <div>{user.username}</div>
                             </Txt>
-                            {!parentId ? <CommentInput>
-                                <ContentInput 
-                                    placeholder='답글을 입력해주세요'
-                                    value={replyComment}
-                                    onChange={(e)=>{setReplyComment(e.target.value)}}
-                                    data-depth="true"
-                                />
-                                <CommentButton type='button' onClick={submitReply}>
-                                    <Icon icon="material-symbols:arrow-circle-up" width="3rem" border="none" />
-                                </CommentButton>
-                            </CommentInput> : <CommentInput>
-                                <ContentInput 
-                                    placeholder={`${username}님에게 답글쓰기`}
-                                    value={replyComment}
-                                    onChange={(e)=>{setReplyComment(e.target.value)}}
-                                    
-                                />
-                                <CommentButton type='button' onClick={submitReply}>
-                                    <Icon icon="material-symbols:arrow-circle-up" width="3rem" border="none" />
-                                </CommentButton>
-                            </CommentInput>
+                            {!parentId ? 
+                                <CommentInput>
+                                    <ContentInput 
+                                        placeholder='답글을 입력해주세요'
+                                        value={replyComment}
+                                        onChange={(e)=>{setReplyComment(e.target.value)}}
+                                        data-depth="true"
+                                    />
+                                    <CommentButton type='button' onClick={submitReply}>
+                                        <Icon icon="material-symbols:arrow-circle-up" width="3rem" border="none" />
+                                    </CommentButton>
+                                </CommentInput> 
+                                : 
+                                <CommentInput>
+                                    <ContentInput 
+                                        placeholder={`${username}님에게 답글쓰기`}
+                                        value={replyComment}
+                                        onChange={(e)=>{setReplyComment(e.target.value)}}
+                                        />
+                                    <CommentButton type='button' onClick={submitReply}>
+                                        <Icon icon="material-symbols:arrow-circle-up" width="3rem" border="none" />
+                                    </CommentButton>
+                                </CommentInput>
                             }
                         </>
                     }
@@ -115,7 +150,7 @@ const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, use
                         <div>{username}</div>
                         <div>{timeAgo}</div>
                     </Txt>
-                    <ModifyInput idx={idx} value={modify.value} onChange={modify.onChange} />
+                    <ModifyInput idx={idx} value={comment.value} onChange={comment.onChange} />
                 </>
             )}
 
@@ -153,7 +188,6 @@ export const Comment = ({ comments, setComments}) => {
     const [commentValue, setCommentValue] = useState()
     const inputRef = useRef()
     const {user} = useSelector(state => state.user)
-    console.log('comments::'. comments)
 
     const submitHandler = async (e) => {
         e.preventDefault()
@@ -161,7 +195,6 @@ export const Comment = ({ comments, setComments}) => {
             content: commentValue,
             email: user.email,
         })
-        console.log(response)
         if (response.status >= 400 || response.data.isError) {
             alert(response.data.message)
         } else {
@@ -188,6 +221,7 @@ export const Comment = ({ comments, setComments}) => {
                         username={comment.username}
                         img={comment.userImg}
                         parentId={comment.parentId}
+                        isDeleted={comment.isDeleted}
                     />
                 ))
             ) : (
@@ -209,3 +243,4 @@ export const Comment = ({ comments, setComments}) => {
         </CommentForm>
     )
 }
+

@@ -91,7 +91,7 @@ export const CommunityView = () => {
             ) : (
                 <></>
             )}
-            <Comment comments={comments} setComments={setComments} view={view} />
+            <Comment comments={comments} setComments={setComments}/>
         </ViewWrapper>
     )
 }
