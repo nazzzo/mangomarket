@@ -1,8 +1,9 @@
 class ChatRepository {
-  constructor({ Chat, User, Board, Sequelize }) {
+  constructor({ Chat, User, Board, Sequelize, sequelize }) {
     this.Chat = Chat;
     this.User = User;
     this.Board = Board;
+    this.sequelize = sequelize;
   }
   async findAll(type) {
     try {
@@ -28,12 +29,35 @@ class ChatRepository {
     }
   }
 
-  async getUsers(data) {
+  async getUsers({ type, useremail }) {
     try {
-      console.log(data)
-      const result = await this.Chat.findAll()
+      let column
+      console.log(type) // seller ? customer
+      console.log(useremail)
+      type === "seller" ? column = `A.customer` : column = `A.seller`
+
+      const sql = `SELECT 
+      ${column}, 
+      A.boardid, 
+      B.username, 
+      B.userImg,
+      B.address
+      FROM 
+      Chat as A 
+      JOIN User as B 
+          ON A.seller = B.email 
+      WHERE 
+      A.${type} = "${useremail}"
+      GROUP BY 
+      ${column}, 
+      A.boardid, 
+      B.username, 
+      B.userImg,
+      B.address;`
+      const result = await this.sequelize.query(sql, { raw: true, nest: true })
+      return result
     } catch (e) {
-      throw new Error(e)
+      console.log(e)
     }
   }
 }
