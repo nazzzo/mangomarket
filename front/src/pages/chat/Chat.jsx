@@ -30,7 +30,6 @@ export const Chat = ({ seller, customer, boardId }) => {
       boardId,
       customer: customer.email,
       seller: seller.email,
-      username: user.username,
     });
 
     socket.on("receiveMessage", (newMessage) => {
@@ -61,7 +60,8 @@ export const Chat = ({ seller, customer, boardId }) => {
         {logs ? (
           <ul>
             {logs.map((v) => (
-              <div>
+              <div key={v.id}>
+                <li>{v.seller || v.customer}</li>
                 <li>{v.content}</li>
               </div>
             ))}
@@ -71,8 +71,9 @@ export const Chat = ({ seller, customer, boardId }) => {
         )}
         {chats ? (
           <ul>
-            {chats.map((v, index) => (
-              <div>
+            {chats.map((v, idx) => (
+              <div key={idx}>
+                <li>{v.seller || v.customer}</li>
                 <li>{v.content}</li>
               </div>
             ))}

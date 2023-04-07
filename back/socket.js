@@ -11,11 +11,11 @@ module.exports = (server, app) => {
 
             let data;
             let room;
-            socket.on("joinRoom", ({ boardId, customer, seller, username }) => {
+            socket.on("joinRoom", ({ boardId, customer, seller }) => {
                 room = `${boardId}-${customer}`;
                 socket.join(room);
                 console.log(`room:::`, room);
-                data = {boardId, seller, customer, username}
+                data = {boardId, seller, customer}
               });
               socket.on("sendMessage", ({ boardId, seller, customer, content, type }) => {
                 io.to(room).emit("receiveMessage", {
@@ -25,18 +25,9 @@ module.exports = (server, app) => {
                   content: content,
                   type: type,
                 })
-        
-
-            repository.postChat({
-                boardid: data.boardId,
-                seller: data.seller,
-                customer: data.customer,
-                content: content,
-                type: type,
-                });
             });
             socket.on("disconnect", () => {
-                console.log(`${data.username}, disconnected`)
+                console.log(`disconnected`)
               })
         })
     } catch (e) {

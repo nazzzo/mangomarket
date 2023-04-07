@@ -47,28 +47,33 @@ export const GlobalChat = () => {
 
     const handleSendMessage = (e) => {
         e.preventDefault()
-        socket.emit("sendMessage", {
+        let data
+        socket.emit("sendMessage", data = {
             boardId: 38,
             customer: "avin1107@naver.com",
             seller: user.email,
             type: "sender",
             content: content.value
         })
-        content.clear()
+        const response = request.post(`/chats`, {data})
+        console.log(response.data)
+        if (response.status === 201) content.clear()
     }
 
     return (
         <form onSubmit={handleSendMessage}>
             {logs ? <ul>
                 {logs.map((v) => (
-                    <div>
+                    <div key={v.id}>
+                        <li>{v.seller || v.customer}</li>
                         <li>{v.content}</li>
                     </div>
                 ))}
             </ul> : <></>}
             {chats ? <ul>
-                {chats.map((v) => (
-                    <div>
+                {chats.map((v, idx) => (
+                    <div key={idx}>
+                        <li>{v.seller || v.customer}</li>
                         <li>{v.content}</li>
                     </div>
                 ))}
