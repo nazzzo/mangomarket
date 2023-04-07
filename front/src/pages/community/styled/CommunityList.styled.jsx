@@ -30,7 +30,66 @@ const TextBoxAStyled = styled.div`
     width: 100%;
     margin-top: 1%;
 `
+const TextBoxAMyProfileStyled = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: space-around;
+    height: 100%;
+    width: 100%;
+    margin-top: 1%;
+`
 
+export const TextBoxAMyProfile2 = ({ subject, content, date, category }) => {
+    return (
+        <TextBoxAMyProfileStyled>
+            <TextBoxASubject>{subject}</TextBoxASubject>
+            <TextBoxProfile>
+                <TextBoxACategory
+                    category={category}
+                    style={{
+                        width: '4rem',
+                        height: '1.5rem',
+                        padding: '1% 0',
+                        boxSizing: 'border-box',
+                    }}
+                >
+                    {category}
+                </TextBoxACategory>
+            </TextBoxProfile>
+
+            <TextBoxAContent>
+                <TextBoxASpan>{content}</TextBoxASpan>
+
+                <TextBoxADate>{useTimeStamp(date)}</TextBoxADate>
+            </TextBoxAContent>
+        </TextBoxAMyProfileStyled>
+    )
+}
+export const TextBoxAMyProfile = ({ subject, content, date, answer }) => {
+    return (
+        <TextBoxAMyProfileStyled>
+            <TextBoxASubject>{subject}</TextBoxASubject>
+            <TextBoxProfile>
+                {!answer ? (
+                    <TextBoxACategory style={{ background: 'red' }}>미처리</TextBoxACategory>
+                ) : (
+                    <TextBoxACategory style={{ background: 'green' }}>처리완료</TextBoxACategory>
+                )}
+            </TextBoxProfile>
+
+            <TextBoxAContent>
+                <TextBoxASpan>{content}</TextBoxASpan>
+
+                <TextBoxADate>
+                    {useTimeStamp(date)}
+                    <div>
+                        <Icon icon="uil:comment-dots" />
+                    </div>
+                </TextBoxADate>
+            </TextBoxAContent>
+        </TextBoxAMyProfileStyled>
+    )
+}
 const TextBoxASubject = styled.h2`
     font-size: 0.9rem;
     height: 2rem;
@@ -173,6 +232,12 @@ export const ItemWrapper = styled(motion.li)`
     align-items: center;
     justify-content: center;
     border-bottom: 1px solid #ececec;
+`
+
+export const PageCounter = styled.button`
+    width: 100%;
+    height: 100px;
+    opacity: 0;
 `
 
 export const TextBoxB = ({ subject, content, date, category }) => {

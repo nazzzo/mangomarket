@@ -8,14 +8,61 @@ import {
     TextBoxB,
     TextBoxSpaceDiv,
     TextBoxSpaceH2,
+    PageCounter,
 } from './styled'
-import { useState, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../../common/button'
 
 export const CommunityList = () => {
     const navigate = useNavigate()
+    const [count, setCount] = useState(0)
+    const [isLoading, setIsLoading] = useState(false)
     const [boardList, setBoardList] = useState([])
+    const pageCountRef = useRef(null)
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await request.get(`/community/?count=${count}`)
+                if (!response.data.isError) {
+                    const newBoardList = response.data
+                    if (count === 0) {
+                        setBoardList(newBoardList)
+                    } else {
+                        setBoardList((preList) => [...preList, ...newBoardList])
+                    }
+                    setIsLoading(false)
+                    if (newBoardList.length === 0) setIsLoading(true)
+                }
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        fetchData()
+    }, [count])
+
+    useEffect(() => {
+        const options = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 1.0,
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting && !isLoading) {
+                    setIsLoading(true)
+                    setCount((preCount) => preCount + 1)
+                }
+            })
+        }, options)
+
+        if (pageCountRef.current) observer.observe(pageCountRef.current)
+        return () => {
+            if (pageCountRef.current) observer.unobserve(pageCountRef.current)
+        }
+    }, [isLoading])
 
     useEffect(() => {
         const getData = async () => {
@@ -105,6 +152,7 @@ export const CommunityList = () => {
             ) : (
                 <></>
             )}
+            <PageCounter ref={pageCountRef} />
         </CommunityWrapper>
     )
 }

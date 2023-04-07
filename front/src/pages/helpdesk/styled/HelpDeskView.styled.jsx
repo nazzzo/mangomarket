@@ -3,6 +3,7 @@ import { TextArea } from '../../../common/textarea'
 import { useTextArea } from '../../../hooks'
 import request from '../../../utils/request'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect } from 'react'
 const ReportWrapper = styled.div`
     width: 100%;
     height: 30rem;
@@ -122,12 +123,16 @@ export const HelpDeskView = ({ view }) => {
                         />
                         <AdminAnswer> [관리자 답변] </AdminAnswer>
                     </div>
-                    <TextArea
-                        value={answer.value}
-                        onChange={answer.onChange}
-                        id="answer"
-                        name="answer"
-                    />
+                    {!view.answerBoolean ? (
+                        <TextArea
+                            value={answer.value}
+                            onChange={answer.onChange}
+                            id="answer"
+                            name="answer"
+                        />
+                    ) : (
+                        <TextArea value={view.answer} id="answer" name="answer" />
+                    )}
                     <SubmitButton>답글작성</SubmitButton>
                 </ReportDiv>
             </ReportWrapper>

@@ -5,11 +5,16 @@ class HelpDeskService {
         this.userRepository = userRepository
     }
 
-    async postHelpDesk({ content, subject, pageState }) {
+    async postHelpDesk({ content, subject, pageState, email }) {
         try {
-            console.log('Service content,subject', content, subject, pageState)
+            console.log('Service content,subject', content, subject, pageState, email)
             if (!subject || !content) throw '내용이 없습니다'
-            const response = await this.helpDeskRepository.create({ content, subject, pageState })
+            const response = await this.helpDeskRepository.create({
+                content,
+                subject,
+                pageState,
+                email,
+            })
             return response
         } catch (e) {
             throw new Error(e)
@@ -54,6 +59,17 @@ class HelpDeskService {
         }
     }
 
+    async getProfileList({ email }) {
+        try {
+            console.log('getProfileList ::: ', email)
+
+            const list = await this.helpDeskRepository.findProfilListAll({ email })
+
+            return list
+        } catch (e) {
+            throw new this.BadRequest(e)
+        }
+    }
     async getView(id) {
         try {
             console.log('view ::: ', id)

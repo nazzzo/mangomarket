@@ -41,9 +41,33 @@ class CommunityService {
         }
     }
 
-    async getList() {
+    async getProfileList({ email }) {
         try {
-            const [list] = await this.communityRepository.findAll()
+            console.log('getProfileList ::: ', email)
+
+            const list = await this.communityRepository.findProfilListAll({ email })
+
+            return list
+        } catch (e) {
+            throw new this.BadRequest(e)
+        }
+    }
+
+    async getList({ count }) {
+        try {
+            console.log('count service ::: ', count)
+
+            const views = 4
+            let limitval = views * count
+
+            if (!count || Number(count) === 1) limitval = 0
+            const limit = {
+                limit: limitval,
+                views,
+            }
+
+            const [list] = await this.communityRepository.findAll({ limit })
+            console.log('list', list)
             if (list.length === 0) throw '내용이 없습니다'
             return list
         } catch (e) {

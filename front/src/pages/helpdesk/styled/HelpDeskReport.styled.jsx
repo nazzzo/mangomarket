@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { useState } from 'react'
 import request from '../../../utils/request'
 import { useNavigate } from 'react-router-dom'
-
+import { useSelector } from 'react-redux'
 const ReportWrapper = styled.div`
     width: 100%;
     height: 30rem;
@@ -56,6 +56,7 @@ export const Report = (reportInfo, setReportInfo) => {
     const [content, setContent] = useState('')
     const [pageState, setPageState] = useState('신고하기')
     const navigate = useNavigate()
+    const { user } = useSelector((state) => state.user)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -65,11 +66,14 @@ export const Report = (reportInfo, setReportInfo) => {
         const response = await request.post('/helpdesk', {
             subject: e.target.reportSubject.value,
             content: e.target.reportContent.value,
+            user: user.email,
             pageState,
         })
-
-        alert('신고접수가 완료되었습니다')
-        navigate('/helpdesk')
+        console.log(response.data)
+        if (response.status === 201) {
+            alert('신고접수가 완료되었습니다')
+            navigate('/helpdesk')
+        }
     }
     return (
         <ReportWrapper>

@@ -21,9 +21,20 @@ class HelpDeskRepository {
         }
     }
 
+    async findProfilListAll({ email }) {
+        try {
+            const findAll = await this.HelpDesk.findAll({ raw: true, where: { email } })
+            console.log('comu repository :: ', findAll)
+
+            return findAll
+        } catch (e) {
+            throw new Error(e)
+        }
+    }
+
     async findOne(id) {
         try {
-            const query = `SELECT subject, content FROM helpdesk WHERE id = ${id};`
+            const query = `SELECT * FROM helpdesk WHERE id = ${id};`
             const [findOne] = await this.sequelize.query(query)
             console.log('findOne ::: ', findOne)
             return findOne
@@ -42,12 +53,13 @@ class HelpDeskRepository {
             throw new Error(e)
         }
     }
-    async create({ content, subject, pageState }) {
+    async create({ content, subject, pageState, email }) {
         try {
             const create = await this.HelpDesk.create({
                 subject,
                 content,
                 pageState,
+                email,
             })
             return create
         } catch (e) {

@@ -28,6 +28,7 @@ const Table = styled.table`
 export const HelpDeskBoard = ({ user }) => {
     const [boardList, setBoardList] = useState([])
     const navigate = useNavigate()
+    console.log('user ::: ', user)
     useEffect(() => {
         const getData = async () => {
             try {

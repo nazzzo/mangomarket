@@ -28,6 +28,17 @@ class HelpDeskController {
         }
     }
 
+    async postServiceOne(req, res, next) {
+        try {
+            const { email } = req.query
+            console.log('postServiceOne ::: ', email)
+            const response = await this.helpDeskService.getProfileList({ email })
+            res.json(response)
+        } catch (e) {
+            next(e)
+        }
+    }
+
     async postAnswerOne(req, res, next) {
         try {
             const { answer } = req.body
@@ -49,7 +60,7 @@ class HelpDeskController {
     async postReport(req, res, next) {
         if (req.body.pageState === '신고하기') {
             try {
-                const { content, subject, pageState } = req.body
+                const { content, subject, pageState, email } = req.body
                 console.log('controller ::: ', req.body)
                 if (!content) throw new Error('내용을 입력해주세요')
                 if (!subject) throw new Error('내용을 입력해주세요')
@@ -57,6 +68,7 @@ class HelpDeskController {
                     content,
                     subject,
                     pageState,
+                    email,
                 })
                 res.status(201).json(response)
             } catch (error) {

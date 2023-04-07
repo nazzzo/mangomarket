@@ -67,6 +67,7 @@ export const ContactForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+
         const response = await request.post('/helpdesk', {
             name: user.username,
             email: user.email,
@@ -74,8 +75,12 @@ export const ContactForm = () => {
             pageState,
         })
 
-        alert('1:1문의가 접수되었습니다.')
-        navigate('/helpdesk')
+        console.log('HelpDeskHelpDeskHelpDeskHelpDeskHelpDesk::', response.data)
+
+        if (response.status === 201) {
+            alert('1:1문의가 접수되었습니다.')
+            navigate('/helpdesk')
+        }
     }
 
     return (
