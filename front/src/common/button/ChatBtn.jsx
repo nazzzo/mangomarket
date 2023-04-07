@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Modal } from "../modal"
 import { useState } from 'react'
-import { SellerChat } from "../../pages/chat"
+import { GlobalChat } from "../../pages/chat"
 import { Icon } from '@iconify/react';
 
 
