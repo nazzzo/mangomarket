@@ -1,36 +1,63 @@
-import { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { useChat, useInput } from "../../hooks"
+import { useState, useEffect } from 'react'
+import { useSelector } from "react-redux"
+import { useInput } from "../../hooks"
+import io from "socket.io-client"
+import config from "../../config";
 
-export const Chat = ({ seller, boardId }) => {
-    const content = useInput()
-    const [ messages, setMessages ] = useState([])
-    const { user } = useSelector((state) => state.user)
+const EndPoint = `${config.PT}://${config.HOST}:${config.BACKEND_PORT}/`;
+let socket;
+
+export const Chat = ({ seller, customer, boardId }) => {
+    const [messages, setMessages] = useState([]);
+    const { user } = useSelector((state) => state.user);
+    const content = useInput("")
+
+  
+    // console.log(`seller:::`, seller, `customer:::`, customer, `boardId:::`, boardId)
+    useEffect(() => {
+        socket = io(EndPoint);
+        socket.emit("joinRoom", { boardId, customer: customer.email, seller: seller.email });
+  
+        socket.on("receiveMessage", (newMessage) => {
+            setMessages([...messages, newMessage]);
+        });    
+    
+        return () => {
+        socket.off();
+        };
+    }, []);
+  
 
 
-    const { sendMessage } = useChat({ seller, user, boardId, setMessages })
-
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        sendMessage(content.value)
-    }
-
-    return (
-        <div>
-            {/* Render chat messages */}
-            {messages && messages.map((message, index) => (
-                <div key={index}>
-                    <strong>{message.sender}: </strong>
-                    {message.content}
-                </div>
+    const handleSendMessage = (e) => {
+        e.preventDefault();
+        socket.emit("sendMessage", {
+          boardId: boardId,
+          seller: seller.email,
+          customer: customer.email,
+          message: content.value,
+          type: user.email === seller.email ? "receiver" : "sender",
+        });
+        content.clear()
+      };
+    
+      return (
+        <>
+          <div>
+            {messages.map((msg, index) => (
+              <div key={index}>
+                {msg.customer}: {msg.message}
+              </div>
             ))}
-
-            {/* Render chat input form */}
-            <form onSubmit={handleSubmit}>
-                <input type="text" {...content} />
-                <button type="submit">Send</button>
-            </form>
-        </div>
-    )
-}
+          </div>
+          <form onSubmit={handleSendMessage}>
+            <input
+              type="text"
+              value={content.value}
+              onChange={content.onChange}
+            />
+            <button type="submit">전송</button>
+          </form>
+        </>
+      );
+    };

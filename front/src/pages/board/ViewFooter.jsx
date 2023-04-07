@@ -13,6 +13,8 @@ export const ViewFooter = ({ isLogin, user, writerEmail, writerName, writerImg, 
         userImg: writerImg,
     }
 
+
+
     return (
         <>
             <Footer footerHeight={footerHeight} footerWidth={footerWidth} >
@@ -20,7 +22,7 @@ export const ViewFooter = ({ isLogin, user, writerEmail, writerName, writerImg, 
                 <ChatBtn isLogin={isLogin} user={user.email} size={size} color="yellow" fontSize="1rem" onClick={() => {setIsOpen(true)}}>채팅하기</ChatBtn>
             </Footer>
             <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-                <Chat seller={seller} boardId={boardId}/>
+                <Chat seller={seller} customer={user} boardId={boardId}/>
             </Modal>
         </>
     )
