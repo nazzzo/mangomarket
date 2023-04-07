@@ -6,7 +6,9 @@ class ChatRepository {
   }
   async findAll(seller) {
     try {
+      console.log(seller.seller)
       const findAll = await this.Chat.findAll({ where:{ seller:`${seller.seller}`}, raw: true, nest: true});
+      // console.log(findAll)
       return findAll;
     } catch (e) {
       throw new Error(e);

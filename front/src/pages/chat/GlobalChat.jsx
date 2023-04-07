@@ -9,21 +9,15 @@ const EndPoint = `${config.PT}://${config.HOST}:${config.BACKEND_PORT}/`;
 let socket
 
 export const GlobalChat = () => {
-    const [ messages ,setMessages ] = useState([])
-    const [ namespace, setNamespace ] = useState([])
-    const [ customer ,setCustomer ] = useState([])
+    const [messages, setMessages] = useState([])
+    const [namespace, setNamespace] = useState([])
+    const [customer, setCustomer] = useState([])
+    const [ a, setA] = useState([])
     const content = useInput("")
     const { user } = useSelector((state) => state.user);
-    // console.log(`sender:::`, user) // 구매자
-    // console.log(`writer(receiver):::`, receiver) // 판매자
-    // console.log(boardId) // 판매글번호
-    // console.log(customer) [ "", "", "", ""]
-    
-    
-    
+
     useEffect(() => {
         const getSellerChat = async () => {
-            // const response = await request.get(`/chat/sell/${user.email}`)
             const response = await request.get(`/chats?seller=${user.email}`)
             if (!response.data.isError) {
                 setMessages(response.data);
@@ -33,28 +27,38 @@ export const GlobalChat = () => {
                 setNamespace(namespaceList)
             }
         }
+        
         getSellerChat()
-      }, [setMessages, namespace, customer])
+    }, [])
 
 
     useEffect(() => {
         socket = io(EndPoint);
-        socket.emit("joinRoom", { boardId: namespace[0], customer: customer[0], seller: user.email });
-      
+        socket.emit("joinRoom", { boardId: 5, customer: "ckstn410@naver.com", seller: user.email, username: user.username });
         socket.on("receiveMessage", (newMessage) => {
-          setMessages((prevMessages) => [...prevMessages, newMessage]);
+            setMessages((prevMessages) => [...prevMessages, newMessage]);
         });
-      
-        return () => {
-          socket.off();
-          socket.disconnect();
-        };
-      }, []);
 
-    
+        return () => {
+            socket.disconnect();
+        };
+    }, []);
+
+    const handleSendMessage = (e) => {
+        e.preventDefault()
+        socket.emit("sendMessage", {
+            boardId: namespace[0],
+            customer: customer[0],
+            seller: user.email,
+            type: "sender",
+            message: content.value
+        })
+        content.clear()
+    }
+
     return (
-        <form>
-            { messages ? <ul>
+        <form onSubmit={handleSendMessage}>
+            {messages ? <ul>
                 {messages.map((v) => (
                     <div key={v.id}>
                         <li>{v.id}</li>
@@ -62,7 +66,7 @@ export const GlobalChat = () => {
                     </div>
                 ))}
             </ul> : <></>}
-            <input onChange={content.onChange} value={content.value} type="text" name="content" id="content"/>
+            <input onChange={content.onChange} value={content.value} type="text" name="content" id="content" />
             <button type='submit'>채팅</button>
         </form>
     )

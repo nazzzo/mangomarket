@@ -11,11 +11,11 @@ module.exports = (server, app) => {
 
             let data;
             let room;
-            socket.on("joinRoom", ({ boardId, customer, seller }) => {
+            socket.on("joinRoom", ({ boardId, customer, seller, username }) => {
                 room = `${boardId}-${customer}`;
                 socket.join(room);
                 console.log(`room:::`, room);
-                data = {boardId, seller, customer}
+                data = {boardId, seller, customer, username}
               });
               socket.on("sendMessage", ({ boardId, seller, customer, message, type }) => {
                 io.to(room).emit("receiveMessage", {
@@ -36,10 +36,10 @@ module.exports = (server, app) => {
                 });
             });
             socket.on("disconnect", () => {
-                console.log("disconnected")
+                console.log(`${data.username}, disconnected`)
               })
         })
     } catch (e) {
-             console.log(e)
+            console.log(e)
     }
 }
