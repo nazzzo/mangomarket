@@ -22,6 +22,7 @@ class ChatRepository {
   async postChat(data) {
     try {
       const result = await this.Chat.create(data);
+      return result
     } catch (e) {
       throw new Error(e)
     }
