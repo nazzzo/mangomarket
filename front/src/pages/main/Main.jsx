@@ -27,25 +27,29 @@ export const Main = () => {
                 const response = await request.get(
                     `boards/?count=${count}&category=${selectedCategory}&distance=${selectedDistance.value}&email=${user.email}`
                 )
-                if (!response.data.isError) {
-                const newBoardList = response.data
-                if (count === 0 || selectedCategory !== '') {
-                    setBoardList(newBoardList)
-                } else {
-                    setBoardList((prevList) => [...prevList, ...newBoardList])
-                }
-                setIsLoading(false)
-                if (newBoardList.length === 0) setIsLoading(true)
-              }
+            if (!response.data.isError) {
+                if (selectedCategory) {
+                    const newBoardList = boardList.filter(
+                      (board) => board.category === selectedCategory
+                  ).concat(response.data);
+                setBoardList(newBoardList);    
+                } else
+                setBoardList([...boardList, ...response.data]);
+                setIsLoading(false);
+                if (response.data.length === 0) setIsLoading(true);
+            }
             } catch (error) {
                 console.log(error)
             }
         }
-
-        if (selectedCategory !== '') setCount(0)
         fetchData()
     }, [count, selectedCategory, selectedDistance])
 
+
+    useEffect(() => {
+      setCount(0);
+  }, [selectedCategory]);
+  
     useEffect(() => {
         const options = {
             root: null,
@@ -65,6 +69,9 @@ export const Main = () => {
             if (pageCountRef.current) observer.unobserve(pageCountRef.current)
         }
     }, [isLoading])
+
+
+
     const TextList = {
         hidden: {
             opacity: 0,
@@ -82,7 +89,6 @@ export const Main = () => {
         hidden: { opacity: 0, y: 50 },
         visible: { opacity: 1, y: 0 },
     }
-    // console.log(count)
 
     return (
         <HomeWrapper>

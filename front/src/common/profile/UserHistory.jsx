@@ -47,8 +47,6 @@ export const UserHistory = ({ email, username, width, height, setIsOpen, navigat
         return () => {
           if (pageCountRef.current) observer.unobserve(pageCountRef.current);
         }}, [isLoading]);
-    
-      console.log(boardList)  
 
 return (
     <>
