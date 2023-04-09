@@ -163,10 +163,23 @@ export const Count = styled.span`
 `
 
 export const TextBoxA = ({ category, subject }) => {
+    let color;
+    if (category === '생활가전') color = '#AEB6BF';
+    else if (category === '가구/인테리어') color = '#D2B48C';
+    else if (category === '디지털기기') color = '#5c8390'; 
+    else if (category === '스포츠/레저') color = '#32CD32'; 
+    else if (category === '게임/음반') color = '#7944ab';
+    else if (category === '주방용품') color = '#FF69B4';
+    else if (category === '유아용품') color = '#e49595';
+    else if (category === '남성패션') color = '#4169E1';
+    else if (category === '여성패션') color = '#FFC0CB';
+    else if (category === '음식') color = '#FFA500';
+    else if (category === '반려동물') color = '#8FBC8F';
+    else color = 'orange';
 
     return (
         <TextBoxAStyled>
-            <Category color="orange">{category}</Category>
+            <Category color={color}>{category}</Category>
             <h2>{subject}</h2>
         </TextBoxAStyled>
     )

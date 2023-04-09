@@ -12,15 +12,17 @@ export const UserHistory = ({ email, username, width, height, setIsOpen, navigat
       useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await request.get(`boards/?count=${count}&searchType=email&search=${email}`);
-            const newBoardList = response.data;
-            if (count === 0) {
-              setBoardList(newBoardList);
-            } else {
-              setBoardList((prevList) => [...prevList, ...newBoardList]);
+            const response = await request.get(`boards/?count=${count}&searchType=email&search=${email}&email=${email}`);
+            if (!response.data.isError) {
+                const newBoardList = response.data;
+                if (count === 0) {
+                  setBoardList(newBoardList);
+                } else {
+                  setBoardList((prevList) => [...prevList, ...newBoardList]);
+                }
+                setIsLoading(false);
+                if (newBoardList.length === 0) setIsLoading(true);
             }
-            setIsLoading(false);
-            if (newBoardList.length === 0) setIsLoading(true);
           } catch (error) {console.log(error);}
         };
         fetchData();

@@ -18,6 +18,7 @@ export const Selector = ({ options, selectedOption, setSelectedOption, width }) 
     }),
     option: (provided, state) => ({
       ...provided,
+      backgroundColor: state.isSelected ? "#f2a93b" : "transparent", // 선택된 메뉴 배경색 변경
     }),
     indicatorSeparator: (provided, state) => ({
       ...provided,
