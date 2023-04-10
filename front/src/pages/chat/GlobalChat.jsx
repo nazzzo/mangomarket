@@ -93,36 +93,30 @@ export const GlobalChat = () => {
 
     return (
         <GlobalChatWrap>
-            <SwitchBox height="3.5rem">
+            {!selectedChatter && <SwitchBox height="3.5rem">
                 <Switch onClick={handleSwitch} isActive={!isSeller} fontSize="0.9rem">
                     나의 판매목록
                 </Switch>
                 <Switch onClick={handleSwitch} isActive={isSeller} fontSize="0.9rem">
                     구매자
                 </Switch>
-            </SwitchBox>
-            {/* {isSeller ? <SellerChat /> : <CustomerChat seller={"1"} customer={123} boardid={1234} />} */}
-            <ChatterWrap>
+            </SwitchBox>}
+
+            {!selectedChatter ? <ChatterWrap>
                 <ChatterList>
-                    {!isSeller ? customerList.map((v, index) =>
-                        !selectedChatter ?
-                            <Chatter onClick={() => handleClick(v)} key={index}>
-                                <ChatterImgWrap>
-                                    <ChatterImg src={v.userImg}></ChatterImg>
-                                </ChatterImgWrap>
-                                <ChatterContentWrap>
-                                    <ChatterUserWrap>
-                                        <ChatterUserName>{v.username}</ChatterUserName>
-                                        <ChatterUserAddress>{v.address}</ChatterUserAddress>
-                                    </ChatterUserWrap>
-                                    <ChatterContent>최신채팅내역</ChatterContent>
-                                </ChatterContentWrap>
-                            </Chatter>
-                            : <SellerChat
-                                seller={user.email}
-                                customer={selectedChatter.customer}
-                                boardid={selectedChatter.boardid}
-                                />
+                    {!isSeller && !selectedChatter ? customerList.map((v, index) =>
+                        <Chatter onClick={() => handleClick(v)} key={index}>
+                            <ChatterImgWrap>
+                                <ChatterImg src={v.userImg}></ChatterImg>
+                            </ChatterImgWrap>
+                            <ChatterContentWrap>
+                                <ChatterUserWrap>
+                                    <ChatterUserName>{v.username}</ChatterUserName>
+                                    <ChatterUserAddress>{v.address}</ChatterUserAddress>
+                                </ChatterUserWrap>
+                                <ChatterContent>최신채팅내역</ChatterContent>
+                            </ChatterContentWrap>
+                        </Chatter>
                     ) : sellerList.map((v) =>
                         <Chatter>
                             <ChatterImgWrap>
@@ -138,15 +132,12 @@ export const GlobalChat = () => {
                         </Chatter>
                     )}
                 </ChatterList>
-            </ChatterWrap>
+            </ChatterWrap> : <SellerChat
+                seller={user.email}
+                customer={selectedChatter.customer}
+                boardid={selectedChatter.boardid}
+            />
+            }
         </GlobalChatWrap>
     );
 };
-// ChatterList
-// Chatter
-// ChatterImgWrap
-// ChatterImg
-// ChatterContentWrap
-// ChatterUserName
-// ChatterUserAddress
-// ChatterContent

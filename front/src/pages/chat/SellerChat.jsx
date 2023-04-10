@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useState, useCallback, useMemo, memo } from 'react';
 import { useSelector } from "react-redux";
 import { useInput } from "../../hooks"
 import request from "../../utils/request"
@@ -13,9 +13,10 @@ export const SellerChat = ({ seller, customer, boardid }) => {
     const [chats, setChats] = useState([])
     const content = useInput("")
 
+    console.log(logs)
     useEffect(() => {
         const getSellerChat = async () => {
-            const response = await request.get(`/chats?seller=${seller}`)
+            const response = await request.get(`/chats?seller=${seller}&opponent=${customer}&boardid=${boardid}`)
             if (!response.data.isError) {
                 setLogs(response.data);
                 // const customerList = [...new Set(response.data.map(v => v.customer))]
