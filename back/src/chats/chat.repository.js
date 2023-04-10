@@ -36,26 +36,35 @@ class ChatRepository {
       let column
       console.log(type) // seller ? customer
       console.log(useremail)
-      type === "seller" ? column = `A.customer` : column = `A.seller`
+      type === "seller" ? column = `customer` : column = `seller`
 
       const sql = `SELECT 
-      ${column}, 
+      A.${column}, 
       A.boardid, 
       B.username, 
       B.userImg,
-      B.address
-      FROM 
-      Chat as A 
+      B.address,
+      C.image,
+      A.content,
+      A.createdAt
+      FROM (
+        SELECT 
+            seller, 
+            boardid, 
+            MAX(content) as content,
+            MAX(createdAt) as createdAt
+        FROM Chat 
+        WHERE ${type} = "${useremail}"
+        GROUP BY seller, boardid
+      ) AS A 
       JOIN User as B 
-          ON A.seller = B.email 
-      WHERE 
-      A.${type} = "${useremail}"
-      GROUP BY 
-      ${column}, 
-      A.boardid, 
-      B.username, 
-      B.userImg,
-      B.address;`
+          ON A.${column} = B.email
+      JOIN BoardImage as C
+          ON A.boardid = C.boardid
+      WHERE
+          C.thumbnail = 1     
+      ORDER BY 
+          A.createdAt DESC;`
       const result = await this.sequelize.query(sql, { raw: true, nest: true })
       return result
     } catch (e) {

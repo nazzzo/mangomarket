@@ -18,6 +18,7 @@ export const GlobalChat = () => {
 
   const getCustomerList = async () => {
     const response = await request.get(`/chats/customers?seller=${user.email}`);
+    console.log(`response:::`, response.data)
     if (!response.data.isError) setCustomerList(response.data);
   };
 
@@ -36,6 +37,7 @@ export const GlobalChat = () => {
   };
 
   const chatterList = isSeller ? sellerList : customerList;
+  console.log(sellerList, customerList)
 
   return (
     <GlobalChatWrap>
