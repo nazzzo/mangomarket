@@ -98,7 +98,7 @@ class CommunityController {
                 req.params.id,
                 req.params.idx,
                 req.body.content,
-                req.body.isDeleted,
+                req.body.isDeleted
             )
             res.status(201).json(response)
         } catch (e) {
