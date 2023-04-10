@@ -85,10 +85,10 @@ export const GlobalChat = () => {
         setSellerList(response.data)
     }
 
-    const handleClick = (e) => {
-        console.log(e.target)
+    const handleClick = (boardid, customer, userImg, address) => {
+        console.log(boardid, customer, userImg, address)
 
-        setSelectedChatter()
+        // setSelectedChatter()
     }
 
     return (
@@ -106,7 +106,7 @@ export const GlobalChat = () => {
                 <ChatterList>
                     {!isSeller ? customerList.map((v, index) =>
                         !selectedChatter ? 
-                        <Chatter onClick={handleClick} key={index} room={`${v.boardid}-${v.customer}`}>
+                        <Chatter onClick={() => handleClick(v.boardid, v.customer, v.userImg, v.address)} key={index} room={`${v.boardid}-${v.customer}`}>
                             <ChatterImgWrap>
                                 <ChatterImg src={v.userImg}></ChatterImg>
                             </ChatterImgWrap>
