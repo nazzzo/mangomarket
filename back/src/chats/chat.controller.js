@@ -26,6 +26,7 @@ class ChatController {
   async getCustomers (req, res, next) {
     try {
       const result = await this.chatService.getUsers(req.query)
+      console.log(`result:::`, result)
       res.status(201).json(result)
     } catch (e) {
       throw new this.BadRequest(e)

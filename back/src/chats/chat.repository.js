@@ -49,13 +49,13 @@ class ChatRepository {
       A.createdAt
       FROM (
         SELECT 
-            seller, 
+            ${column}, 
             boardid, 
             MAX(content) as content,
             MAX(createdAt) as createdAt
         FROM Chat 
         WHERE ${type} = "${useremail}"
-        GROUP BY seller, boardid
+        GROUP BY ${column}, boardid
       ) AS A 
       JOIN User as B 
           ON A.${column} = B.email
