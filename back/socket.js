@@ -14,13 +14,15 @@ module.exports = (server, app) => {
                 console.log(`room:::`, room);
               });
               socket.on("sendMessage", ({ data }) => {
-                console.log(data.boardid, data.seller, data.customer, data.content)
                 io.to(roomname).emit("receiveMessage", {
                   boardid: data.boardid,
                   seller: data.seller,
                   customer: data.customer,
                   content: data.content,
-                  email: data.email
+                  email: data.email,
+                  username: data.username,
+                  userImg: data.userImg,
+                  address: data.address,
                 })
             })
 

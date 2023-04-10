@@ -11,6 +11,7 @@ let socket
 export const SellerChat = ({ seller, customer, boardid }) => {
     const [logs, setLogs] = useState([])
     const [chats, setChats] = useState([])
+    const { user } = useSelector((state) => state.user)
     const content = useInput("")
 
     useEffect(() => {
@@ -26,7 +27,7 @@ export const SellerChat = ({ seller, customer, boardid }) => {
     useEffect(() => {
         socket = io(ENDPOINT);
         socket.emit("joinRoom", { room: `${boardid}-${customer}` });
-        
+
         socket.on("receiveMessage", (newChat) => {
             console.log(`newChat: ${newChat}`)
             setChats([...chats, newChat]);
@@ -39,39 +40,58 @@ export const SellerChat = ({ seller, customer, boardid }) => {
 
     const handleSendMessage = async (e) => {
         e.preventDefault()
+        console.log(user)
         let data = {
             boardid,
             customer,
             seller,
             content: content.value,
             email: seller,
+            username: user.username,
+            userImg: user.userImg,
+            address: user.address,
         }
-        socket.emit("sendMessage", { data } )
-        const response = await request.post(`/chats`, {data})
+        socket.emit("sendMessage", { data })
+        const response = await request.post(`/chats`, { data })
         console.log(response.data)
         if (response.status === 201) content.clear()
     }
 
     return (
-        <form onSubmit={handleSendMessage}>
-            {logs ? <ul>
-                {logs.map((v) => (
-                    <div key={v.id}>
-                        <li>{v.email}</li>
-                        <li>{v.content}</li>
-                    </div>
-                ))}
-            </ul> : <></>}
-            {chats ? <ul>
-                {chats.map((v, idx) => (
-                    <div key={idx}>
-                        <li>{v.email}</li>
-                        <li>{v.content}</li>
-                    </div>
-                ))}
-            </ul> : <></>}
-            <input onChange={content.onChange} value={content.value} type="text" name="content" id="content" />
-            <button type='submit'>채팅</button>
-        </form>
+        <>
+            <div>
+                {logs ? (
+                    <ul>
+                        {logs.map((v) => (
+                            <div key={v.id}>
+                                <li>{v.email}</li>
+                                <li>{v.content}</li>
+                            </div>
+                        ))}
+                    </ul>
+                ) : (
+                    <></>
+                )}
+                {chats ? (
+                    <ul>
+                        {chats.map((v, idx) => {
+                            return (
+                            <div key={idx}>
+                                <h3>{v.username}</h3>
+                                {/* <img src={v.userImg}/> */}
+                                <li>{v.address}</li>
+                                <li>{v.content}</li>
+                            </div>
+                        )})}
+                    </ul>
+                ) : (
+                    <></>
+                )}
+            </div>
+            <form onSubmit={handleSendMessage}>
+                <input type="text" value={content.value} onChange={content.onChange} />
+                <button type="submit">전송</button>
+            </form>
+        </>
     )
 }

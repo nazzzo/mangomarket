@@ -17,7 +17,9 @@ class ChatService {
 
     async postChat(data) {
         try {
-          const result = await this.chatRepository.postChat(data)
+          const { seller, customer, boardid, content, email } = data
+
+          const result = await this.chatRepository.postChat({ seller, customer, boardid, content, email })
           return result
           } catch (e) {
             throw new this.BadRequest(e);
