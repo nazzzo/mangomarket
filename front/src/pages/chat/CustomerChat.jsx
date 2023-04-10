@@ -17,8 +17,9 @@ export const CustomerChat = ({ seller, customer, boardid }) => {
 
   useEffect(() => {
     const getCustomerChat = async () => {
-      const response = await request.get(`/chats?customer=${customer.email}`);
+      const response = await request.get(`/chats?customer=${customer.email}&opponent=${seller}&boardid=${boardid}`);
       if (!response.data.isError) setLogs(response.data);
+      console.log(logs)
     };
     getCustomerChat();
   }, [])

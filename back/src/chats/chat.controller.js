@@ -33,6 +33,7 @@ class ChatController {
 
   async getSellers (req, res, next) {
     try {
+      // console.log("쿼리",req.query)
       const result = await this.chatService.getUsers(req.query)
       res.status(201).json(result)
     } catch (e) {
