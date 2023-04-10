@@ -5,6 +5,7 @@ class ChatController {
 
   async getList(req, res, next) {
     try {
+      console.log(req.query)
       const response = await this.chatService.getList(req.query);
       res.json(response);
     } catch (e) {

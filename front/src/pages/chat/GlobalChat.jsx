@@ -52,7 +52,8 @@ export const GlobalChat = () => {
       {!selectedChatter && customerList && sellerList ? (
         <ChatterWrap>
           <ChatterList>
-            {chatterList.map((v, index) => (
+            {chatterList.map((v, index) =>  { console.log(chatterList)
+            return(
               <ChatterItem onClick={() => handleClick(v)} key={index}>
                 <ChatterImgWrap>
                   <ChatterImg src={v.userImg}></ChatterImg>
@@ -65,7 +66,7 @@ export const GlobalChat = () => {
                   <ChatterContent>최신채팅내역</ChatterContent>
                 </ChatterContentWrap>
               </ChatterItem>
-            ))}
+            )})}
           </ChatterList>
         </ChatterWrap>
       ) : (

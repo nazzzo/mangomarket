@@ -13,7 +13,6 @@ export const SellerChat = ({ seller, customer, boardid }) => {
     const [chats, setChats] = useState([])
     const content = useInput("")
 
-    console.log(logs)
     useEffect(() => {
         const getSellerChat = async () => {
             const response = await request.get(`/chats?seller=${seller}&opponent=${customer}&boardid=${boardid}`)
@@ -23,7 +22,6 @@ export const SellerChat = ({ seller, customer, boardid }) => {
         }
         getSellerChat()
     }, [])
-    console.log(logs)
 
     useEffect(() => {
         socket = io(ENDPOINT);
@@ -45,8 +43,8 @@ export const SellerChat = ({ seller, customer, boardid }) => {
             boardid,
             customer,
             seller,
-            type: "sender",
-            content: content.value
+            content: content.value,
+            email: seller,
         }
         socket.emit("sendMessage", { data } )
         const response = await request.post(`/chats`, {data})
@@ -59,7 +57,7 @@ export const SellerChat = ({ seller, customer, boardid }) => {
             {logs ? <ul>
                 {logs.map((v) => (
                     <div key={v.id}>
-                        <li>{v.seller || v.customer}</li>
+                        <li>{v.email}</li>
                         <li>{v.content}</li>
                     </div>
                 ))}
@@ -67,7 +65,7 @@ export const SellerChat = ({ seller, customer, boardid }) => {
             {chats ? <ul>
                 {chats.map((v, idx) => (
                     <div key={idx}>
-                        <li>{v.seller || v.customer}</li>
+                        <li>{v.email}</li>
                         <li>{v.content}</li>
                     </div>
                 ))}

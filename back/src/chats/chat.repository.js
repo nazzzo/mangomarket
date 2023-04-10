@@ -16,6 +16,7 @@ class ChatRepository {
         const findAll = await this.Chat.findAll({ where:{ seller:`${type.seller}`,customer: `${type.opponent}`, boardid: `${type.boardid}`}, raw: true, nest: true});
         return findAll;
       }
+
     } catch (e) {
       throw new Error(e);
     }
