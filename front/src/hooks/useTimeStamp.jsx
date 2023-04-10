@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 
 export const useTimeStamp = (createdAt) => {
-    console.log(`createdAt::`, createdAt)
     const parsedTime = useMemo(
         () => (createdAt ? new Date(Date.parse(createdAt)) : null),
         [createdAt]

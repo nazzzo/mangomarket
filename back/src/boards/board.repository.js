@@ -17,7 +17,7 @@ class BoardRepository {
         this.BoardKeyword = BoardKeyword;
     }
 
-    async findAll({ searchType, search, sort, email, category, limit, pagingsort, pagingcategory }) {
+    async findAll({ searchType, search, sort, email, category, limit, pagingsort, pagingcategory, distance }) {
         try {
             const check = (post, query) => {
                 if (!post && query) {
@@ -27,7 +27,8 @@ class BoardRepository {
                 } else if (!post && !query) return null;
             };
 
-            let sortvalue = check(sort, pagingsort);
+            let sortvalue = null;
+            if (pagingcategory) sortvalue = `hit`;
             let categoryvalue = check(category, pagingcategory);
             let where;
             if ((searchType === "A.subject") | (searchType === "A.content")) {
@@ -50,7 +51,6 @@ class BoardRepository {
                 userLatitude = user.latitude;
                 userLongitude = user.longitude;
             }
-
             const query = `SELECT 
             A.id,
             A.email, 
@@ -73,7 +73,7 @@ class BoardRepository {
             LEFT JOIN User AS B ON A.email = B.email
             LEFT JOIN Hashtag AS C ON A.id = C.boardid
             LEFT JOIN BoardImage AS D ON A.id = D.boardid WHERE D.thumbnail = 1
-            AND ST_Distance_Sphere(POINT(${userLongitude}, ${userLatitude}), POINT(B.longitude, B.latitude)) / 1000 <= 10
+            AND ST_Distance_Sphere(POINT(${userLongitude}, ${userLatitude}), POINT(B.longitude, B.latitude)) / 1000 <= ${distance}
             ${where}${categoryKey}
             GROUP BY A.id, D.id
             ${sortKey}

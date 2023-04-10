@@ -9,12 +9,14 @@ import {
   USER_LIKE_REMOVE,
   USER_KEYWORD_ADD,
   USER_KEYWORD_REMOVE,
+  USER_SET_ALARM,
 } from "./types";
 
 const initialState = {
   isLoading: true,
   isError: null,
   isLogin: false,
+  isAlarm: false,
   user: {
     email: "",
     username: "",
@@ -96,6 +98,11 @@ export const user = (state = initialState, action) => {
         ...state,
         keyword: [...action.payload]
       };
+    case USER_SET_ALARM:
+      return {
+        ...state,
+        isAlarm: action.payload,
+    };  
     default:
       return state;
   }

@@ -2,7 +2,7 @@ import request from '../../utils/request'
 import { useRef, useState, useEffect } from 'react'
 import { useSelector } from "react-redux";
 import { Modal } from '../../common/modal'
-import { RefreshBtn } from '../../common/button'
+import { RefreshBtn, DistanceBtn } from '../../common/button'
 import { CategoryOpener, CategorySelector } from '../../common/category'
 import { HomeWrapper, BtnBox, List, ItemWrapper, ItemImage, ItemContent, TextBoxA, TextBoxB, TextBoxC, TextBoxD, Count, PageCounter, } from './styled'
 import { Icon } from '@iconify/react'
@@ -16,6 +16,7 @@ export const Main = () => {
     const [count, setCount] = useState(0)
     const [isOpen, setIsOpen] = useState(false)
     const [boardList, setBoardList] = useState([])
+    const [selectedDistance, setSelectedDistance] = useState('')
     const [selectedCategory, setSelectedCategory] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
@@ -24,27 +25,31 @@ export const Main = () => {
         const fetchData = async () => {
             try {
                 const response = await request.get(
-                    `boards/?count=${count}&category=${selectedCategory}&email=${user.email}`
+                    `boards/?count=${count}&category=${selectedCategory}&distance=${selectedDistance.value}&email=${user.email}`
                 )
-                if (!response.data.isError) {
-                const newBoardList = response.data
-                if (count === 0 || selectedCategory !== '') {
-                    setBoardList(newBoardList)
-                } else {
-                    setBoardList((prevList) => [...prevList, ...newBoardList])
-                }
-                setIsLoading(false)
-                if (newBoardList.length === 0) setIsLoading(true)
-              }
+            if (!response.data.isError) {
+                if (selectedCategory) {
+                    const newBoardList = boardList.filter(
+                      (board) => board.category === selectedCategory
+                  ).concat(response.data);
+                setBoardList(newBoardList);    
+                } else
+                setBoardList([...boardList, ...response.data]);
+                setIsLoading(false);
+                if (response.data.length === 0) setIsLoading(true);
+            }
             } catch (error) {
                 console.log(error)
             }
         }
-
-        if (selectedCategory !== '') setCount(0)
         fetchData()
-    }, [count, selectedCategory])
+    }, [count, selectedCategory, selectedDistance])
 
+
+    useEffect(() => {
+      setCount(0);
+  }, [selectedCategory]);
+  
     useEffect(() => {
         const options = {
             root: null,
@@ -64,6 +69,9 @@ export const Main = () => {
             if (pageCountRef.current) observer.unobserve(pageCountRef.current)
         }
     }, [isLoading])
+
+
+
     const TextList = {
         hidden: {
             opacity: 0,
@@ -81,23 +89,28 @@ export const Main = () => {
         hidden: { opacity: 0, y: 50 },
         visible: { opacity: 1, y: 0 },
     }
-    // console.log(count)
 
     return (
         <HomeWrapper>
             <BtnBox height="2.5rem">
-                <CategoryOpener
-                    width="8.5rem"
-                    height="2.5rem"
-                    onClick={() => {
-                        setIsOpen(true)
-                    }}
-                />
                 <RefreshBtn
                     height="2.5rem"
                     width="3rem"
                     onClick={() => {
                         setSelectedCategory('')
+                    }}
+                />
+                <DistanceBtn 
+                    height="2.5rem"
+                    width="7.5rem"
+                    selectedDistance={selectedDistance}
+                    setSelectedDistance={setSelectedDistance} 
+                />
+                <CategoryOpener
+                    width="8.5rem"
+                    height="2.5rem"
+                    onClick={() => {
+                        setIsOpen(true)
                     }}
                 />
             </BtnBox>
@@ -112,14 +125,14 @@ export const Main = () => {
             <List variants={TextList} initial="hidden" animate="visible">
                 {boardList.map((board) => (
                     <ItemWrapper
-                        height="220px"
-                        key={board.id}
+                        height="180px"
+                        key={board.id + Math.random()}
                         onClick={() => {
                             navigate(`board/${board.id}`)
                         }}
                         variants={TextItem}
                     >
-                        <ItemImage size="220px" src={board.image} state={board.state} />
+                        <ItemImage size="180px" src={board.image} state={board.state} />
                         <ItemContent key={board.id}>
                             <TextBoxA
                                 category={board.category}

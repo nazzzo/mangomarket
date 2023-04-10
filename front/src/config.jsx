@@ -18,7 +18,6 @@ const config = {
 }
 export default config
 
-
 // PORT=3000
 // HOST=localhost
 // REDIRECT_HOST=mgmarket.store

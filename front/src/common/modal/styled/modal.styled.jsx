@@ -23,11 +23,11 @@ export const ModalContent = styled.div`
   height: ${(props) => props.height};
 
   & .iconify {
-    width: 2.2rem;
-    height: 2.2rem;
+    width: 2rem;
+    height: 2rem;
     position: absolute;
-    top: 2%;
-    right: 3%;
+    top: 3%;
+    right: 4%;
     cursor: pointer;    
   }
 `;

@@ -91,6 +91,7 @@ export const BoardView = () => {
             height="30rem"
             width="25rem"
             category={viewData.category}
+            email={user.email}
       />
       {isLogin && (user.email !== viewData.email)
         ? <ViewFooter 

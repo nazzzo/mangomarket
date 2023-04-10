@@ -32,7 +32,7 @@ export const ItemWrapper = styled(motion.li)`
     height: ${({ height }) => height};
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     background-color: #fff;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
     border-radius: 6px;
@@ -42,7 +42,7 @@ export const ItemWrapper = styled(motion.li)`
 const ItemImageWrap = styled.div`
     /* flex-basis: ${({ size }) => size}; */
     width: 200px;
-    height: 200px;
+    height: 180px;
     padding-left: 2%;
     height: 85%;
     display: flex;
@@ -101,7 +101,7 @@ export const ItemImage = ({ size, src, state }) => {
 }
 
 export const ItemContent = styled.div`
-    width: 60%;
+    width: 65%;
     height: 85%;
     display: flex;
     flex-direction: column;
@@ -163,10 +163,23 @@ export const Count = styled.span`
 `
 
 export const TextBoxA = ({ category, subject }) => {
+    let color;
+    if (category === '생활가전') color = '#AEB6BF';
+    else if (category === '가구/인테리어') color = '#D2B48C';
+    else if (category === '디지털기기') color = '#5c8390'; 
+    else if (category === '스포츠/레저') color = '#32CD32'; 
+    else if (category === '게임/음반') color = '#7944ab';
+    else if (category === '주방용품') color = '#FF69B4';
+    else if (category === '유아용품') color = '#e0a88d';
+    else if (category === '남성패션') color = '#4169E1';
+    else if (category === '여성패션') color = '#ec3f5c';
+    else if (category === '음식') color = '#FFA500';
+    else if (category === '반려동물') color = '#8FBC8F';
+    else color = 'orange';
 
     return (
         <TextBoxAStyled>
-            <Category color="orange">{category}</Category>
+            <Category color={color}>{category}</Category>
             <h2>{subject}</h2>
         </TextBoxAStyled>
     )

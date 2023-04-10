@@ -13,7 +13,7 @@ const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { loading, error, data } = useSelector((state) => state.category);
-  const { isLogin, user, keyword } = useSelector((state) => state.user);
+  const { isLogin, user, keyword, isAlarm } = useSelector((state) => state.user);
   const [isAllowChat, setIsAllowChat] = useState(false);
 
 
@@ -50,7 +50,7 @@ const App = () => {
 
   return (
     <>
-      <Header categories={data} isLogin={isLogin} user={user} keywords={keyword} />
+      <Header categories={data} isLogin={isLogin} user={user} keywords={keyword} isAlarm={isAlarm} />
       <AppWrapper><AppRouter /></AppWrapper>
       {isLogin && !isAllowChat && <ChatBtn />}
     </>

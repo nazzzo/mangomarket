@@ -1,5 +1,5 @@
 const app = require('./app.js')
-const socketIO = require("./socket.js")
+const socketIO = require('./socket.js')
 const { sequelize } = require('./models')
 const config = require('./config')
 const PORT = config.port
