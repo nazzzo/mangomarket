@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { SwitchBox, Switch } from "../../common/switch";
-import { GlobalChatWrap, ChatterWrap, ChatterList, ChatterItem, ChatterImgWrap, ChatterImg, ChatterContentWrap, ChatterUserWrap, ChatterUserName, ChatterUserAddress, ChatterContent, BoardImgWrap, BoardImg } from "./styled";
+import { GlobalChatWrap, ChatterWrap, ChatterList, ChatterItem, ChatterImgWrap, ChatterImg, ChatterContentWrap, ChatterUser, ChatterContent, BoardImgWrap, BoardImg, ChatterCard } from "./styled";
 import request from "../../utils/request";
 import { SellerChat, CustomerChat } from "./index";
 
@@ -14,13 +14,11 @@ export const GlobalChat = () => {
 
   const handleSwitch = () => {
     setIsSeller(!isSeller)
-    console.log(selectedChatter)
-    console.log(chatterList)
-    console.log(user)
   };
 
   const getCustomerList = async () => {
     const response = await request.get(`/chats/customers?seller=${user.email}`);
+
     if (!response.data.isError) setCustomerList(response.data);
   };
 
@@ -39,16 +37,20 @@ export const GlobalChat = () => {
     setSelectedChatter(data);
   };
 
+  const handleGoBack = () => {
+    setSelectedChatter(null);
+  }
+
   const chatterList = isSeller ? sellerList : customerList;
-  
+
   return (
-    <GlobalChatWrap>
+    <GlobalChatWrap width="27rem" height="37rem">
       {!selectedChatter && (
         <SwitchBox height="3.5rem">
-          <Switch onClick={handleSwitch} isActive={!isSeller} fontSize="0.9rem">
+          <Switch onClick={handleSwitch} isActive={!isSeller} fontSize="1rem">
             나의 판매목록
           </Switch>
-          <Switch onClick={handleSwitch} isActive={isSeller} fontSize="0.9rem">
+          <Switch onClick={handleSwitch} isActive={isSeller} fontSize="1rem">
             나의 구매목록
           </Switch>
         </SwitchBox>
@@ -56,31 +58,34 @@ export const GlobalChat = () => {
       {!selectedChatter && customerList && sellerList ? (
         <ChatterWrap>
           <ChatterList>
-            {chatterList.map((v, index) =>  (
-              <ChatterItem onClick={() => handleClick(v)} key={index}>
-                <ChatterImgWrap>
-                  <ChatterImg src={v.userImg}></ChatterImg>
-                </ChatterImgWrap>
-                <ChatterContentWrap>
-                  <ChatterUserWrap>
-                    <ChatterUserName>{v.username}</ChatterUserName>
-                    <ChatterUserAddress>{v.address}</ChatterUserAddress>
-                  </ChatterUserWrap>
-                  <ChatterContent>{v.content}</ChatterContent>
+            {chatterList.map((v, index) => {
+              console.log(chatterList);
+              return (
+                <ChatterItem onClick={() => handleClick(v)} key={index}>
+                  <ChatterImgWrap>
+                    <ChatterImg src={v.userImg}></ChatterImg>
+                  </ChatterImgWrap>
+                  <ChatterContentWrap>
+                    <ChatterUser username={v.username} address={v.address} date={v.createdAt} />
+                    <ChatterContent>{v.content}</ChatterContent>
+                  </ChatterContentWrap>
                   <BoardImgWrap>
-                    <BoardImg src={v.image}/>
+                    <BoardImg src={v.image} />
                   </BoardImgWrap>
-                </ChatterContentWrap>
-              </ChatterItem>
-            ))}
+                </ChatterItem>
+              );
+            })}
           </ChatterList>
         </ChatterWrap>
       ) : (
-        <SellerChat
-          seller={!isSeller ? user.email : selectedChatter.seller}
-          customer={!isSeller ? selectedChatter.customer : user.email}
-          boardid={selectedChatter.boardid}
-        /> 
+        <>
+          <ChatterCard onClick={handleGoBack} chatter={selectedChatter} />
+          <SellerChat
+            seller={!isSeller ? user.email : selectedChatter.seller}
+            customer={!isSeller ? selectedChatter.customer : user.email}
+            boardid={selectedChatter.boardid}
+          />
+        </>
       )}
     </GlobalChatWrap>
   );

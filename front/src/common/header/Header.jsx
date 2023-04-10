@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
+import { useInput } from "../../hooks"
 import { useDispatch } from "react-redux"
-import { userSetAlarm } from "../../store"
+import { userSetAlarm, userSetSearch } from "../../store"
 import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import { HeaderWrapper, HeaderWrap, HeaderLogoWrap, HeaderLogoImgWrap, HeaderLogoImg, HeaderMenuWrap, HeaderMenuul, HeaderMenuli, HeaderFunctionWrap, HeaderSearchWrap, HeaderSearchBox, HeaderSearchInput, HeaderAlarmWrap, HeaderUserWrap, HeaderUser, HeaderAlarmMenu } from "./styled"
 import { Hamburger, SearchPopUp, MenuPopUp } from '../index';
@@ -11,6 +12,7 @@ import { Icon } from '@iconify/react';
 import request from "../../utils/request"
 
 export const Header = (({ categories, isLogin, user, keywords, isAlarm }) => {
+    const search = useInput("")
     const dispatch = useDispatch()
     const [searchBox, setSearchBox] = useState(false)
     const [menuBox, setMenuBox] = useState(false)
@@ -56,13 +58,16 @@ export const Header = (({ categories, isLogin, user, keywords, isAlarm }) => {
 
     const headerMenuList = navigation(HeaderMenuli)
 
-    const handleSearchClick = () => {
+    const handleSearchClick = (e) => {
+        e.preventDefault();
         if(menuBox) {
             setMenuBox(!menuBox)
             setSearchBox(!searchBox)}
         else {
             setSearchBox(!searchBox) 
         }
+        dispatch(userSetSearch(search.value))
+        search.clear()
     }
 
     const handleMenuClick = () => {
@@ -94,7 +99,7 @@ export const Header = (({ categories, isLogin, user, keywords, isAlarm }) => {
                         <HeaderFunctionWrap>
                             <HeaderSearchWrap>
                                 <HeaderSearchBox>
-                                    <HeaderSearchInput placeholder='검색어를 입력해주세요' type={'search'}/>
+                                    <HeaderSearchInput placeholder='검색어를 입력해주세요' type="search" id="search" name="search" value={search.value} onChange={search.onChange} />
                                     <Icon icon="material-symbols:search" onClick={handleSearchClick} />
                                 </HeaderSearchBox>
                             </HeaderSearchWrap>

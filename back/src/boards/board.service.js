@@ -13,6 +13,7 @@ class BoardService {
             // console.log("scht, sch, srt", searchType, search, sort, count, pagingsort, pagingcategory);
             if (category === `default`) category = ``;
             if (searchType === "email") searchType = "A.email";
+            if (!searchType && search) searchType = "A.subject";
             const views = 6;
             let limitval = views * count;
             // console.log(`limitval:::`, limitval);

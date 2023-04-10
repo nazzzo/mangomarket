@@ -65,7 +65,8 @@ class ChatRepository {
       B.userImg,
       B.address,
       C.image,
-      A.content
+      A.content,
+      A.createdAt
       FROM Chat AS A
       INNER JOIN (
       SELECT 

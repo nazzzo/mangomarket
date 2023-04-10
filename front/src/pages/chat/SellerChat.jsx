@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, useMemo, memo } from 'react';
 import { useSelector } from "react-redux";
 import { useInput } from "../../hooks"
+import { ChatForm, ChatInput, ChatButton} from "./styled"
 import request from "../../utils/request"
 import io from "socket.io-client"
 import config from "../../config"
@@ -13,6 +14,7 @@ export const SellerChat = ({ seller, customer, boardid }) => {
     const [chats, setChats] = useState([])
     const { user } = useSelector((state) => state.user)
     const content = useInput("")
+    console.log(`customer::::`, customer)
 
     useEffect(() => {
         const getSellerChat = async () => {
@@ -92,10 +94,10 @@ export const SellerChat = ({ seller, customer, boardid }) => {
                     <></>
                 )}
             </div>
-            <form onSubmit={handleSendMessage}>
-                <input type="text" value={content.value} onChange={content.onChange} />
-                <button type="submit">전송</button>
-            </form>
+            <ChatForm onSubmit={handleSendMessage}>
+                <ChatInput type="text" value={content.value} onChange={content.onChange} placeholder="메세지를 입력해주세요" />
+                <ChatButton type="submit" />
+            </ChatForm>
         </>
     )
 }
