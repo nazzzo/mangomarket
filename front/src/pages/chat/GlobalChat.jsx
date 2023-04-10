@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux';
 import { SwitchBox, Switch } from "../../common/switch";
 import { GlobalChatWrap } from "./styled"
 import request from "../../utils/request";
-import { SellerChat, CustomerChat } from './index';
+// import { SellerChat, CustomerChat } from './index';
+import { SellerChat } from './SellerChat';
 
 import styled from 'styled-components';
 
@@ -85,10 +86,9 @@ export const GlobalChat = () => {
         setSellerList(response.data)
     }
 
-    const handleClick = (boardid, customer, userImg, address) => {
-        console.log(boardid, customer, userImg, address)
-
-        // setSelectedChatter()
+    const handleClick = (data) => {
+        console.log(data)
+        setSelectedChatter(data)
     }
 
     return (
@@ -105,20 +105,24 @@ export const GlobalChat = () => {
             <ChatterWrap>
                 <ChatterList>
                     {!isSeller ? customerList.map((v, index) =>
-                        !selectedChatter ? 
-                        <Chatter onClick={() => handleClick(v.boardid, v.customer, v.userImg, v.address)} key={index} room={`${v.boardid}-${v.customer}`}>
-                            <ChatterImgWrap>
-                                <ChatterImg src={v.userImg}></ChatterImg>
-                            </ChatterImgWrap>
-                            <ChatterContentWrap>
-                                <ChatterUserWrap>
-                                    <ChatterUserName>{v.username}</ChatterUserName>
-                                    <ChatterUserAddress>{v.address}</ChatterUserAddress>
-                                </ChatterUserWrap>
-                                <ChatterContent>최신채팅내역</ChatterContent>
-                            </ChatterContentWrap>
-                        </Chatter>
-                        : <CustomerChat seller customer boardid />
+                        !selectedChatter ?
+                            <Chatter onClick={() => handleClick(v)} key={index}>
+                                <ChatterImgWrap>
+                                    <ChatterImg src={v.userImg}></ChatterImg>
+                                </ChatterImgWrap>
+                                <ChatterContentWrap>
+                                    <ChatterUserWrap>
+                                        <ChatterUserName>{v.username}</ChatterUserName>
+                                        <ChatterUserAddress>{v.address}</ChatterUserAddress>
+                                    </ChatterUserWrap>
+                                    <ChatterContent>최신채팅내역</ChatterContent>
+                                </ChatterContentWrap>
+                            </Chatter>
+                            : <SellerChat
+                                seller={user.email}
+                                customer={selectedChatter.customer}
+                                boardid={selectedChatter.boardid}
+                                />
                     ) : sellerList.map((v) =>
                         <Chatter>
                             <ChatterImgWrap>

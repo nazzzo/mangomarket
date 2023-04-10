@@ -13,6 +13,8 @@ export const CustomerChat = ({ seller, customer, boardid }) => {
   const [ chats, setChats ] = useState([]);
   const content = useInput("");
 
+  console.log(seller, customer, boardid)
+
   useEffect(() => {
     const getCustomerChat = async () => {
       const response = await request.get(`/chats?customer=${customer.email}`);
