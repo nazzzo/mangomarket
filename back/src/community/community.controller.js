@@ -24,8 +24,6 @@ class CommunityController {
             console.log('req.query getWrite :: ', req.query)
             console.log('req.query getWrite :: ', id)
             const response = await this.communityService.getWriting({ id })
-
-            const response = await this.communityService.postComment({ id, content, email, parentId })
             console.log(response)
 
             res.json(response)
@@ -101,7 +99,7 @@ class CommunityController {
                 req.params.id,
                 req.params.idx,
                 req.body.content,
-                req.body.isDeleted,
+                req.body.isDeleted
             )
             res.status(201).json(response)
         } catch (e) {
