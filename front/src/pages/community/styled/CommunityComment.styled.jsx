@@ -63,7 +63,7 @@ const ReplyPoint = styled.span`
   left: 0;
   display: inline-block;
   position: absolute;
-  top:0.5rem;
+  top:0.6rem;
   left: 2.5rem;
   opacity: 0.4;
 `
