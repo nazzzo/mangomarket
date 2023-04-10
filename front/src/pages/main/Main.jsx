@@ -125,14 +125,14 @@ export const Main = () => {
             <List variants={TextList} initial="hidden" animate="visible">
                 {boardList.map((board) => (
                     <ItemWrapper
-                        height="220px"
+                        height="180px"
                         key={board.id + Math.random()}
                         onClick={() => {
                             navigate(`board/${board.id}`)
                         }}
                         variants={TextItem}
                     >
-                        <ItemImage size="220px" src={board.image} state={board.state} />
+                        <ItemImage size="180px" src={board.image} state={board.state} />
                         <ItemContent key={board.id}>
                             <TextBoxA
                                 category={board.category}

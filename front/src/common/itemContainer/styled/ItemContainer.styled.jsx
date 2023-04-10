@@ -13,7 +13,10 @@ export const List = styled.ul`
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    padding: 0 3%;    
+    padding: 0 3%;
+    /* & nth-child(odd) {
+    justify-content: flex-start;
+    } */
 `
 
 export const ItemWrapper = styled.li`

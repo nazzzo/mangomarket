@@ -32,7 +32,7 @@ export const ItemWrapper = styled(motion.li)`
     height: ${({ height }) => height};
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     background-color: #fff;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
     border-radius: 6px;
@@ -42,7 +42,7 @@ export const ItemWrapper = styled(motion.li)`
 const ItemImageWrap = styled.div`
     /* flex-basis: ${({ size }) => size}; */
     width: 200px;
-    height: 200px;
+    height: 180px;
     padding-left: 2%;
     height: 85%;
     display: flex;
@@ -101,7 +101,7 @@ export const ItemImage = ({ size, src, state }) => {
 }
 
 export const ItemContent = styled.div`
-    width: 60%;
+    width: 65%;
     height: 85%;
     display: flex;
     flex-direction: column;
