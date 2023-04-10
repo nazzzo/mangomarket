@@ -9,6 +9,7 @@ import {
   USER_LIKE_REMOVE,
   USER_KEYWORD_ADD,
   USER_KEYWORD_REMOVE,
+  USER_SET_ALARM,
 } from "./types";
 
 export const userLogin = (isLogin, user) => ({
@@ -66,3 +67,7 @@ export const removeUserInfo = () => ({
   type: USER_INFO_REMOVE,
 });
 
+export const userSetAlarm = (data) => ({
+  type: USER_SET_ALARM,
+  payload: data,
+})

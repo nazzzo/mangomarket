@@ -4,7 +4,7 @@ class BoardController {
     }
     async getList(req, res, next) {
         try {
-            // console.log("req.query", req.query);
+            console.log("req.query", req.query);
             // console.log("req.body", req.body);
             const response = await this.boardService.getList(req.body, req.query);
             res.json(response);

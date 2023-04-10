@@ -8,12 +8,12 @@ class BoardService {
         this.viewObj = new Object();
     }
 
-    async getList({ sort, category }, { count, searchType, search, email, sort: pagingsort, category: pagingcategory }) {
+    async getList({ sort, category }, { count, searchType, search, email, sort: pagingsort, category: pagingcategory, distance }) {
         try {
             // console.log("scht, sch, srt", searchType, search, sort, count, pagingsort, pagingcategory);
             if (category === `default`) category = ``;
             if (searchType === "email") searchType = "A.email";
-            const views = 8;
+            const views = 6;
             let limitval = views * count;
             // console.log(`limitval:::`, limitval);
             if (!count || Number(count) === 1) limitval = views;
@@ -21,7 +21,9 @@ class BoardService {
                 limit: limitval,
                 views,
             };
-            const data = await this.boardRepository.findAll({ searchType, search, email, sort, category, limit, pagingsort, pagingcategory });
+            if (distance === "undefined") distance = 2.5
+            else if (!distance) distance = 10
+            const data = await this.boardRepository.findAll({ searchType, search, email, sort, category, limit, pagingsort, pagingcategory, distance });
             // console.log("serv", data);
             return data;
         } catch (e) {

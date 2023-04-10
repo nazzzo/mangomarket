@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react"
+import { useDispatch } from "react-redux"
+import { userSetAlarm } from "../../store"
 import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import { HeaderWrapper, HeaderWrap, HeaderLogoWrap, HeaderLogoImgWrap, HeaderLogoImg, HeaderMenuWrap, HeaderMenuul, HeaderMenuli, HeaderFunctionWrap, HeaderSearchWrap, HeaderSearchBox, HeaderSearchInput, HeaderAlarmWrap, HeaderUserWrap, HeaderUser, HeaderAlarmMenu } from "./styled"
 import { Hamburger, SearchPopUp, MenuPopUp } from '../index';
@@ -8,34 +10,34 @@ import { KeywordAlarm } from "../../common/profile"
 import { Icon } from '@iconify/react';
 import request from "../../utils/request"
 
-export const Header = (({ categories, isLogin, user, keywords }) => {
+export const Header = (({ categories, isLogin, user, keywords, isAlarm }) => {
+    const dispatch = useDispatch()
     const [searchBox, setSearchBox] = useState(false)
     const [menuBox, setMenuBox] = useState(false)
     const [isActive, setIsActive] = useState(false);
     const [isOpen, setIsOpen] = useState(false)
-    const [newAlarm, setNewAlarm] = useState(false)
     const [alarmData, setAlarmData] = useState([])
 
 
     const getAlarm = async () => {
         const query = keywords.map(v => v.id).join(',');
         const response = await request.get(`boards/keywords?id=${query}&email=${user.email}`);
-        setAlarmData(response.data);
+        if (!response.data.isError) setAlarmData(response.data);
     };
 
     useEffect(() => {
         getAlarm();
-        const interval = setInterval(() => { getAlarm();}, 1 * 60 * 1000);
+        const interval = setInterval(() => { getAlarm();}, 3 * 60 * 1000);
         return () => clearInterval(interval);
     }, []);
 
     useEffect(() => {
-        if (alarmData.length > 0) setNewAlarm(true);
+        if (alarmData.length > 0) dispatch(userSetAlarm(true))
     }, [alarmData]);
-    // console.log(`newAlarm:::`, newAlarm)
+    console.log(isAlarm)
 
     useEffect(() => {
-        if (isOpen) setNewAlarm(false);
+        if (isOpen) dispatch(userSetAlarm(false))
     }, [isOpen]);
 
 
@@ -65,7 +67,6 @@ export const Header = (({ categories, isLogin, user, keywords }) => {
     }
 
     const handleMenuClick = () => {
-        console.log(1)
         if(searchBox) {
             setSearchBox(!searchBox)
             setMenuBox(!menuBox)}
@@ -100,13 +101,13 @@ export const Header = (({ categories, isLogin, user, keywords }) => {
                             </HeaderSearchWrap>
                             <HeaderAlarmWrap onClick={()=>{setIsActive(!isActive)}} className={isActive ? 'on' : ''}>
                                 <Icon icon="mdi:bell" />
-                                {newAlarm && <AlarmDot setNewAlarm={setNewAlarm} top="27%" right="27%" />}
+                                {isAlarm && <AlarmDot top="27%" right="27%" />}
                                 <HeaderAlarmMenu onClick={
                                      ()=> {setIsOpen(true)
-                                     setNewAlarm(false)}} 
+                                     dispatch(userSetAlarm(false))}} 
                                      className="snb"
                                 >
-                                    {newAlarm && <AlarmDot top="20%" left="14%" />}
+                                    {isAlarm && <AlarmDot top="20%" left="14%" />}
                                 </HeaderAlarmMenu>
                             </HeaderAlarmWrap>
                             <HeaderUserWrap onClick={handleMenuClick}>
