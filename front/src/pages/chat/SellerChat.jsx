@@ -18,14 +18,11 @@ export const SellerChat = ({ seller, customer, boardid }) => {
             const response = await request.get(`/chats?seller=${seller}`)
             if (!response.data.isError) {
                 setLogs(response.data);
-                // const customerList = [...new Set(response.data.map(v => v.customer))]
-                // const namespaceList = [...new Set(response.data.map(v => v.boardid))]
-                // setCustomer(customerList)
-                // setNamespace(namespaceList)
             }
         }
         getSellerChat()
     }, [])
+    console.log(logs)
 
     useEffect(() => {
         socket = io(ENDPOINT);
