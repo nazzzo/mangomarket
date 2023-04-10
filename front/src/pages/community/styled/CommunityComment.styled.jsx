@@ -5,17 +5,18 @@ export const TotalComments = styled.div`
   border-bottom: 1px solid #000000;
   font-size:1.5rem;
   padding: 0.5rem;
+  align-items: center;
 `
 
 export const CommentForm = styled.form`
   /* margin-top: 2rem; */
+  
 `
 
 export const CommentInput = styled.div`
-  margin-top: 1rem;
+  /* margin-top: 1rem; */
   display: flex;
-  align-items: center;
-  background: #D9D9D9;
+  /* align-items: center; */
 `
 
 export const ContentInput = styled.input`
@@ -36,10 +37,35 @@ export const CommentList = styled.div`
   width: 100%;
 `
 
-const CommentWrapStyled = styled.div``
+const CommentWrapStyled = styled.div`
+  border-bottom: 0.5px solid #c8c8c8;
+`
+
+const DeleteInfo = styled.div`
+  height: 5rem;
+  display: flex;
+  align-items: center;
+`
 
 const ReplyWrapStyled = styled.div`
-  margin-left: 10%
+  padding-left: 10%;
+  border-bottom: 0.5px solid #c8c8c8;
+  background-color: #fffaf2;
+  padding-top: 1px;
+  position: relative;
+`
+
+const ReplyPoint = styled.span`
+  border-width: 0 0 1px 1px;
+  border-style: solid;
+  width: 10px;
+  height: 10px;
+  left: 0;
+  display: inline-block;
+  position: absolute;
+  top:0.6rem;
+  left: 2.5rem;
+  opacity: 0.4;
 `
 
 export const CommentWrapper = ({parentId, children, isDeleted, deleteRender}) => {
@@ -47,8 +73,8 @@ export const CommentWrapper = ({parentId, children, isDeleted, deleteRender}) =>
   return (
     <>
       { !parentId ? 
-        <CommentWrapStyled>{!deleteRender && !isDeleted ? children : <>삭제된 댓글입니다.</>}</CommentWrapStyled>
-        : <ReplyWrapStyled>{children}</ReplyWrapStyled>
+        <CommentWrapStyled>{!deleteRender && !isDeleted ? children : <DeleteInfo>삭제된 댓글입니다.</DeleteInfo>}</CommentWrapStyled>
+        : <ReplyWrapStyled><ReplyPoint></ReplyPoint>{children}</ReplyWrapStyled>
       }
     </>
   ) 
@@ -89,7 +115,7 @@ export const MDButtons = styled.div`
 export const ButtonMD = styled.button`
   outline: none;
   border: none;
-  background: white;
+  background: #fffaf2;
   cursor: pointer;
   padding: 0.3rem;
 `
