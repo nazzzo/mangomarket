@@ -1,6 +1,7 @@
 import request from '../../utils/request'
 import { useRef, useState, useEffect } from 'react'
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { userSetSearch } from "../../store"
 import { Modal } from '../../common/modal'
 import { RefreshBtn, DistanceBtn } from '../../common/button'
 import { CategoryOpener, CategorySelector } from '../../common/category'
@@ -8,10 +9,8 @@ import { HomeWrapper, BtnBox, List, ItemWrapper, ItemImage, ItemContent, TextBox
 import { Icon } from '@iconify/react'
 import { useNavigate } from 'react-router-dom'
 
-
-
 export const Main = () => {
-    const { isLogin, user } = useSelector((state) => state.user);
+    const { isLogin, user, search } = useSelector((state) => state.user);
     const pageCountRef = useRef(null)
     const [count, setCount] = useState(0)
     const [isOpen, setIsOpen] = useState(false)
@@ -20,31 +19,39 @@ export const Main = () => {
     const [selectedCategory, setSelectedCategory] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    console.log(`search:::`, search)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await request.get(
-                    `boards/?count=${count}&category=${selectedCategory}&distance=${selectedDistance.value}&email=${user.email}`
+                    `boards/?count=${count}&category=${selectedCategory}&distance=${selectedDistance.value}&email=${user.email}&search=${search}`
                 )
             if (!response.data.isError) {
                 if (selectedCategory) {
                     const newBoardList = boardList.filter(
                       (board) => board.category === selectedCategory
                   ).concat(response.data);
-                setBoardList(newBoardList);    
+                setBoardList(newBoardList);
+                } else if (search) {
+                  const newBoardList = boardList.filter(
+                    (board) => board.subject.includes(search)
+                  ).concat(response.data);
+                setBoardList(newBoardList);
+                dispatch(userSetSearch(""))
                 } else
                 setBoardList((prevList) => [...prevList, ...response.data]);
                 setIsLoading(false);
-                if (response.data.length === 0) setIsLoading(true);
+                if (response.data.length === 0) setIsLoading(true)
             }
             } catch (error) {
                 console.log(error)
             }
         }
         fetchData()
-    }, [count, selectedCategory, selectedDistance])
-
+    }, [count, selectedCategory, selectedDistance, search, dispatch])
 
     useEffect(() => {
         setCount(0);
