@@ -5,6 +5,7 @@ class ChatRepository {
     this.Board = Board;
     this.sequelize = sequelize;
   }
+
   async findAll(type) {
     try {
       if (type.customer) {
@@ -35,6 +36,14 @@ class ChatRepository {
     }
   }
 
+  async findUserInfo(opponent){
+    try {
+      console.log("abcd",opponent)
+    } catch (e) {
+      throw new Error(e)
+    }
+  }
+
   async postChat(data) {
     try {
       const result = await this.Chat.create(data);
@@ -47,8 +56,6 @@ class ChatRepository {
   async getUsers({ type, useremail }) {
     try {
       let column;
-      console.log(type); // seller ? customer
-      console.log(useremail);
       type === "seller" ? (column = `customer`) : (column = `seller`);
 
       const sql = `SELECT 
@@ -80,7 +87,7 @@ class ChatRepository {
       const result = await this.sequelize.query(sql, { raw: true, nest: true });
       return result;
     } catch (e) {
-      console.log(e);
+      throw new Error(e);
     }
   }
 }

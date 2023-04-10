@@ -41,15 +41,16 @@ export const SellerChat = ({ seller, customer, boardid }) => {
 
     const handleSendMessage = async (e) => {
         e.preventDefault()
+        let email
 
-        if(seller !== user.email) seller = user.email
-        
+        seller === user.email ? email = seller : email = customer
+
         let data = {
             boardid,
             customer,
             seller,
             content: content.value,
-            email: seller,
+            email,
             username: user.username,
             userImg: user.userImg,
             address: user.address,

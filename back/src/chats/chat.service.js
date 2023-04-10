@@ -7,7 +7,9 @@ class ChatService {
     
     async getList(type) {
         try {
+            const { opponent } = type
             const list = await this.chatRepository.findAll(type);
+            const userInfo = await this.chatRepository.findUserInfo(opponent)
             if (list.length === 0) throw "내용이 없습니다";
             return list;
           } catch (e) {
