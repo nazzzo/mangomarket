@@ -45,6 +45,9 @@ export const CustomerChat = ({ seller, customer, boardid }) => {
       customer: customer.email,
       content: content.value,
       email: customer.email,
+      username: customer.username,
+      userImg: customer.userImg,
+      address: customer.address,
     }
     socket.emit("sendMessage", { data });
     const response = await request.post(`/chats`, { data })
@@ -71,7 +74,9 @@ export const CustomerChat = ({ seller, customer, boardid }) => {
           <ul>
             {chats.map((v, idx) => (
               <div key={idx}>
-                <li>{v.email}</li>
+                <h3>{v.username}</h3>
+                {/* <img src={v.userImg}/> */}
+                <li>{v.address}</li>
                 <li>{v.content}</li>
               </div>
             ))}

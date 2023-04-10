@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { SwitchBox, Switch } from "../../common/switch";
-import { GlobalChatWrap, ChatterWrap, ChatterList, ChatterItem, ChatterImgWrap, ChatterImg, ChatterContentWrap, ChatterUserWrap, ChatterUserName, ChatterUserAddress, ChatterContent } from "./styled";
+import { GlobalChatWrap, ChatterWrap, ChatterList, ChatterItem, ChatterImgWrap, ChatterImg, ChatterContentWrap, ChatterUserWrap, ChatterUserName, ChatterUserAddress, ChatterContent, BoardImgWrap, BoardImg } from "./styled";
 import request from "../../utils/request";
 import { SellerChat, CustomerChat } from "./index";
 
@@ -65,7 +65,10 @@ export const GlobalChat = () => {
                     <ChatterUserName>{v.username}</ChatterUserName>
                     <ChatterUserAddress>{v.address}</ChatterUserAddress>
                   </ChatterUserWrap>
-                  <ChatterContent>최신채팅내역</ChatterContent>
+                  <ChatterContent>{v.content}</ChatterContent>
+                  <BoardImgWrap>
+                    <BoardImg src={v.image}/>
+                  </BoardImgWrap>
                 </ChatterContentWrap>
               </ChatterItem>
             )})}
