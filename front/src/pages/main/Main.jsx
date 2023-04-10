@@ -34,7 +34,7 @@ export const Main = () => {
                   ).concat(response.data);
                 setBoardList(newBoardList);    
                 } else
-                setBoardList([...boardList, ...response.data]);
+                setBoardList((prevList) => [...prevList, ...response.data]);
                 setIsLoading(false);
                 if (response.data.length === 0) setIsLoading(true);
             }
