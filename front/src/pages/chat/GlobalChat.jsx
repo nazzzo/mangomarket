@@ -13,12 +13,14 @@ export const GlobalChat = () => {
   const { user } = useSelector((state) => state.user);
 
   const handleSwitch = () => {
-    setIsSeller(!isSeller);
+    setIsSeller(!isSeller)
+    console.log(selectedChatter)
+    console.log(chatterList)
+    console.log(user)
   };
 
   const getCustomerList = async () => {
     const response = await request.get(`/chats/customers?seller=${user.email}`);
-    console.log(`response:::`, response.data)
     if (!response.data.isError) setCustomerList(response.data);
   };
 
@@ -33,12 +35,12 @@ export const GlobalChat = () => {
   };
 
   const handleClick = (data) => {
+    console.log(data)
     setSelectedChatter(data);
   };
 
   const chatterList = isSeller ? sellerList : customerList;
-  console.log(sellerList, customerList)
-
+  
   return (
     <GlobalChatWrap>
       {!selectedChatter && (
@@ -47,15 +49,14 @@ export const GlobalChat = () => {
             나의 판매목록
           </Switch>
           <Switch onClick={handleSwitch} isActive={isSeller} fontSize="0.9rem">
-            구매자
+            나의 구매목록
           </Switch>
         </SwitchBox>
       )}
       {!selectedChatter && customerList && sellerList ? (
         <ChatterWrap>
           <ChatterList>
-            {chatterList.map((v, index) =>  { console.log(chatterList)
-            return(
+            {chatterList.map((v, index) =>  (
               <ChatterItem onClick={() => handleClick(v)} key={index}>
                 <ChatterImgWrap>
                   <ChatterImg src={v.userImg}></ChatterImg>
@@ -71,15 +72,15 @@ export const GlobalChat = () => {
                   </BoardImgWrap>
                 </ChatterContentWrap>
               </ChatterItem>
-            )})}
+            ))}
           </ChatterList>
         </ChatterWrap>
       ) : (
         <SellerChat
-          seller={user.email}
-          customer={selectedChatter.customer}
+          seller={!isSeller ? user.email : selectedChatter.seller}
+          customer={!isSeller ? selectedChatter.customer : user.email}
           boardid={selectedChatter.boardid}
-        />
+        /> 
       )}
     </GlobalChatWrap>
   );

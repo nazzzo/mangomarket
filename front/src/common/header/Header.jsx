@@ -34,7 +34,6 @@ export const Header = (({ categories, isLogin, user, keywords, isAlarm }) => {
     useEffect(() => {
         if (alarmData.length > 0) dispatch(userSetAlarm(true))
     }, [alarmData]);
-    console.log(isAlarm)
 
     useEffect(() => {
         if (isOpen) dispatch(userSetAlarm(false))

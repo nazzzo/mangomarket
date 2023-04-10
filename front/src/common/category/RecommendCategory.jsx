@@ -15,7 +15,6 @@ export const RecommendCategory = ({ width, height, category, email }) => {
         const response = await request.get(
           `boards/?count=${count}&category=${category}&email=${email}`
         );
-        console.log(response.data)
         if (!response.data.isError) {
           const newBoardList = response.data;
           if (count === 0 || category !== "") {
