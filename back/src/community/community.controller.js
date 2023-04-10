@@ -11,7 +11,7 @@ class CommunityController {
             if (!email) throw new Error('로그인이 필요합니다.')
             if (!content) throw new Error('내용을 입력해주세요')
 
-            const response = await this.communityService.postComment({ id, content, email })
+            const response = await this.communityService.postComment({ id, content, email, parentId })
             res.json(response)
         } catch (e) {
             next(e)

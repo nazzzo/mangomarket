@@ -7,7 +7,6 @@ import { Icon } from '@iconify/react'
 import { useRef } from 'react'
 import { useSelector } from 'react-redux'
 
-
 const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, username, img, parentId, isDeleted}) => {
     const [isInput, setIsInput] = useState(false)
     const [modified, setModified] = useState()
@@ -36,6 +35,7 @@ const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, use
         }
 
         try {
+            console.log(parentIdx)
             const response = await request.post(`/community/${id}`, {
                 // content: toUser + " " + replyComment,
                 // content: `${toUser.outerHTML} ${replyComment}`
@@ -79,8 +79,10 @@ const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, use
     const handleModify = async () => {
         if (content === comment.value) setIsInput(false)
         try {
-            const response = await request.put(`/community/comment/${id}/${idx}`, {
-                content: comment.value,
+            let toUser
+            if (content.indexOf('@') === 0) toUser = content.split(" ")[0]
+                const response = await request.put(`/community/comment/${id}/${idx}`, {
+                content: toUser + " " + comment.value,
             })
             if (response.data === 1) {
                 setModified(comment.value)
