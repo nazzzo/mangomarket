@@ -15,7 +15,7 @@ export const CustomerChat = ({ seller, customer, boardid }) => {
 
   useEffect(() => {
     const getCustomerChat = async () => {
-      const response = await request.get(`/chats?customer=${customer.email}`);
+      const response = await request.get(`/chats?customer=${customer.email}&opponent=${seller.email}&boardid=${boardid}`);
       if (!response.data.isError) setLogs(response.data);
     };
     getCustomerChat();
@@ -30,6 +30,8 @@ export const CustomerChat = ({ seller, customer, boardid }) => {
       setChats([...chats, newMessage]);
     });
 
+    //{boardid: '5', seller: 'seller@naver.com', customer: 'customer@naver.com', content: 'hi', type: 'sender'}
+
     return () => {
       socket.disconnect();
     };
@@ -42,7 +44,7 @@ export const CustomerChat = ({ seller, customer, boardid }) => {
       seller: seller.email,
       customer: customer.email,
       content: content.value,
-      type: "sender",
+      email: customer.email,
     }
     socket.emit("sendMessage", { data });
     const response = await request.post(`/chats`, { data })
@@ -57,7 +59,7 @@ export const CustomerChat = ({ seller, customer, boardid }) => {
           <ul>
             {logs.map((v) => (
               <div key={v.id}>
-                <li>{v.seller || v.customer}</li>
+                <li>{v.email}</li>
                 <li>{v.content}</li>
               </div>
             ))}
@@ -69,7 +71,7 @@ export const CustomerChat = ({ seller, customer, boardid }) => {
           <ul>
             {chats.map((v, idx) => (
               <div key={idx}>
-                <li>{v.seller || v.customer}</li>
+                <li>{v.email}</li>
                 <li>{v.content}</li>
               </div>
             ))}

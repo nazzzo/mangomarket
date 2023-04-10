@@ -7,14 +7,16 @@ class ChatRepository {
   }
   async findAll(type) {
     try {
+      console.log(type)
       if (type.customer) {
-        const findAll = await this.Chat.findAll({ where:{ customer:`${type.customer}`}, raw: true, nest: true});
+        const findAll = await this.Chat.findAll({ where:{ customer:`${type.customer}`,seller: `${type.opponent}`, boardid: `${type.boardid}`}, raw: true, nest: true});
         return findAll;
       }
       else if (type.seller) {
-        const findAll = await this.Chat.findAll({ where:{ seller:`${type.seller}`}, raw: true, nest: true});
+        const findAll = await this.Chat.findAll({ where:{ seller:`${type.seller}`,customer: `${type.opponent}`, boardid: `${type.boardid}`}, raw: true, nest: true});
         return findAll;
       }
+
     } catch (e) {
       throw new Error(e);
     }
@@ -47,7 +49,7 @@ class ChatRepository {
       JOIN User as B 
           ON A.seller = B.email 
       WHERE 
-      A.${type} = "${useremail}"
+      A.${column} = "${useremail}"
       GROUP BY 
       ${column}, 
       A.boardid, 

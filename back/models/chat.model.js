@@ -23,10 +23,6 @@ module.exports = (sequelize, Sequelize) => {
               key: "email",
             },
           },
-          type: {
-            type: Sequelize.ENUM('sender', 'receiver'),
-            allowNull: false,
-          }
         },
         {
           sequelize,

@@ -5,6 +5,7 @@ class ChatController {
 
   async getList(req, res, next) {
     try {
+      console.log(req.query)
       const response = await this.chatService.getList(req.query);
       res.json(response);
     } catch (e) {
@@ -33,6 +34,7 @@ class ChatController {
 
   async getSellers (req, res, next) {
     try {
+      // console.log("쿼리",req.query)
       const result = await this.chatService.getUsers(req.query)
       res.status(201).json(result)
     } catch (e) {
