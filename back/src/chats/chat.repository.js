@@ -7,7 +7,6 @@ class ChatRepository {
   }
   async findAll(type) {
     try {
-      console.log(type);
       if (type.customer) {
         const findAll = await this.Chat.findAll({
           where: {

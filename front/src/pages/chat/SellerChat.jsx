@@ -14,10 +14,6 @@ export const SellerChat = ({ seller, customer, boardid }) => {
     const { user } = useSelector((state) => state.user)
     const content = useInput("")
 
-    console.log(seller)
-    console.log(customer)
-    console.log(boardid)
-
     useEffect(() => {
         const getSellerChat = async () => {
             const response = await request.get(`/chats?seller=${seller}&opponent=${customer}&boardid=${boardid}`)
@@ -45,7 +41,9 @@ export const SellerChat = ({ seller, customer, boardid }) => {
 
     const handleSendMessage = async (e) => {
         e.preventDefault()
-        console.log(user)
+
+        if(seller !== user.email) seller = user.email
+        
         let data = {
             boardid,
             customer,
