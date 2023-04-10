@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom'
 
 
 export const Main = () => {
-  const { isLogin, user } = useSelector((state) => state.user);
+    const { isLogin, user } = useSelector((state) => state.user);
     const pageCountRef = useRef(null)
     const [count, setCount] = useState(0)
     const [isOpen, setIsOpen] = useState(false)
@@ -27,17 +27,17 @@ export const Main = () => {
                 const response = await request.get(
                     `boards/?count=${count}&category=${selectedCategory}&distance=${selectedDistance.value}&email=${user.email}`
                 )
-            if (!response.data.isError) {
-                if (selectedCategory) {
-                    const newBoardList = boardList.filter(
-                      (board) => board.category === selectedCategory
-                  ).concat(response.data);
-                setBoardList(newBoardList);    
-                } else
-                setBoardList([...boardList, ...response.data]);
-                setIsLoading(false);
-                if (response.data.length === 0) setIsLoading(true);
-            }
+                if (!response.data.isError) {
+                    if (selectedCategory) {
+                        const newBoardList = boardList.filter(
+                            (board) => board.category === selectedCategory
+                        ).concat(response.data);
+                        setBoardList(newBoardList);
+                    } else
+                        setBoardList((prevList) => [...prevList, ...response.data]);
+                    setIsLoading(false);
+                    if (response.data.length === 0) setIsLoading(true);
+                }
             } catch (error) {
                 console.log(error)
             }
@@ -47,9 +47,9 @@ export const Main = () => {
 
 
     useEffect(() => {
-      setCount(0);
-  }, [selectedCategory]);
-  
+        setCount(0);
+    }, [selectedCategory]);
+
     useEffect(() => {
         const options = {
             root: null,
@@ -100,11 +100,11 @@ export const Main = () => {
                         setSelectedCategory('')
                     }}
                 />
-                <DistanceBtn 
+                <DistanceBtn
                     height="2.5rem"
                     width="7.5rem"
                     selectedDistance={selectedDistance}
-                    setSelectedDistance={setSelectedDistance} 
+                    setSelectedDistance={setSelectedDistance}
                 />
                 <CategoryOpener
                     width="8.5rem"
