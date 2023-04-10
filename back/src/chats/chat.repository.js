@@ -49,7 +49,7 @@ class ChatRepository {
       JOIN User as B 
           ON A.seller = B.email 
       WHERE 
-      A.${type} = "${useremail}"
+      A.${column} = "${useremail}"
       GROUP BY 
       ${column}, 
       A.boardid, 
