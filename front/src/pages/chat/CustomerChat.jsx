@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { ChatterCard, CustomerChatWrap, ChatForm, ChatOption, ChatInput, ChatButton, ChatMenu, ChatLogWrap, ChatLogs, LiveChats, LeftMessageWrap, RightMessageWrap, ChatUserImg, ChatMessage, ChatTime } from "./styled"
 import { useInput } from "../../hooks";
@@ -15,6 +15,7 @@ export const CustomerChat = ({ seller, customer, boardid, chatter, width, height
   const [isActiveButton, setIsActiveButton] = useState(false);
   const { user } = useSelector((state) => state.user)
   const content = useInput("");
+  const chatheight = useRef()
 
   useEffect(() => {
     const getCustomerChat = async () => {
@@ -29,6 +30,7 @@ export const CustomerChat = ({ seller, customer, boardid, chatter, width, height
       if (!data.isError) setLogs(messageList);
     };
     getCustomerChat();
+    chatheight.current.scrollTop = chatheight.current.scrollHeight
   }, [])
 
   useEffect(() => {
@@ -40,6 +42,7 @@ export const CustomerChat = ({ seller, customer, boardid, chatter, width, height
       newMessage.email === user.email ? position = "right" : position = "left"
       newMessage.position = position
       setChats([...chats, newMessage]);
+      chatheight.current.scrollTop = chatheight.current.scrollHeight
     });
 
     //{boardid: '5', seller: 'seller@naver.com', customer: 'customer@naver.com', content: 'hi', type: 'sender'}
@@ -74,7 +77,7 @@ export const CustomerChat = ({ seller, customer, boardid, chatter, width, height
   return (
       <CustomerChatWrap width={width} height={height}>
         <ChatterCard onClick={()=>{}} chatter={chatter}></ChatterCard>
-        <ChatLogWrap>
+        <ChatLogWrap ref={chatheight}>
           {logs ? (
             <ChatLogs>
             {logs.map((v) => (

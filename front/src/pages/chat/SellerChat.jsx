@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo, memo } from 'react';
+import { useEffect, useState, useCallback, useMemo, memo, useRef } from 'react';
 import { useSelector } from "react-redux";
 import { useInput } from "../../hooks"
 import { ChatForm, ChatInput, ChatButton, ChatOption, ChatMenu, ChatLogWrap, ChatLogs, LiveChats, LeftMessageWrap, RightMessageWrap, ChatUserImg, ChatMessage, ChatTime } from "./styled"
@@ -15,6 +15,7 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
   const [isActiveButton, setIsActiveButton] = useState(false);
   const { user } = useSelector((state) => state.user)
   const content = useInput("")
+  const chatheight = useRef()
 
   useEffect(() => {
     const getSellerChat = async () => {
@@ -29,6 +30,7 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
       if (!data.isError) setLogs(messageList);
     }
     getSellerChat()
+    chatheight.current.scrollTop = chatheight.current.scrollHeight
   }, [])
 
   useEffect(() => {
@@ -40,6 +42,7 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
       newMessage.email === user.email ? position = "right" : position = "left"
       newMessage.position = position
       setChats([...chats, newMessage]);
+      chatheight.current.scrollTop = chatheight.current.scrollHeight
     });
 
     return () => {
@@ -71,7 +74,7 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
 
   return (
     <>
-      <ChatLogWrap>
+      <ChatLogWrap ref={chatheight}>
         {logs ? (
           <ChatLogs>
             {logs.map((v) => (
