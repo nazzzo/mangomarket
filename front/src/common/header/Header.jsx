@@ -6,6 +6,7 @@ import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import { HeaderWrapper, HeaderWrap, HeaderLogoWrap, HeaderLogoImgWrap, HeaderLogoImg, HeaderMenuWrap, HeaderMenuul, HeaderMenuli, HeaderFunctionWrap, HeaderSearchWrap, HeaderSearchBox, HeaderSearchInput, HeaderAlarmWrap, HeaderUserWrap, HeaderUser, HeaderAlarmMenu } from "./styled"
 import { Hamburger, SearchPopUp, MenuPopUp } from '../index';
 import { Modal } from "../../common/modal";
+import { Alert } from "../../common/alert";
 import { AlarmDot } from "../../common/button"
 import { KeywordAlarm } from "../../common/profile"
 import { Icon } from '@iconify/react';
@@ -18,6 +19,7 @@ export const Header = (({ categories, isLogin, user, keywords, isAlarm }) => {
     const [menuBox, setMenuBox] = useState(false)
     const [isActive, setIsActive] = useState(false);
     const [isOpen, setIsOpen] = useState(false)
+    const [isOpenAlert, setIsOpenAlert] = useState(false)
     const [alarmData, setAlarmData] = useState([])
 
 
@@ -40,7 +42,7 @@ export const Header = (({ categories, isLogin, user, keywords, isAlarm }) => {
     useEffect(() => {
         if (isOpen) dispatch(userSetAlarm(false))
     }, [isOpen]);
-
+    console.log(user)
 
     const navigate = useNavigate()
 
@@ -48,13 +50,32 @@ export const Header = (({ categories, isLogin, user, keywords, isAlarm }) => {
 
     const navigation = (styledComponent) => loginFilter.map( v => {
         const Component = styledComponent
+
+        const handleCloseAlert = () => {
+            setIsOpenAlert(false)
+            navigate("/profile")
+        }
+
+        if (v.name === "장터등록" && !user.address) {
+            return (
+                <>   
+                    <Component key={v.id}>
+                        <NavLink to={v.path} onClick={() => setIsOpenAlert(true)}>
+                            {v.name}
+                        </NavLink>
+                    </Component>
+                    <Alert isOpenAlert={isOpenAlert} onClose={handleCloseAlert} color="red" width="20rem" height="5rem">동네인증이 필요합니다</Alert>
+                </>  
+            );
+        }
         return(
                 <Component key={v.id}>
                     <NavLink to={v.path}>
                         {v.name}
                     </NavLink>
                 </Component>
-            )})
+        )}
+    )
 
     const headerMenuList = navigation(HeaderMenuli)
 
