@@ -38,6 +38,9 @@ export const CustomerChat = ({ setIsOpen, seller, customer, boardid, chatter, wi
     socket.emit("joinRoom", { room: `${boardid}-${customer.email}`});
 
     socket.on("receiveMessage", (newMessage) => {
+      // if( newMessage.content.indexOf("latitude") && newMessage.content.indexOf("longitude") ){
+      //   // 맵을 띄우는 로직
+      // }
       let position
       newMessage.email === user.email ? position = "right" : position = "left"
       newMessage.position = position
