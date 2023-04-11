@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { ChatterCard, CustomerChatWrap } from "./styled"
+import { ChatterCard, CustomerChatWrap, ChatForm, ChatOption, ChatInput, ChatButton, ChatMenu } from "./styled"
 import { useInput } from "../../hooks";
 import io from "socket.io-client";
 import config from "../../config";
@@ -12,6 +12,7 @@ let socket;
 export const CustomerChat = ({ seller, customer, boardid, chatter, width, height }) => {
   const [ logs, setLogs ] = useState([]);
   const [ chats, setChats ] = useState([]);
+  const [isActiveButton, setIsActiveButton] = useState(false);
   const { user } = useSelector((state) => state.user)
   const content = useInput("");
 
@@ -66,43 +67,46 @@ export const CustomerChat = ({ seller, customer, boardid, chatter, width, height
     content.clear();
   };
 
+  
+
   return (
-    <>
-      {/* <CustomerChatWrap width={width} height={height}>
-        <ChatterCard chatter={chatter}></ChatterCard>
-      </CustomerChatWrap> */}
-      <div>
-        {logs ? (
-          <ul>
-            {logs.map((v) => (
-              <div key={v.id}>
-                <li>{v.email}</li>
-                <li>{v.content}</li>
-              </div>
-            ))}
-          </ul>
-        ) : (
-          <></>
-        )}
-        {chats ? (
-          <ul>
-            {chats.map((v, idx) => (
-              <div key={idx}>
-                <h3>{v.username}</h3>
-                {/* <img src={v.userImg}/> */}
-                <li>{v.address}</li>
-                <li>{v.content}</li>
-              </div>
-            ))}
-          </ul>
-        ) : (
-          <></>
-        )}
-      </div>
-      <form onSubmit={handleSendMessage}>
-        <input type="text" value={content.value} onChange={content.onChange} />
-        <button type="submit">전송</button>
-      </form>
-    </>
+      <CustomerChatWrap width={width} height={height}>
+        <ChatterCard onClick={()=>{}} chatter={chatter}></ChatterCard>
+        <div>
+          {logs ? (
+            <ul>
+              {logs.map((v) => (
+                <div key={v.id}>
+                  <li>{v.email}</li>
+                  <li>{v.content}</li>
+                </div>
+              ))}
+            </ul>
+          ) : (
+            <></>
+          )}
+          {chats ? (
+            <ul>
+              {chats.map((v, idx) => (
+                <div key={idx}>
+                  <h3>{v.username}</h3>
+                  {/* <img src={v.userImg}/> */}
+                  <li>{v.address}</li>
+                  <li>{v.content}</li>
+                </div>
+              ))}
+            </ul>
+          ) : (
+            <></>
+          )}
+        </div>
+        <ChatForm onSubmit={handleSendMessage}>
+                <ChatOption onClick={()=>{setIsActiveButton(!isActiveButton)}} className={isActiveButton ? 'on' : ''}>
+                  <ChatMenu className="chatMenu" onClick={()=>{}} />
+                </ChatOption>  
+                <ChatInput type="text" value={content.value} onChange={content.onChange} placeholder="메세지를 입력해주세요" />
+                <ChatButton type="submit" />
+        </ChatForm>
+      </CustomerChatWrap>
   );
 };
