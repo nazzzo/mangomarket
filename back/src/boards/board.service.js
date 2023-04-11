@@ -85,7 +85,7 @@ class BoardService {
             }
             const view = await this.boardRepository.findOne(id)
             if (email !== "guest") await this.boardRepository.updatehit(id, email)
-            // console.log(view)
+            console.log(view)
             return view
         } catch (e) {
             console.error(e);

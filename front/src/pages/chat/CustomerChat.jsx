@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { ChatterCard, CustomerChatWrap } from "./styled"
 import { useInput } from "../../hooks";
 import io from "socket.io-client";
 import config from "../../config";
@@ -8,15 +9,23 @@ import request from "../../utils/request";
 const ENDPOINT = `${config.PT}://${config.HOST}:${config.BACKEND_PORT}/`;
 let socket;
 
-export const CustomerChat = ({ seller, customer, boardid }) => {
+export const CustomerChat = ({ seller, customer, boardid, chatter, width, height }) => {
   const [ logs, setLogs ] = useState([]);
   const [ chats, setChats ] = useState([]);
+  const { user } = useSelector((state) => state.user)
   const content = useInput("");
 
   useEffect(() => {
     const getCustomerChat = async () => {
-      const response = await request.get(`/chats?customer=${customer.email}&opponent=${seller.email}&boardid=${boardid}`);
-      if (!response.data.isError) setLogs(response.data);
+      const { data } = await request.get(`/chats?customer=${customer.email}&opponent=${seller.email}&boardid=${boardid}`);
+      const messageList = data.map((v) => {
+        let position
+        v.email === user.email ? position = "right" : position = "left"
+        v.position = position
+        return v
+      })
+
+      if (!data.isError) setLogs(messageList);
     };
     getCustomerChat();
   }, [])
@@ -26,7 +35,9 @@ export const CustomerChat = ({ seller, customer, boardid }) => {
     socket.emit("joinRoom", { room: `${boardid}-${customer.email}`});
 
     socket.on("receiveMessage", (newMessage) => {
-      console.log(newMessage)
+      let position
+      newMessage.email === user.email ? position = "right" : position = "left"
+      newMessage.position = position
       setChats([...chats, newMessage]);
     });
 
@@ -57,6 +68,9 @@ export const CustomerChat = ({ seller, customer, boardid }) => {
 
   return (
     <>
+      {/* <CustomerChatWrap width={width} height={height}>
+        <ChatterCard chatter={chatter}></ChatterCard>
+      </CustomerChatWrap> */}
       <div>
         {logs ? (
           <ul>

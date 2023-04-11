@@ -44,7 +44,6 @@ class BoardController {
         try {
             const { id, idx } = req.params;
             const response = await this.boardService.getView(id, idx);
-            // console.log(`response:::`, response);
             res.json(response);
         } catch (e) {
             next(e);

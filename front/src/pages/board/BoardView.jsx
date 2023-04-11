@@ -8,9 +8,6 @@ import { RecommendCategory } from "../../common/category"
 import { ViewContent, ViewFooter } from './';
 import request from "../../utils/request";
 
-
-
-
 export const BoardView = () => {
   const { isLogin, user } = useSelector((state) => state.user);
   const userLikes = useSelector((state) => state.user.like);
@@ -33,7 +30,7 @@ export const BoardView = () => {
         const response = await request.get(`boards/${id}/${idx}`);
         setViewData(response.data);
         selectOptions.forEach(v => {
-            response.data.state === v.value && setSelectedOption(v)
+          response.data.state === v.value && setSelectedOption(v)
         })
       } catch (error) {
         console.log(error);
@@ -42,69 +39,70 @@ export const BoardView = () => {
     getView();
   }, [userLikes, navigate]);
 
-    useEffect(() => {
+  useEffect(() => {
     const putState = async () => {
-        try {
-            const response = await request.put(`boards/${id}/state`, {
-                state : selectedOption?.value
-            })
-            // console.log(response.data)
-        } catch (error) {
-            console.log(error);
-        }
+      try {
+        const response = await request.put(`boards/${id}/state`, {
+          state: selectedOption?.value
+        })
+        // console.log(response.data)
+      } catch (error) {
+        console.log(error);
+      }
     }
     putState()
-    }, [selectedOption]);  
+  }, [selectedOption]);
 
   return (
     viewData
-    ? (<>
-      <MainSlider images={viewData.images} />
-      <WriterInfo
-        navigate={navigate}
-        email={viewData.email}
-        username={viewData.username}
-        userImg={viewData.userImg}
-        address={viewData.address}
-        width="100%"
-        height="12rem"
-        imgSize="7rem"
-        fontSize="1.1rem"
-      />
-      {(user.email === viewData.email) 
-        && <Selector 
-            options={selectOptions} 
+      ? (<>
+        <MainSlider images={viewData.images} />
+        <WriterInfo
+          navigate={navigate}
+          email={viewData.email}
+          username={viewData.username}
+          userImg={viewData.userImg}
+          address={viewData.address}
+          width="100%"
+          height="12rem"
+          imgSize="7rem"
+          fontSize="1.1rem"
+        />
+        {(user.email === viewData.email)
+          && <Selector
+            options={selectOptions}
             selectedOption={selectedOption}
             setSelectedOption={setSelectedOption}
-            width="30%" 
-      />}
-      <ViewContent
-        category={viewData.category}
-        subject={viewData.subject}
-        state={selectedOption.label}
-        content={viewData.content}
-        likeCount={viewData.likeCount}
-        hit={viewData.hit}
-        date={viewData.createdAt}
-      />
-      <RecommendCategory
-            height="30rem"
-            width="25rem"
-            category={viewData.category}
-            email={user.email}
-      />
-      {isLogin && (user.email !== viewData.email)
-        ? <ViewFooter 
-            isLogin={isLogin} 
+            width="30%"
+          />}
+        <ViewContent
+          category={viewData.category}
+          subject={viewData.subject}
+          state={selectedOption.label}
+          content={viewData.content}
+          likeCount={viewData.likeCount}
+          hit={viewData.hit}
+          date={viewData.createdAt}
+        />
+        <RecommendCategory
+          height="30rem"
+          width="25rem"
+          category={viewData.category}
+          email={user.email}
+        />
+        {isLogin && (user.email !== viewData.email)
+          ? <ViewFooter
+            isLogin={isLogin}
             user={user}
             writerEmail={viewData.email}
             writerName={viewData.username}
-            writerImg={viewData.userImg}              
-            size="3rem" 
+            writerImg={viewData.userImg}
+            chatter={viewData}
+            size="3rem"
             boardId={id}
-            footerHeight="4.5rem" 
-            footerWidth="30rem" /> 
-        : <></>} 
-    </>) : <></>
+            footerHeight="4.5rem"
+            footerWidth="30rem" />
+          : <></>}
+      </>) : <></>
   );
 };
