@@ -86,7 +86,7 @@ class ChatRepository {
       ORDER BY 
       A.createdAt DESC;`;
       const result = await this.sequelize.query(sql, { raw: true, nest: true });
-      return result;
+      return result
     } catch (e) {
       throw new Error(e);
     }

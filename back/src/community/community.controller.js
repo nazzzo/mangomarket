@@ -11,7 +11,7 @@ class CommunityController {
             if (!email) throw new Error('로그인이 필요합니다.')
             if (!content) throw new Error('내용을 입력해주세요')
 
-            const response = await this.communityService.postComment({ id, content, email })
+            const response = await this.communityService.postComment({ id, content, email, parentId })
             res.json(response)
         } catch (e) {
             next(e)
@@ -24,7 +24,6 @@ class CommunityController {
             console.log('req.query getWrite :: ', req.query)
             console.log('req.query getWrite :: ', id)
             const response = await this.communityService.getWriting({ id })
-            console.log(response)
             res.json(response)
         } catch (e) {
             next(e)
@@ -98,7 +97,7 @@ class CommunityController {
                 req.params.id,
                 req.params.idx,
                 req.body.content,
-                req.body.isDeleted,
+                req.body.isDeleted
             )
             res.status(201).json(response)
         } catch (e) {

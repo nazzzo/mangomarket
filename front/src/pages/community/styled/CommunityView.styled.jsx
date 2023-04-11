@@ -79,7 +79,7 @@ export const ViewContent = ({ children, subject, content }) => {
     )
 }
 
-export const Profile = ({ username, date, img }) => {
+export const Profile = ({ username, date, img, address }) => {
     console.log(`date:::`, username, date)
     return (
         <ProfileWrapper>
@@ -87,7 +87,7 @@ export const Profile = ({ username, date, img }) => {
             <Info>
                 <Nickname>{username}</Nickname>
                 <LocalTime>
-                    <li>논현 고잔동</li>
+                    <li>{address}</li>
                     <li>{useTimeStamp(date)}</li>
                 </LocalTime>
             </Info>

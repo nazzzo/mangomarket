@@ -7,11 +7,10 @@ import { Icon } from '@iconify/react'
 import { useRef } from 'react'
 import { useSelector } from 'react-redux'
 
-
 const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, username, img, parentId, isDeleted}) => {
     const [isInput, setIsInput] = useState(false)
     const [modified, setModified] = useState()
-    const [reply, setReply] = useState(true)
+    const [reply, setReply] = useState(false)
     const [replyComment, setReplyComment] = useState()
     const timeAgo = useTimeStamp(createdAt)
     const comment = useInput(content)
@@ -36,6 +35,7 @@ const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, use
         }
 
         try {
+            console.log(parentIdx)
             const response = await request.post(`/community/${id}`, {
                 // content: toUser + " " + replyComment,
                 // content: `${toUser.outerHTML} ${replyComment}`
@@ -49,6 +49,7 @@ const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, use
             } else {
                 setComments(response.data)
                 setReply(!reply)
+                setReplyComment('') // 2번째 답글을 달때 첫번째 답글에 대한 내용을 input박스에 불러오는 문제발생.. 이걸로 해결
             }
         } catch(error){
             console.error(error)
@@ -78,11 +79,14 @@ const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, use
     const handleModify = async () => {
         if (content === comment.value) setIsInput(false)
         try {
-            const response = await request.put(`/community/comment/${id}/${idx}`, {
-                content: comment.value,
+            let toUser
+            if (content.indexOf('@') === 0) toUser = content.split(" ")[0]
+                const response = await request.put(`/community/comment/${id}/${idx}`, {
+                content: toUser + " " + comment.value,
             })
             if (response.data === 1) {
                 setModified(comment.value)
+                setIsInput(false) // 글을 수정후에 2번쨰 글을 수정할때 내용변화가 없었으면 db에서 수정했다고는 했으나 화면으로는 그려주질못했음 이걸로해결..
             }
         } catch (error) {
             console.error(error)
@@ -105,17 +109,16 @@ const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, use
                     <div>{timeAgo}</div>
                     <div>
                         {!comment.value.indexOf('@') ? 
-                            <>
-                                <NavLink to='/community'>{comment.value.split(" ")[0]}</NavLink>
-                                {/* <span> {comment.value.replace(/^@\w+\s/, '')}</span> */}
-                                <span> {comment.value.replace(/@.+?\s/, '')}</span>
-                            </> 
+                            <span>
+                                <NavLink to='/community'>{comment.value.split(" ")[0]}</NavLink> {comment.value.split(" ")[1]}
+                                {/* {comment.value.replace(/@.+?\s/, '')}                                 */}
+                            </span> 
                             : 
-                            <>{comment.value}</>
+                            <span>{comment.value}</span>
                         }
                     </div>
                 </Txt>
-                    {reply ? <ReplyButton type="button" onClick={()=>{setReply(!reply)}}>답글</ReplyButton> : 
+                    {!reply ? <ReplyButton type="button" onClick={()=>{setReply(!reply)}}>답글</ReplyButton> : 
                         <>  
                             <ReplyButton type='button' onClick={()=>{setReply(!reply)}}>답글</ReplyButton>
                             <Txt idx={idx}>
@@ -194,6 +197,7 @@ export const Comment = ({ comments, setComments}) => {
     const [commentValue, setCommentValue] = useState()
     const inputRef = useRef()
     const {user} = useSelector(state => state.user)
+    console.log('user', user)
 
     const submitHandler = async (e) => {
         e.preventDefault()
