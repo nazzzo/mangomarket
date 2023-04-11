@@ -30,8 +30,8 @@ module.exports = (sequelize, Sequelize) => {
       this.belongsTo(models.Board, {
         foreignKey: "boardid",
       });
-      this.belongsTo(models.Chat, {
-        foreignKey: "chatid",
+      this.belongsTo(models.User, {
+        foreignKey: "email",
       });
     }
   }

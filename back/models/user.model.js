@@ -107,6 +107,9 @@ module.exports = (sequelize, Sequelize) => {
         foreignKey: "email",
         as: "receiver",
       });
+      this.hasMany(models.Reservation, {
+        foreignKey: "email",
+      });
     }
   }
   User.createTable();

@@ -34,9 +34,6 @@ module.exports = (sequelize, Sequelize) => {
       this.belongsTo(models.Board, {
         foreignKey: "boardid",
       });
-      this.hasMany(models.Reservation, {
-        foreignKey: "chatid",
-      });
     }
   }
   Chat.createTable();
