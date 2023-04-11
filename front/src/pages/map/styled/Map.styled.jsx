@@ -34,7 +34,7 @@ export const MyAddress = styled.div`
     font-size: 1.2rem;
 `
 
-export const Result = styled.span`
+export const Result = styled.div`
     color: #00a32b;
-    font-size: 1.6rem;
+    font-size: 1.4rem;
 `
