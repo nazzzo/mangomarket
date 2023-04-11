@@ -84,6 +84,7 @@ export const GlobalChat = () => {
             seller={!isSeller ? user.email : selectedChatter.seller}
             customer={!isSeller ? selectedChatter.customer : user.email}
             boardid={selectedChatter.boardid}
+            chatter={selectedChatter}
           />
         </>
       )}
