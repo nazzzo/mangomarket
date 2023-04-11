@@ -35,9 +35,11 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
         socket = io(ENDPOINT);
         socket.emit("joinRoom", { room: `${boardid}-${customer}` });
 
-        socket.on("receiveMessage", (newChat) => {
-            console.log(`newChat: ${newChat}`)
-            setChats([...chats, newChat]);
+        socket.on("receiveMessage", (newMessage) => {
+            let position
+            newMessage.email === user.email ? position = "right" : position = "left"
+            newMessage.position = position
+            setChats([...chats, newMessage]);
         });
 
         return () => {
