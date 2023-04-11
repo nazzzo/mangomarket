@@ -55,12 +55,13 @@ class ChatRepository {
 
   async getUsers({ type, useremail }) {
     try {
-      let column;
-      type === "seller" ? (column = `customer`) : (column = `seller`);
+      let opponent;
+      type === "seller" ? (opponent = `customer`) : (opponent = `seller`);
 
       const sql = `SELECT 
-      A.${column}, 
-      A.boardid, 
+      A.${opponent}, 
+      A.boardid,
+      E.subject, 
       B.username, 
       B.userImg,
       B.address,
@@ -70,17 +71,19 @@ class ChatRepository {
       FROM Chat AS A
       INNER JOIN (
       SELECT 
-          ${column}, 
+          ${opponent}, 
           boardid, 
           MAX(createdAt) AS max_createdAt
       FROM Chat
       WHERE ${type} = "${useremail}"
-      GROUP BY ${column}, boardid
-      ) AS D ON A.${column} = D.${column} AND A.boardid = D.boardid AND A.createdAt = D.max_createdAt
+      GROUP BY ${opponent}, boardid
+      ) AS D ON A.${opponent} = D.${opponent} AND A.boardid = D.boardid AND A.createdAt = D.max_createdAt
       JOIN User AS B 
-      ON A.${column} = B.email
+      ON A.${opponent} = B.email
       JOIN BoardImage AS C
-      ON A.boardid = C.boardid     
+      ON A.boardid = C.boardid
+      JOIN Board AS E
+      ON A.boardid = E.id     
       WHERE 
       C.thumbnail = 1
       ORDER BY 
