@@ -1,6 +1,17 @@
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
 
+
+
+export const CustomerChatWrap = styled.div`
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+`
+
 const ChatterCardWrap = styled.div`
   display: flex;
   height: 60px;

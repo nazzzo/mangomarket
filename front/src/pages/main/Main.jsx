@@ -29,23 +29,23 @@ export const Main = () => {
                 const response = await request.get(
                     `boards/?count=${count}&category=${selectedCategory}&distance=${selectedDistance.value}&email=${user.email}&search=${search}`
                 )
-            if (!response.data.isError) {
-                if (selectedCategory) {
-                    const newBoardList = boardList.filter(
-                      (board) => board.category === selectedCategory
-                  ).concat(response.data);
-                setBoardList(newBoardList);
-                } else if (search) {
-                  const newBoardList = boardList.filter(
-                    (board) => board.subject.includes(search)
-                  ).concat(response.data);
-                setBoardList(newBoardList);
-                dispatch(userSetSearch(""))
-                } else
-                setBoardList((prevList) => [...prevList, ...response.data]);
-                setIsLoading(false);
-                if (response.data.length === 0) setIsLoading(true)
-            }
+                if (!response.data.isError) {
+                    if (selectedCategory) {
+                        const newBoardList = boardList.filter(
+                            (board) => board.category === selectedCategory
+                        ).concat(response.data);
+                        setBoardList(newBoardList);
+                    } else if (search) {
+                        const newBoardList = boardList.filter(
+                            (board) => board.subject.includes(search)
+                        ).concat(response.data);
+                        setBoardList(newBoardList);
+                        dispatch(userSetSearch(""))
+                    } else
+                        setBoardList((prevList) => [...prevList, ...response.data]);
+                    setIsLoading(false);
+                    if (response.data.length === 0) setIsLoading(true)
+                }
             } catch (error) {
                 console.log(error)
             }
@@ -149,7 +149,7 @@ export const Main = () => {
                             <TextBoxC hashtag={board.tagname} />
                             <TextBoxD>
                                 <Count id="messageCount">
-                                    <Icon icon="ant-design:message-outlined" /> {board.messageCount}
+                                    <Icon icon="mdi:comment-user-outline" /> {board.messageCount}
                                 </Count>
                                 <Count id="likeCount">
                                     <Icon icon="mdi:cards-heart-outline" /> {board.likeCount}

@@ -65,7 +65,7 @@ class BoardRepository {
             D.image,
             (SELECT GROUP_CONCAT(D.email SEPARATOR ', ') FROM Liked AS D WHERE A.id = D.boardid) AS likeidlist,
             GROUP_CONCAT(C.tagname SEPARATOR ', ') AS tagname,
-            (SELECT COUNT(Chat.id) FROM Chat WHERE Chat.id = A.id) AS messageCount, 
+            (SELECT COUNT(DISTINCT Chat.customer) FROM Chat WHERE Chat.boardid = A.id) AS messageCount, 
             (SELECT COUNT(Liked.BoardId) FROM Liked WHERE Liked.BoardId = A.id) AS likeCount,
             (SELECT COUNT(Hit.BoardId) FROM Hit WHERE Hit.BoardId = A.id) AS hit,
             ST_Distance_Sphere(POINT(${userLongitude}, ${userLatitude}), POINT(B.longitude, B.latitude)) / 1000 AS distance
@@ -134,20 +134,24 @@ class BoardRepository {
             B.userImg,
             B.username,
             B.address,
-            GROUP_CONCAT(D.image SEPARATOR ', ') AS images,
+            E.image,
+            GROUP_CONCAT(DISTINCT D.image SEPARATOR ', ') AS images,
             (SELECT GROUP_CONCAT(D.email SEPARATOR ', ') FROM Liked AS D WHERE A.id = D.boardid) AS likeidlist,
-            GROUP_CONCAT(C.tagname SEPARATOR ', ') AS tagname,
-            (SELECT COUNT(Chat.id) FROM Chat WHERE Chat.id = A.id) AS messageCount, 
+            GROUP_CONCAT(DISTINCT C.tagname SEPARATOR ', ') AS tagname,
+            (SELECT COUNT(Chat.boardid) FROM Chat WHERE Chat.boardid = A.id) AS messageCount, 
             (SELECT COUNT(Liked.BoardId) FROM Liked WHERE Liked.BoardId = A.id) AS likeCount,
             (SELECT COUNT(Hit.BoardId) FROM Hit WHERE Hit.BoardId = A.id) AS hit
         FROM Board AS A 
         LEFT JOIN User AS B ON A.email = B.email
         LEFT JOIN Hashtag AS C ON A.id = C.boardid
         LEFT JOIN BoardImage AS D ON A.id = D.boardid
+        JOIN BoardImage AS E ON A.id = E.boardid
         WHERE A.id = ${id}
-        GROUP BY A.id`;
+        AND
+        E.thumbnail = 1
+        GROUP BY A.id, E.image`;
         const [[findOne]] = await this.sequelize.query(query);
-        // console.log(findOne);
+        console.log("asdfasdf",findOne);
         return findOne
         } catch (e) {
             throw new Error(e);
