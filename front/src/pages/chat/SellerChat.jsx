@@ -10,114 +10,116 @@ const ENDPOINT = `${config.PT}://${config.HOST}:${config.BACKEND_PORT}/`;
 let socket
 
 export const SellerChat = ({ seller, customer, boardid, chatter }) => {
-    const [logs, setLogs] = useState([])
-    const [chats, setChats] = useState([])
-    const [isActiveButton, setIsActiveButton] = useState(false);
-    const { user } = useSelector((state) => state.user)
-    const content = useInput("")
+  const [logs, setLogs] = useState([])
+  const [chats, setChats] = useState([])
+  const [isActiveButton, setIsActiveButton] = useState(false);
+  const { user } = useSelector((state) => state.user)
+  const content = useInput("")
 
-    useEffect(() => {
-        const getSellerChat = async () => {
-            const { data } = await request.get(`/chats?seller=${seller}&opponent=${customer}&boardid=${boardid}`)
-            const messageList = data.map((v) => {
-                let position
-                v.email === user.email ? position = "right" : position = "left"
-                v.position = position
-                return v
-            })
-            
-            if (!data.isError) setLogs(messageList);
-        }
-        getSellerChat()
-    }, [])
+  useEffect(() => {
+    const getSellerChat = async () => {
+      const { data } = await request.get(`/chats?seller=${seller}&opponent=${customer}&boardid=${boardid}`)
+      const messageList = data.map((v) => {
+        let position
+        v.email === user.email ? position = "right" : position = "left"
+        v.position = position
+        return v
+      })
 
-    useEffect(() => {
-        socket = io(ENDPOINT);
-        socket.emit("joinRoom", { room: `${boardid}-${customer}` });
-
-        socket.on("receiveMessage", (newChat) => {
-            console.log(`newChat: ${newChat}`)
-            setChats([...chats, newChat]);
-        });
-
-        return () => {
-            socket.disconnect();
-        };
-    }, [chats]);
-
-    const handleSendMessage = async (e) => {
-        e.preventDefault()
-        let email
-
-        seller === user.email ? email = seller : email = customer
-
-        let data = {
-            boardid,
-            customer,
-            seller,
-            content: content.value,
-            email,
-            username: user.username,
-            userImg: user.userImg,
-            address: user.address,
-        }
-        socket.emit("sendMessage", { data })
-        const response = await request.post(`/chats`, { data })
-        console.log(response.data)
-        if (response.status === 201) content.clear()
+      if (!data.isError) setLogs(messageList);
     }
+    getSellerChat()
+  }, [])
 
-    return (
-        <>
-        <ChatLogWrap>
-          {logs ? (
-            <ChatLogs>
-              {logs.map((v) => (
-                v.position === "left" ? (
-                  <LeftMessageWrap key={v.id}>
-                    <ChatUserImg src={chatter.userImg} />
-                    <ChatMessage color="yellow" content={v.content}/>
-                    <ChatTime date={v.createdAt} />
-                  </LeftMessageWrap>
-                ) : (
-                  <RightMessageWrap>
-                    <ChatTime date={v.createdAt} />
-                    <ChatMessage color="green" content={v.content}/>
-                  </RightMessageWrap>
-                )
-              ))}
-            </ChatLogs>
-          ) : (
-            <></>
-          )}
-          {chats ? (
-            <LiveChats>
-              {chats.map((v, idx) => (
-                v.position === "left" ? (
-                  <LeftMessageWrap key={v.id}>
-                    <ChatUserImg src={chatter.userImg} />
-                    <ChatMessage color="yellow" content={v.content}/>
-                    <ChatTime date={v.createdAt} />
-                  </LeftMessageWrap>
-                ) : (
-                  <RightMessageWrap>
-                    <ChatTime date={v.createdAt} />
-                    <ChatMessage color="green" content={v.content}/>
-                  </RightMessageWrap>
-                )
-              ))}
-            </LiveChats>
-          ) : (
-            <></>
-          )}
-        </ChatLogWrap>
-            <ChatForm onSubmit={handleSendMessage}>
-                <ChatOption onClick={()=>{setIsActiveButton(!isActiveButton)}} className={isActiveButton ? 'on' : ''}>
-                  <ChatMenu className="chatMenu" onClick={()=>{}} />
-                </ChatOption>  
-                <ChatInput type="text" value={content.value} onChange={content.onChange} placeholder="메세지를 입력해주세요" />
-                <ChatButton type="submit" />
-            </ChatForm>
-        </>
-    )
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("joinRoom", { room: `${boardid}-${customer}` });
+
+    socket.on("receiveMessage", (newMessage) => {
+      let position
+      newMessage.email === user.email ? position = "right" : position = "left"
+      newMessage.position = position
+      setChats([...chats, newMessage]);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [chats]);
+
+  const handleSendMessage = async (e) => {
+    e.preventDefault()
+    let email
+
+    seller === user.email ? email = seller : email = customer
+
+    let data = {
+      boardid,
+      customer,
+      seller,
+      content: content.value,
+      email,
+      username: user.username,
+      userImg: user.userImg,
+      address: user.address,
+    }
+    socket.emit("sendMessage", { data })
+    const response = await request.post(`/chats`, { data })
+    console.log(response.data)
+    if (response.status === 201) content.clear()
+  }
+
+  return (
+    <>
+      <ChatLogWrap>
+        {logs ? (
+          <ChatLogs>
+            {logs.map((v) => (
+              v.position === "left" ? (
+                <LeftMessageWrap key={v.id}>
+                  <ChatUserImg src={chatter.userImg} />
+                  <ChatMessage color="yellow" content={v.content} />
+                  <ChatTime date={v.createdAt} />
+                </LeftMessageWrap>
+              ) : (
+                <RightMessageWrap>
+                  <ChatTime date={v.createdAt} />
+                  <ChatMessage color="green" content={v.content} />
+                </RightMessageWrap>
+              )
+            ))}
+          </ChatLogs>
+        ) : (
+          <></>
+        )}
+        {chats ? (
+          <LiveChats>
+            {chats.map((v, idx) => (
+              v.position === "left" ? (
+                <LeftMessageWrap key={v.id}>
+                  <ChatUserImg src={chatter.userImg} />
+                  <ChatMessage color="yellow" content={v.content} />
+                  <ChatTime date={v.createdAt} />
+                </LeftMessageWrap>
+              ) : (
+                <RightMessageWrap>
+                  <ChatTime date={v.createdAt} />
+                  <ChatMessage color="green" content={v.content} />
+                </RightMessageWrap>
+              )
+            ))}
+          </LiveChats>
+        ) : (
+          <></>
+        )}
+      </ChatLogWrap>
+      <ChatForm onSubmit={handleSendMessage}>
+        <ChatOption onClick={() => { setIsActiveButton(!isActiveButton) }} className={isActiveButton ? 'on' : ''}>
+          <ChatMenu className="chatMenu" onClick={() => { }} />
+        </ChatOption>
+        <ChatInput type="text" value={content.value} onChange={content.onChange} placeholder="메세지를 입력해주세요" />
+        <ChatButton type="submit" />
+      </ChatForm>
+    </>
+  )
 }
