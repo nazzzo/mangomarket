@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { ChatterCard, CustomerChatWrap, ChatForm, ChatOption, ChatInput, ChatButton, ChatMenu, ChatLogWrap, ChatLogs, LiveChats, LeftMessageWrap, RightMessageWrap, ChatUserImg, ChatMessage, ChatTime } from "./styled"
 import { useInput } from "../../hooks";
+import { Modal } from "../../common/modal"
+import { ChatterMap } from "../../pages/map"
 import io from "socket.io-client";
 import config from "../../config";
 import request from "../../utils/request";
@@ -9,9 +11,10 @@ import request from "../../utils/request";
 const ENDPOINT = `${config.PT}://${config.HOST}:${config.BACKEND_PORT}/`;
 let socket;
 
-export const CustomerChat = ({ setIsOpen, seller, customer, boardid, chatter, width, height }) => {
+export const CustomerChat = ({ seller, customer, boardid, chatter, width, height }) => {
   const [ logs, setLogs ] = useState([]);
   const [ chats, setChats ] = useState([]);
+  const [ isOpen, setIsOpen ] = useState(false)
   const [isActiveButton, setIsActiveButton] = useState(false);
   const { user } = useSelector((state) => state.user)
   const content = useInput("");
@@ -124,11 +127,14 @@ export const CustomerChat = ({ setIsOpen, seller, customer, boardid, chatter, wi
         </ChatLogWrap>
         <ChatForm onSubmit={handleSendMessage}>
                 <ChatOption onClick={()=>{setIsActiveButton(!isActiveButton)}} className={isActiveButton ? 'on' : ''}>
-                  <ChatMenu className="chatMenu" onClick={()=>{}} />
+                  <ChatMenu className="chatMenu" onClick={()=>{setIsOpen(true)}} />
                 </ChatOption>  
                 <ChatInput type="text" value={content.value} onChange={content.onChange} placeholder="메세지를 입력해주세요" />
                 <ChatButton type="submit" />
         </ChatForm>
+        <Modal isOpen={isOpen} setIsOpen={setIsOpen} height="37rem">
+            <ChatterMap setIsOpen={setIsOpen} boardid={boardid} customer={customer.email} />
+        </Modal>
       </CustomerChatWrap>
   );
 };

@@ -11,6 +11,7 @@ import {
   USER_KEYWORD_REMOVE,
   USER_SET_ALARM,
   USER_SET_SEARCH,
+  USER_SET_RESERVATION,
 } from "./types";
 
 const initialState = {
@@ -34,6 +35,7 @@ const initialState = {
   },
   keyword: [],
   search: "",
+  reservation: {},
 };
 
 export const user = (state = initialState, action) => {
@@ -109,7 +111,12 @@ export const user = (state = initialState, action) => {
       return {
         ...state,
         search: action.payload,
-    };    
+    };
+    case USER_SET_RESERVATION:
+      return {
+        ...state,
+        reservation: action.payload,
+    };        
     default:
       return state;
   }

@@ -40,9 +40,7 @@ export const BoardWrite = () => {
         if (response.status === 201 && !response.data.isError) {
             setIsOpenAlert(true)
             setPageId(response.data.id)
-          } else {
-            alert("등록 실패")
-          }
+        }
       }
 
       const handleCloseAlert = () => {
