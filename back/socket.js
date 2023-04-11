@@ -14,6 +14,7 @@ module.exports = (server, app) => {
                 console.log(`room:::`, room);
               });
               socket.on("sendMessage", ({ data }) => {
+                const date = new Date()
                 io.to(roomname).emit("receiveMessage", {
                   boardid: data.boardid,
                   seller: data.seller,
@@ -23,6 +24,7 @@ module.exports = (server, app) => {
                   username: data.username,
                   userImg: data.userImg,
                   address: data.address,
+                  createdAt: date.toISOString(),
                 })
             })
 
