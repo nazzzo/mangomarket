@@ -295,7 +295,7 @@ const ChatUserImgWrap = styled.div`
 `
 
 export const ChatUserImg = ({src}) => {
-    return <ChatUserImgWrap><img src={src} /></ChatUserImgWrap>
+    return <ChatUserImgWrap><img src={src} alt="" /></ChatUserImgWrap>
 }
 
 const ChatMessageStyled = styled.div`
