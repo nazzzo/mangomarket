@@ -7,6 +7,7 @@ const chatRouter = require('../src/chats/chat.route')
 const communityRouter = require('../src/community/community.route')
 const categoriesRouter = require('../src/categories/category.route')
 const helpdeskRouter = require('../src/helpdesk/helpdesk.route')
+const tempRouter = require('../src/temp/temp.route')
 
 router.use('/categories', categoriesRouter)
 router.use('/users', userRouter)
@@ -15,5 +16,6 @@ router.use('/boards', boardRouter)
 router.use('/chats', chatRouter)
 router.use('/community', communityRouter)
 router.use('/helpdesk', helpdeskRouter)
+router.use('/temp', tempRouter)
 
 module.exports = router

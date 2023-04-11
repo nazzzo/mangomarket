@@ -1,6 +1,6 @@
 const {
     sequelize: {
-        models: { Community, User, Comment, HelpDesk },
+        models: { Community, User, Comment, HelpDesk, Temp },
     },
     sequelize,
 } = require('../../models/index')
@@ -13,7 +13,7 @@ const config = require('../../config')
 const UserRepository = require('../users/user.repository')
 
 const userRepository = new UserRepository({ sequelize, User, Sequelize })
-const repository = new CommunityRepository({ Community, sequelize, User, Comment, HelpDesk })
+const repository = new CommunityRepository({ Community, sequelize, User, Comment, HelpDesk, Temp })
 const service = new CommunityService({ communityRepository: repository, config, userRepository })
 const controller = new CommunityController({ communityService: service })
 

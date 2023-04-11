@@ -11,14 +11,21 @@ import {
     PageCounter,
 } from './styled'
 import { useState, useRef, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../../common/button'
+import { CommunityWrite } from './CommunityWrite'
 
 export const CommunityList = () => {
     const navigate = useNavigate()
+    const { user } = useSelector((state) => state.user)
     const [count, setCount] = useState(0)
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoadding] = useState(false)
     const [boardList, setBoardList] = useState([])
+    const [tempContent, setTempContent] = useState('')
+    const [tempSubject, setTempSubject] = useState('')
+    const [tempUpdatedAt, setTempUpdatedAt] = useState('')
+    const [tempMode, setTempMode] = useState(false)
     const pageCountRef = useRef(null)
 
     useEffect(() => {
@@ -30,10 +37,10 @@ export const CommunityList = () => {
                     if (count === 0) {
                         setBoardList(newBoardList)
                     } else {
-                        setBoardList((preList) => [...preList, ...newBoardList])
+                        setBoardList((preList) => [...preList, ...response.data])
                     }
-                    setIsLoading(false)
-                    if (newBoardList.length === 0) setIsLoading(true)
+                    setIsLoadding(false)
+                    if (newBoardList.length === 0) setIsLoadding(true)
                 }
             } catch (e) {
                 console.log(e)
@@ -41,6 +48,19 @@ export const CommunityList = () => {
         }
         fetchData()
     }, [count])
+
+    useEffect(() => {
+        setTempMode(false)
+        const getData = async () => {
+            const { data } = await request.get(`/temp?email=${user.email}`)
+            if (data.length > 0) {
+                setTempContent(data[0].tempContent)
+                setTempSubject(data[0].tempSubject)
+                setTempUpdatedAt(data[0].updatedAt)
+            }
+        }
+        getData()
+    }, [])
 
     useEffect(() => {
         const options = {
@@ -52,7 +72,7 @@ export const CommunityList = () => {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting && !isLoading) {
-                    setIsLoading(true)
+                    setIsLoadding(true)
                     setCount((preCount) => preCount + 1)
                 }
             })
@@ -63,20 +83,6 @@ export const CommunityList = () => {
             if (pageCountRef.current) observer.unobserve(pageCountRef.current)
         }
     }, [isLoading])
-
-    useEffect(() => {
-        const getData = async () => {
-            try {
-                const response = await request.get('/community')
-                const newBoardList = response.data
-                setBoardList(newBoardList)
-                console.log(response.data)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        getData()
-    }, [])
 
     const TextList = {
         hidden: {
@@ -96,7 +102,7 @@ export const CommunityList = () => {
         visible: { opacity: 1, y: 0 },
     }
 
-    return (
+    return !tempMode ? (
         <CommunityWrapper>
             <TextBoxSpaceDiv>
                 <TextBoxSpaceH2>
@@ -110,7 +116,7 @@ export const CommunityList = () => {
                     height="3rem"
                     width="7rem"
                     onClick={() => {
-                        navigate('/community/write')
+                        setTempMode(true)
                     }}
                 >
                     글작성
@@ -154,5 +160,15 @@ export const CommunityList = () => {
             )}
             <PageCounter ref={pageCountRef} />
         </CommunityWrapper>
+    ) : (
+        <CommunityWrite
+            tempContent={tempContent}
+            tempSubject={tempSubject}
+            updatedAt={tempUpdatedAt}
+            setTempContent={setTempContent}
+            setTempSubject={setTempSubject}
+            tempMode={tempMode}
+            setTempMode={setTempMode}
+        />
     )
 }
