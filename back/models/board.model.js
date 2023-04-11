@@ -60,6 +60,9 @@ module.exports = (sequelize, Sequelize) => {
                 foreignKey: 'boardid',
                 as: "boardid"
             })
+            this.hasMany(models.Reservation, {
+                foreignKey: 'boardid',
+            })
         }
     }
     Board.createTable()
