@@ -34,13 +34,13 @@ const GoBackBtn = styled.button`
 
 const ChatterImgWrap = styled.div`
   width: 11%;
-  padding: 2% 0;
+  padding: 2.3% 0;
 `;
 
 const ChatterImg = styled.img`
   width: 100%;
   height: 100%;
-  border-radius: 50%;
+  border-radius: 6px;
 `;
 
 const ChatterInfoWrap = styled.div`
@@ -56,18 +56,19 @@ const ChatterUserName = styled.div`
 `;
 const ChatterAddress = styled.span`
   padding-top: 3%;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: #888;
 `;
 
 export const ChatterCard = ({ onClick, chatter }) => {
+    console.log(chatter)
   return (
     <ChatterCardWrap>
       <ChatterImgWrap>
-        <ChatterImg src={chatter.userImg} />
+        <ChatterImg src={chatter.image} />
       </ChatterImgWrap>
       <ChatterInfoWrap>
-        <ChatterUserName>{chatter.username}</ChatterUserName>
+        <ChatterUserName>{chatter.subject}</ChatterUserName>
         <ChatterAddress>{chatter.address}</ChatterAddress>
       </ChatterInfoWrap>
       <GoBackBtn onClick={onClick}>
