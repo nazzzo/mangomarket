@@ -1,27 +1,23 @@
 module.exports = (sequelize, Sequelize) => {
-  class Chat extends Sequelize.Model {
+  class Reservation extends Sequelize.Model {
     static createTable() {
       return this.init(
         {
-          content: {
+          reservation: {
             type: Sequelize.TEXT(),
             allowNull: false,
           },
-          seller: {
-            type: Sequelize.STRING(30),
+          address: {
+            type: Sequelize.STRING(50),
             allowNull: false,
-            references: {
-              model: "User",
-              key: "email",
-            },
           },
-          customer: {
-            type: Sequelize.STRING(30),
+          latitude: {
+            type: Sequelize.FLOAT(10,6),
             allowNull: false,
-            references: {
-              model: "User",
-              key: "email",
-            },
+          },
+          longitude: {
+            type: Sequelize.FLOAT(10,6),
+            allowNull: false,
           },
         },
         {
@@ -34,7 +30,10 @@ module.exports = (sequelize, Sequelize) => {
       this.belongsTo(models.Board, {
         foreignKey: "boardid",
       });
+      this.belongsTo(models.User, {
+        foreignKey: "email",
+      });
     }
   }
-  Chat.createTable();
+  Reservation.createTable();
 };

@@ -13,6 +13,8 @@ class BoardService {
             // console.log("scht, sch, srt", searchType, search, sort, count, pagingsort, pagingcategory);
             if (category === `default`) category = ``;
             if (searchType === "email") searchType = "A.email";
+            if (search === "undefined") search = "";
+            if (!searchType && search) searchType = "A.subject";
             const views = 6;
             let limitval = views * count;
             // console.log(`limitval:::`, limitval);
@@ -83,7 +85,7 @@ class BoardService {
             }
             const view = await this.boardRepository.findOne(id)
             if (email !== "guest") await this.boardRepository.updatehit(id, email)
-            // console.log(view)
+            console.log(view)
             return view
         } catch (e) {
             console.error(e);

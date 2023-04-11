@@ -5,14 +5,30 @@ class ChatRepository {
     this.Board = Board;
     this.sequelize = sequelize;
   }
+
   async findAll(type) {
     try {
       if (type.customer) {
-        const findAll = await this.Chat.findAll({ where:{ customer:`${type.customer}`}, raw: true, nest: true});
+        const findAll = await this.Chat.findAll({
+          where: {
+            customer: `${type.customer}`,
+            seller: `${type.opponent}`,
+            boardid: `${type.boardid}`,
+          },
+          raw: true,
+          nest: true,
+        });
         return findAll;
-      }
-      else if (type.seller) {
-        const findAll = await this.Chat.findAll({ where:{ seller:`${type.seller}`}, raw: true, nest: true});
+      } else if (type.seller) {
+        const findAll = await this.Chat.findAll({
+          where: {
+            seller: `${type.seller}`,
+            customer: `${type.opponent}`,
+            boardid: `${type.boardid}`,
+          },
+          raw: true,
+          nest: true,
+        });
         return findAll;
       }
     } catch (e) {
@@ -20,44 +36,62 @@ class ChatRepository {
     }
   }
 
-  async postChat(data) {
+  async findUserInfo(opponent){
     try {
-      const result = await this.Chat.create(data);
-      return result
+      console.log("abcd",opponent)
     } catch (e) {
       throw new Error(e)
     }
   }
 
+  async postChat(data) {
+    try {
+      const result = await this.Chat.create(data);
+      return result;
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
   async getUsers({ type, useremail }) {
     try {
-      let column
-      console.log(type) // seller ? customer
-      console.log(useremail)
-      type === "seller" ? column = `A.customer` : column = `A.seller`
+      let opponent;
+      type === "seller" ? (opponent = `customer`) : (opponent = `seller`);
 
       const sql = `SELECT 
-      ${column}, 
-      A.boardid, 
+      A.${opponent}, 
+      A.boardid,
+      E.subject, 
       B.username, 
       B.userImg,
-      B.address
-      FROM 
-      Chat as A 
-      JOIN User as B 
-          ON A.seller = B.email 
+      B.address,
+      C.image,
+      A.content,
+      A.createdAt
+      FROM Chat AS A
+      INNER JOIN (
+      SELECT 
+          ${opponent}, 
+          boardid, 
+          MAX(createdAt) AS max_createdAt
+      FROM Chat
+      WHERE ${type} = "${useremail}"
+      GROUP BY ${opponent}, boardid
+      ) AS D ON A.${opponent} = D.${opponent} AND A.boardid = D.boardid AND A.createdAt = D.max_createdAt
+      JOIN User AS B 
+      ON A.${opponent} = B.email
+      JOIN BoardImage AS C
+      ON A.boardid = C.boardid
+      JOIN Board AS E
+      ON A.boardid = E.id     
       WHERE 
-      A.${type} = "${useremail}"
-      GROUP BY 
-      ${column}, 
-      A.boardid, 
-      B.username, 
-      B.userImg,
-      B.address;`
-      const result = await this.sequelize.query(sql, { raw: true, nest: true })
+      C.thumbnail = 1
+      ORDER BY 
+      A.createdAt DESC;`;
+      const result = await this.sequelize.query(sql, { raw: true, nest: true });
       return result
     } catch (e) {
-      console.log(e)
+      throw new Error(e);
     }
   }
 }

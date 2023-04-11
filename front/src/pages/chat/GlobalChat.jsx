@@ -1,50 +1,93 @@
 import { useState, useEffect } from "react";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 import { SwitchBox, Switch } from "../../common/switch";
-import { GlobalChatWrap } from "./styled"
+import { GlobalChatWrap, ChatterWrap, ChatterList, ChatterItem, ChatterImgWrap, ChatterImg, ChatterContentWrap, ChatterUser, ChatterContent, BoardImgWrap, BoardImg, ChatterCard } from "./styled";
 import request from "../../utils/request";
-import { SellerChat, CustomerChat } from './index';
+import { SellerChat, CustomerChat } from "./index";
 
 export const GlobalChat = () => {
-    const [ isSeller, setIsSeller ] = useState(false);
-    const [ customerList, setCustomerList ]  = useState([])
-    const [ sellerList, setSellerList ]  = useState([])
-    const { user } = useSelector((state) => state.user)
+  const [isSeller, setIsSeller] = useState(false);
+  const [customerList, setCustomerList] = useState([]);
+  const [sellerList, setSellerList] = useState([]);
+  const [selectedChatter, setSelectedChatter] = useState();
+  const { user } = useSelector((state) => state.user);
 
-    const handleSwitch = () => {
-        setIsSeller(!isSeller);
-    };
+  const handleSwitch = () => {
+    setIsSeller(!isSeller)
+  };
 
-    const getCustomerList = async () => {
-        const response = await request.get(`/chats/customers?seller=${user.email}`)
-        setCustomerList(response.data)
-    }
+  const getCustomerList = async () => {
+    const response = await request.get(`/chats/customers?seller=${user.email}`);
 
-    useEffect(() => {
-        getCustomerList()
-        getSellerList()
-    }, [])
+    if (!response.data.isError) setCustomerList(response.data);
+  };
 
-    const getSellerList = async () => {
-        const response = await request.get(`/chats/sellers?customer=${user.email}`)
-        setSellerList(response.data)
-    }
+  useEffect(() => {
+    getCustomerList();
+    getSellerList();
+  }, []);
 
-    return (
-        <GlobalChatWrap>
-            <SwitchBox height="3.5rem">
-                <Switch onClick={handleSwitch} isActive={!isSeller} fontSize="0.9rem">
-                    나의 판매목록
-                </Switch>
-                <Switch onClick={handleSwitch} isActive={isSeller} fontSize="0.9rem">
-                    구매자
-                </Switch>
-            </SwitchBox>
-            {/* {isSeller ? <SellerChat /> : <CustomerChat seller={"1"} customer={123} boardid={1234} />} */}
-            <div>{ !isSeller ?
-            customerList.map((v) => <div>{Object.values(v)}</div> )
-            :
-            sellerList.map((v) => <div>{Object.values(v)}</div> ) }</div>
-        </GlobalChatWrap>
-    );
+  const getSellerList = async () => {
+    const response = await request.get(`/chats/sellers?customer=${user.email}`);
+    if (!response.data.isError) setSellerList(response.data);
+  };
+
+  const handleClick = (data) => {
+    console.log(data)
+    setSelectedChatter(data);
+  };
+
+  const handleGoBack = () => {
+    setSelectedChatter(null);
+  }
+
+  const chatterList = isSeller ? sellerList : customerList;
+
+  return (
+    <GlobalChatWrap width="27rem" height="37rem">
+      {!selectedChatter && (
+        <SwitchBox height="3.5rem">
+          <Switch onClick={handleSwitch} isActive={!isSeller} fontSize="1rem">
+            나의 판매목록
+          </Switch>
+          <Switch onClick={handleSwitch} isActive={isSeller} fontSize="1rem">
+            나의 구매목록
+          </Switch>
+        </SwitchBox>
+      )}
+      {!selectedChatter && customerList && sellerList ? (
+        <ChatterWrap>
+          <ChatterList>
+            {chatterList.map((v, index) => {
+              console.log(chatterList);
+              return (
+                <ChatterItem onClick={() => handleClick(v)} key={index}>
+                  <ChatterImgWrap>
+                    <ChatterImg src={v.userImg}></ChatterImg>
+                  </ChatterImgWrap>
+                  <ChatterContentWrap>
+                    <ChatterUser username={v.username} address={v.address} date={v.createdAt} />
+                    <ChatterContent>{v.content}</ChatterContent>
+                  </ChatterContentWrap>
+                  <BoardImgWrap>
+                    <BoardImg src={v.image} />
+                  </BoardImgWrap>
+                </ChatterItem>
+              );
+            })}
+          </ChatterList>
+        </ChatterWrap>
+      ) : (
+        <>
+          <ChatterCard onClick={handleGoBack} chatter={selectedChatter} />
+          <SellerChat
+            seller={!isSeller ? user.email : selectedChatter.seller}
+            customer={!isSeller ? selectedChatter.customer : user.email}
+            boardid={selectedChatter.boardid}
+            chatter={selectedChatter}
+          />
+        </>
+      )}
+    </GlobalChatWrap>
+  );
 };

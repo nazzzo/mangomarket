@@ -12,7 +12,7 @@ class CommunityRepository {
             // const boardView = await this.Community.findOne({ raw: true, where: { id } })
             const sql = `
             SELECT 
-            A.id,A.email,A.subject,A.content,A.createdAt,A.updatedAt,A.category,B.username,B.userImg,
+            A.id,A.email,A.subject,A.content,A.createdAt,A.updatedAt,A.category,B.username,B.userImg,B.address,
             (SELECT COUNT(communityid) FROM Comment WHERE communityid = A.id) AS CommentCount
             FROM Community AS A JOIN User AS B ON A.email = B.email
             WHERE A.id = ${id};
@@ -26,6 +26,7 @@ class CommunityRepository {
                 SELECT A.id, A.content, A.createdAt, A.email, A.parentId, A.isDeleted, B.username, B.userImg
                 FROM Comment AS A
                 JOIN User AS B ON A.email = B.email
+                WHERE A.communityid = ${id}
                 ORDER BY CASE WHEN parentId = 0 THEN id ELSE parentId END, A.createdAt ASC;`
             const [commentList] = await this.sequelize.query(commentSql)
             console.log('commentinfo::', commentList)
@@ -143,6 +144,7 @@ class CommunityRepository {
                 communityid: commentData.id,
                 content: commentData.content,
                 email: commentData.email,
+                parentId: commentData.parentId
             })
             console.log('create:', create)
             const findAll = await this.Comment.findAll({
@@ -168,6 +170,7 @@ class CommunityRepository {
             SELECT A.id, A.content, A.createdAt, A.email, A.parentId, A.isDeleted, B.username, B.userImg
                 FROM Comment AS A
                 JOIN User AS B ON A.email = B.email
+                WHERE A.communityid = ${commentData.id}
                 ORDER BY CASE WHEN parentId = 0 THEN id ELSE parentId END, A.createdAt ASC;
             `
             const [commentList] = await this.sequelize.query(commentSql)

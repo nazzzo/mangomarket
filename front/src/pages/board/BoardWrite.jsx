@@ -1,8 +1,10 @@
 import { useState, useRef } from 'react'
+import { useNavigate } from "react-router-dom"
 import { useSelector } from 'react-redux'
 import { MarketImgUpload } from '../../common/upload'
 import { Input } from '../../common/input'
 import { Modal } from '../../common/modal'
+import { Alert } from "../../common/alert"
 import { HashTag } from '../../common/hashtag'
 import { CategorySelector } from './CategorySelector'
 import { useInput } from '../../hooks'
@@ -12,12 +14,15 @@ import request from '../../utils/request'
 export const BoardWrite = () => {
     const { user } = useSelector((state) => state.user)
     const [isOpen, setIsOpen] = useState(false)
+    const [isOpenAlert, setIsOpenAlert] = useState(false);
     const [uploadedImages, setUploadedImages] = useState([])
     const [thumbnailIndex, setThumbnailIndex] = useState(0)
     const [selectedCategory, setSelectedCategory] = useState('')
     const [tags, setTags] = useState([])
+    const [pageId, setPageId] = useState('')
     const subject = useInput('')
     const contentRef = useRef(null)
+    const navigate = useNavigate()
 
     console.log(`tags:::`, tags, `category:::`, selectedCategory)
 
@@ -32,6 +37,15 @@ export const BoardWrite = () => {
             images: uploadedImages,
             thumbnail: thumbnailIndex,
         })
+        if (response.status === 201 && !response.data.isError) {
+            setIsOpenAlert(true)
+            setPageId(response.data.id)
+        }
+      }
+
+      const handleCloseAlert = () => {
+        setIsOpenAlert(false)
+        navigate(`/board/${pageId}`)
     }
 
     return (
@@ -106,6 +120,7 @@ export const BoardWrite = () => {
                     등록하기
                 </Submit>
             </form>
+            <Alert isOpenAlert={isOpenAlert} onClose={handleCloseAlert} color="green" width="20rem" height="5rem">성공적으로 등록되었습니다</Alert>
         </>
     )
 }

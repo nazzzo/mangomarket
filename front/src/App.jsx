@@ -16,6 +16,7 @@ const App = () => {
     const { isLogin, user, keyword, isAlarm } = useSelector((state) => state.user)
     const [isAllowChat, setIsAllowChat] = useState(false)
 
+
     useEffect(() => {
         if (document.cookie.split('=')[0] === 'token') {
             const token = document.cookie.split('=')[1]
