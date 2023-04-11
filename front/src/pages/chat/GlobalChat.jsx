@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { SwitchBox, Switch } from "../../common/switch";
 import { GlobalChatWrap, ChatterWrap, ChatterList, ChatterItem, ChatterImgWrap, ChatterImg, ChatterContentWrap, ChatterUser, ChatterContent, BoardImgWrap, BoardImg, ChatterCard } from "./styled";
 import request from "../../utils/request";
-import { SellerChat, CustomerChat } from "./index";
+import { SellerChat } from "./index";
 
 export const GlobalChat = () => {
   const [isSeller, setIsSeller] = useState(false);

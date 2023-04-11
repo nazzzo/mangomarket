@@ -311,7 +311,6 @@ const ChatMessageStyled = styled.div`
 
 
 export const ChatMessage = ({ color , content}) => {
-    console.log(color)
     return <ChatMessageStyled color={color}>{content}</ChatMessageStyled>
 }
 

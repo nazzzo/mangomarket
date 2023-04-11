@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback, useMemo, memo, useRef } from 'react';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { userSetReservation } from "../../store"
 import { useInput } from "../../hooks"
 import { Modal } from "../../common/modal"
 import { ChatterMap } from "../../pages/map"
@@ -15,8 +16,9 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
   const [logs, setLogs] = useState([])
   const [chats, setChats] = useState([])
   const [ isOpen, setIsOpen ] = useState(false)
+  const [ isReserved, setIsReserved ] = useState(false)
   const [isActiveButton, setIsActiveButton] = useState(false);
-  const { user } = useSelector((state) => state.user)
+  const { user, reservation } = useSelector((state) => state.user)
   const content = useInput("")
   const chatheight = useRef()
 
@@ -52,6 +54,10 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
       socket.disconnect();
     };
   }, [chats]);
+
+  useEffect(() => {
+    socket.emit("reservation", reservation)
+  }, [isReserved])
 
   const handleSendMessage = async (e) => {
     e.preventDefault()
@@ -121,13 +127,13 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
       </ChatLogWrap>
       <ChatForm onSubmit={handleSendMessage}>
         <ChatOption onClick={() => { setIsActiveButton(!isActiveButton) }} className={isActiveButton ? 'on' : ''}>
-          <ChatMenu className="chatMenu" onClick={() => { }} />
+          <ChatMenu className="chatMenu" onClick={() => {setIsOpen(true)}} />
         </ChatOption>
         <ChatInput type="text" value={content.value} onChange={content.onChange} placeholder="메세지를 입력해주세요" />
         <ChatButton type="submit" />
       </ChatForm>
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-            <ChatterMap setIsOpen={setIsOpen} boardid={boardid} customer={customer} />
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen} height="37rem">
+            <ChatterMap setIsOpen={setIsOpen} setIsReserved={setIsReserved} boardid={boardid} customer={customer} />
       </Modal>
     </>
   )

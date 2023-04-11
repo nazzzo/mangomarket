@@ -15,10 +15,14 @@ export const CustomerChat = ({ seller, customer, boardid, chatter, width, height
   const [ logs, setLogs ] = useState([]);
   const [ chats, setChats ] = useState([]);
   const [ isOpen, setIsOpen ] = useState(false)
+  const [ isReserved, setIsReserved ] = useState(false)
   const [isActiveButton, setIsActiveButton] = useState(false);
   const { user } = useSelector((state) => state.user)
   const content = useInput("");
   const chatheight = useRef()
+
+
+  console.log(`isOpen::`, isOpen)
 
   useEffect(() => {
     const getCustomerChat = async () => {
@@ -58,8 +62,6 @@ export const CustomerChat = ({ seller, customer, boardid, chatter, width, height
     };
   }, [chats]);
 
-  console.log(logs)
-
   const handleSendMessage = async (e) => {
     e.preventDefault();
     let data = {
@@ -77,9 +79,7 @@ export const CustomerChat = ({ seller, customer, boardid, chatter, width, height
     if (response.status === 201) content.clear()
     content.clear();
   };
-
   
-
   return (
       <CustomerChatWrap width={width} height={height}>
         <ChatterCard onClick={()=>{setIsOpen(false)}} chatter={chatter}></ChatterCard>
@@ -133,7 +133,7 @@ export const CustomerChat = ({ seller, customer, boardid, chatter, width, height
                 <ChatButton type="submit" />
         </ChatForm>
         <Modal isOpen={isOpen} setIsOpen={setIsOpen} height="37rem">
-            <ChatterMap setIsOpen={setIsOpen} boardid={boardid} customer={customer.email} />
+          <ChatterMap setIsOpen={setIsOpen} setIsReserved={setIsReserved} boardid={boardid} customer={customer} />
         </Modal>
       </CustomerChatWrap>
   );
