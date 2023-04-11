@@ -1,20 +1,36 @@
-export const Header = ({ categories, isLogin, user, keywords, isAlarm }) => {
-import { useState, useEffect } from "react"
-import { useInput } from "../../hooks"
-import { useDispatch } from "react-redux"
-import { userSetAlarm, userSetSearch } from "../../store"
-import { Navigate, NavLink, useNavigate } from "react-router-dom";
-import { HeaderWrapper, HeaderWrap, HeaderLogoWrap, HeaderLogoImgWrap, HeaderLogoImg, HeaderMenuWrap, HeaderMenuul, HeaderMenuli, HeaderFunctionWrap, HeaderSearchWrap, HeaderSearchBox, HeaderSearchInput, HeaderAlarmWrap, HeaderUserWrap, HeaderUser, HeaderAlarmMenu } from "./styled"
-import { Hamburger, SearchPopUp, MenuPopUp } from '../index';
-import { Modal } from "../../common/modal";
-import { Alert } from "../../common/alert";
-import { AlarmDot } from "../../common/button"
-import { KeywordAlarm } from "../../common/profile"
-import { Icon } from '@iconify/react';
-import request from "../../utils/request"
+import { useState, useEffect } from 'react'
+import { useInput } from '../../hooks'
+import { useDispatch } from 'react-redux'
+import { userSetAlarm, userSetSearch } from '../../store'
+import { Navigate, NavLink, useNavigate } from 'react-router-dom'
+import {
+    HeaderWrapper,
+    HeaderWrap,
+    HeaderLogoWrap,
+    HeaderLogoImgWrap,
+    HeaderLogoImg,
+    HeaderMenuWrap,
+    HeaderMenuul,
+    HeaderMenuli,
+    HeaderFunctionWrap,
+    HeaderSearchWrap,
+    HeaderSearchBox,
+    HeaderSearchInput,
+    HeaderAlarmWrap,
+    HeaderUserWrap,
+    HeaderUser,
+    HeaderAlarmMenu,
+} from './styled'
+import { Hamburger, SearchPopUp, MenuPopUp } from '../index'
+import { Modal } from '../../common/modal'
+import { Alert } from '../../common/alert'
+import { AlarmDot } from '../../common/button'
+import { KeywordAlarm } from '../../common/profile'
+import { Icon } from '@iconify/react'
+import request from '../../utils/request'
 
-export const Header = (({ categories, isLogin, user, keywords, isAlarm }) => {
-    const search = useInput("")
+export const Header = ({ categories, isLogin, user, keywords, isAlarm }) => {
+    const search = useInput('')
     const dispatch = useDispatch()
     const [searchBox, setSearchBox] = useState(false)
     const [menuBox, setMenuBox] = useState(false)
@@ -39,50 +55,58 @@ export const Header = (({ categories, isLogin, user, keywords, isAlarm }) => {
 
     useEffect(() => {
         if (alarmData.length > 0) dispatch(userSetAlarm(true))
-    }, [alarmData]);
+    }, [alarmData])
 
     useEffect(() => {
         if (isOpen) dispatch(userSetAlarm(false))
-    }, [isOpen]);
+    }, [isOpen])
     console.log(user)
 
     const navigate = useNavigate()
 
     const loginFilter = categories.filter((v) => v.isLogin === null || v.isLogin === isLogin)
 
+    const navigation = (styledComponent) =>
+        loginFilter.map((v) => {
+            const Component = styledComponent
 
-    const navigation = (styledComponent) => loginFilter.map( v => {
-        const Component = styledComponent
+            const handleCloseAlert = () => {
+                setIsOpenAlert(false)
+                navigate('/profile')
+            }
 
-        const handleCloseAlert = () => {
-            setIsOpenAlert(false)
-            navigate("/profile")
-        }
-
-        if (v.name === "장터등록" && !user.address) {
+            if (v.name === '장터등록' && !user.address) {
+                return (
+                    <>
+                        <Component key={v.id}>
+                            <NavLink to={v.path} onClick={() => setIsOpenAlert(true)}>
+                                {v.name}
+                            </NavLink>
+                        </Component>
+                        <Alert
+                            isOpenAlert={isOpenAlert}
+                            onClose={handleCloseAlert}
+                            color="red"
+                            width="20rem"
+                            height="5rem"
+                        >
+                            동네인증이 필요합니다
+                        </Alert>
+                    </>
+                )
+            }
             return (
-                <>   
-                    <Component key={v.id}>
-                        <NavLink to={v.path} onClick={() => setIsOpenAlert(true)}>
-                            {v.name}
-                        </NavLink>
-                    </Component>
-                    <Alert isOpenAlert={isOpenAlert} onClose={handleCloseAlert} color="red" width="20rem" height="5rem">동네인증이 필요합니다</Alert>
-                </>  
-            );
-        }
-        return(
                 <Component key={v.id}>
                     <NavLink to={v.path}>{v.name}</NavLink>
                 </Component>
-        )}
-    )
+            )
+        })
 
     const headerMenuList = navigation(HeaderMenuli)
 
     const handleSearchClick = (e) => {
-        e.preventDefault();
-        if(menuBox) {
+        e.preventDefault()
+        if (menuBox) {
             setMenuBox(!menuBox)
             setSearchBox(!searchBox)
         } else {
@@ -101,56 +125,85 @@ export const Header = (({ categories, isLogin, user, keywords, isAlarm }) => {
         }
     }
 
-    return(
-            <>
-                <HeaderWrapper>
-                    <HeaderWrap>
-                        {/*  */}
-                        <HeaderLogoWrap>
-                            <HeaderLogoImgWrap onClick={() => {navigate("/")}}>
-                                <HeaderLogoImg src='https://i.ibb.co/BNxzrWN/mangomarket3.png'/>
-                            </HeaderLogoImgWrap>
-                        </HeaderLogoWrap>
-                        {/*  */}
-                        <HeaderMenuWrap>
-                            <HeaderMenuul>
-                                {headerMenuList}
-                            </HeaderMenuul>
-                        </HeaderMenuWrap>
-                        {/*  */}
-                        <HeaderFunctionWrap>
-                            <HeaderSearchWrap>
-                                <HeaderSearchBox>
-                                    <HeaderSearchInput placeholder='검색어를 입력해주세요' type="search" id="search" name="search" value={search.value} onChange={search.onChange} />
-                                    <Icon icon="material-symbols:search" onClick={handleSearchClick} />
-                                </HeaderSearchBox>
-                            </HeaderSearchWrap>
-                            <HeaderAlarmWrap onClick={()=>{setIsActive(!isActive)}} className={isActive ? 'on' : ''}>
-                                <Icon icon="mdi:bell" />
-                                {isAlarm && <AlarmDot top="27%" right="27%" />}
-                                <HeaderAlarmMenu onClick={
-                                     ()=> {setIsOpen(true)
-                                     dispatch(userSetAlarm(false))}} 
-                                     className="snb"
-                                >
-                                    {isAlarm && <AlarmDot top="20%" left="14%" />}
-                                </HeaderAlarmMenu>
-                            </HeaderAlarmWrap>
-                            <HeaderUserWrap onClick={handleMenuClick}>
-                                { user.userImg ? <HeaderUser src={user.userImg} onClick={() => {navigate("/profile")}}/> : <></>}
-                                <Hamburger />
-                            </HeaderUserWrap>
-                        </HeaderFunctionWrap>
-                        {/*  */}
-                    </HeaderWrap>
-                </HeaderWrapper>
-                <SearchPopUp visible={searchBox}/>
-                <MenuPopUp visible={menuBox} navigation={navigation}/>                
-                <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-                    <KeywordAlarm height="30rem" width="25rem" setIsOpen={setIsOpen} alarmData={alarmData} navigate={navigate} />
-                </Modal>
-            </>
-        )
-    }
-);
-
+    return (
+        <>
+            <HeaderWrapper>
+                <HeaderWrap>
+                    {/*  */}
+                    <HeaderLogoWrap>
+                        <HeaderLogoImgWrap
+                            onClick={() => {
+                                navigate('/')
+                            }}
+                        >
+                            <HeaderLogoImg src="https://i.ibb.co/BNxzrWN/mangomarket3.png" />
+                        </HeaderLogoImgWrap>
+                    </HeaderLogoWrap>
+                    {/*  */}
+                    <HeaderMenuWrap>
+                        <HeaderMenuul>{headerMenuList}</HeaderMenuul>
+                    </HeaderMenuWrap>
+                    {/*  */}
+                    <HeaderFunctionWrap>
+                        <HeaderSearchWrap>
+                            <HeaderSearchBox>
+                                <HeaderSearchInput
+                                    placeholder="검색어를 입력해주세요"
+                                    type="search"
+                                    id="search"
+                                    name="search"
+                                    value={search.value}
+                                    onChange={search.onChange}
+                                />
+                                <Icon icon="material-symbols:search" onClick={handleSearchClick} />
+                            </HeaderSearchBox>
+                        </HeaderSearchWrap>
+                        <HeaderAlarmWrap
+                            onClick={() => {
+                                setIsActive(!isActive)
+                            }}
+                            className={isActive ? 'on' : ''}
+                        >
+                            <Icon icon="mdi:bell" />
+                            {isAlarm && <AlarmDot top="27%" right="27%" />}
+                            <HeaderAlarmMenu
+                                onClick={() => {
+                                    setIsOpen(true)
+                                    dispatch(userSetAlarm(false))
+                                }}
+                                className="snb"
+                            >
+                                {isAlarm && <AlarmDot top="20%" left="14%" />}
+                            </HeaderAlarmMenu>
+                        </HeaderAlarmWrap>
+                        <HeaderUserWrap onClick={handleMenuClick}>
+                            {user.userImg ? (
+                                <HeaderUser
+                                    src={user.userImg}
+                                    onClick={() => {
+                                        navigate('/profile')
+                                    }}
+                                />
+                            ) : (
+                                <></>
+                            )}
+                            <Hamburger />
+                        </HeaderUserWrap>
+                    </HeaderFunctionWrap>
+                    {/*  */}
+                </HeaderWrap>
+            </HeaderWrapper>
+            <SearchPopUp visible={searchBox} />
+            <MenuPopUp visible={menuBox} navigation={navigation} />
+            <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+                <KeywordAlarm
+                    height="30rem"
+                    width="25rem"
+                    setIsOpen={setIsOpen}
+                    alarmData={alarmData}
+                    navigate={navigate}
+                />
+            </Modal>
+        </>
+    )
+}
