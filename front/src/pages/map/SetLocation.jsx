@@ -7,14 +7,13 @@ import { TimerBtn } from "../../common/button"
 import { Alert } from "../../common/alert"
 import request from "../../utils/request"
 
-export const SetLocation = ({ lat, lng, setIsOpen, boardid, customer }) => {
+export const SetLocation = ({ setIsOpen, setIsReserved, lat, lng, boardid, customer }) => {
     const [address, setAddress] = useState(null);
     const [isOpenAlert, setIsOpenAlert] = useState(false);
     const [selectedTime, setSelectedTime] = useState('')
     const { user } = useSelector((state) => state.user);
     const dispatch = useDispatch()
-    console.log(selectedTime, customer, boardid)
-
+  
     const handleGetAddress= () => {
         const geocoder = new window.kakao.maps.services.Geocoder(); // 좌표 -> 주소로 변환해주는 객체
         const coord = new window.kakao.maps.LatLng(lat, lng); // 주소로 변환할 좌표 입력
@@ -36,11 +35,14 @@ export const SetLocation = ({ lat, lng, setIsOpen, boardid, customer }) => {
                 longitude : lng,
                 reservation : selectedTime.value,
                 boardid : boardid,
-                customer : customer,
+                email : customer,
               });
-              if (response.data.user) {
+              console.log(response.data)
+              if (response.data.email) {
                 dispatch(
                     userSetReservation({
+                        email: customer,
+                        boardid: boardid,
                         address: address,
                         latitude : lat, 
                         longitude : lng,
@@ -48,12 +50,12 @@ export const SetLocation = ({ lat, lng, setIsOpen, boardid, customer }) => {
                     })
                   );
                   setIsOpenAlert(true)
+                  setIsReserved(true)
                 }
         } catch (e) {
             console.error(e)
         }
       }
-      console.log(`opened:::`, isOpenAlert)
 
       const handleCloseAlert = () => {
         setIsOpenAlert(false)
@@ -78,7 +80,7 @@ export const SetLocation = ({ lat, lng, setIsOpen, boardid, customer }) => {
           </>
         }
         </GetAddressForm>
-        <Alert isOpenAlert={isOpenAlert} onClose={handleCloseAlert} color="green" width="20rem" height="5rem">동네인증 성공</Alert>
+        <Alert isOpenAlert={isOpenAlert} onClose={handleCloseAlert} color="green" width="20rem" height="5rem">예약신청 성공</Alert>
     </>
   );
 };

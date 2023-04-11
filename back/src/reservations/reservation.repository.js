@@ -15,10 +15,21 @@ class ReservationRepository {
     }
   }
 
-  async postReservation() {
+  async postReservation(data) {
     try {
-      const result = await this.Reservation.create();
-      return result;
+      const [reservation, created] = await this.Reservation.findOrCreate({
+        where: { boardid: data.boardid, email: data.email },
+        defaults: data,
+      });
+  
+      if (created) {
+        console.log('New reservation created!');
+      } else {
+        console.log('Reservation already exists!');
+        await reservation.update(data);
+      }
+  
+      return reservation;
     } catch (e) {
       throw new Error(e);
     }

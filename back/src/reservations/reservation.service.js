@@ -12,9 +12,9 @@ class ReservationService {
           }        
     }
 
-    async postReservation() {
+    async postReservation(data) {
         try {
-          const result = await this.reservationRepository.postReservation()
+          const result = await this.reservationRepository.postReservation(data)
           return result
           } catch (e) {
             throw new Error()
