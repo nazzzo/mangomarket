@@ -172,8 +172,13 @@ export const HeaderAlarmWrap = styled.div`
     height: 100%;
     position: relative;
 
+    & .snb {
+        pointer-events: none;
+    }
+
     &.on .snb {
         opacity: 0.8;
+        pointer-events: auto;
         transition: all 0.2s ease-out;
     }
 

@@ -3,14 +3,36 @@ import { Icon } from "@iconify/react";
 
 
 
-export const CustomerChatWrap = styled.div`
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
+const CustomerChatWrapStyled = styled.div`
+  width: ${({ width }) => width};
+  height: ${({ height }) => height};
+  background: #fff;
+  box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.7);
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  border-radius: 6px;
+  overflow-y: hidden;
 `
+
+const ImageBox = styled.div`
+  width: 100%;
+  height: 8.5%;
+  border-radius: 6px 6px 0 0;
+  background: url(https://i.ibb.co/Xxbw7Bb/mangomarket5.png) no-repeat;
+  background-color: #fda31b;
+  background-size: 35%;
+  background-position: center 50%;
+`;
+
+export const CustomerChatWrap = ({ width, height, children }) => {
+    return (
+      <CustomerChatWrapStyled width={width} height={height}>
+        <ImageBox />
+        {children}
+      </CustomerChatWrapStyled>
+)}
 
 const ChatterCardWrap = styled.div`
   display: flex;
@@ -110,7 +132,7 @@ const ChatFormStyled = styled.form`
 export const ChatInput = styled.input`
   border: none;
   border-radius: 20px;
-  width: 80%;
+  width: 76%;
   height: 40px;
   background-color: #f3f3f3;
   padding-left: 5%;
@@ -138,6 +160,75 @@ export const ChatButtonStyled = styled.button`
     transition: all 0.3s ease-out;
   }
 `;
+
+
+export const ChatOptionStyled = styled.div`
+  margin-left: 2%;
+  width: 12%;
+  position: relative;
+  border: none;
+  outline: none;
+  background: #fff;
+
+  & .chatMenu {
+    pointer-events: none;
+  }
+
+  &.on .chatMenu {
+       opacity: 1;
+       pointer-events: auto;
+       transition: all 0.2s ease-out;
+  }
+  & .iconify {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: #666;
+    transition: all 0.3s ease-out;
+  }
+  & .iconify:hover {
+    color: #333;
+    transition: all 0.3s ease-out;
+  }
+`;
+
+
+export const ChatOption = ({onClick, className, children}) => {
+    return (
+      <ChatOptionStyled type="button" className={className} onClick={onClick}>
+        <Icon icon="mdi:plus-circle" />
+        {children}
+      </ChatOptionStyled>
+    );
+};
+
+const ChatMenuWrapper = styled.div`
+    width: 15rem;
+    height: 3.5rem;
+    opacity: 0;
+    transition: all 0.2s ease-out;
+    position: absolute;
+    bottom: 170%;
+    left: 20%;
+    background: #fff;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+    padding: 2%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    cursor: pointer;
+`
+
+export const ChatMenu = ({onClick, className, children}) => {
+    return <ChatMenuWrapper className={className}>
+        {children}
+        <div onClick={onClick}>약속 잡기</div>
+        <div>취소하기</div>
+    </ChatMenuWrapper>
+}
+  
 
 export const ChatButton = ({ type }) => {
   return (
