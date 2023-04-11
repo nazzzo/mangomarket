@@ -38,12 +38,12 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
     socket.emit("joinRoom", { room: `${boardid}-${customer}` });
 
     socket.on("receiveMessage", (newMessage) => {
-      let position
-      newMessage.email === user.email ? position = "right" : position = "left"
-      newMessage.position = position
-      setChats([...chats, newMessage]);
-      chatheight.current.scrollTop = chatheight.current.scrollHeight
-    });
+        let position
+        newMessage.email === user.email ? position = "right" : position = "left"
+        newMessage.position = position
+        setChats([...chats, newMessage]);
+        chatheight.current.scrollTop = chatheight.current.scrollHeight
+      });
 
     return () => {
       socket.disconnect();

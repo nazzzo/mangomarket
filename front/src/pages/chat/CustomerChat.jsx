@@ -9,7 +9,7 @@ import request from "../../utils/request";
 const ENDPOINT = `${config.PT}://${config.HOST}:${config.BACKEND_PORT}/`;
 let socket;
 
-export const CustomerChat = ({ seller, customer, boardid, chatter, width, height }) => {
+export const CustomerChat = ({ setIsOpen, seller, customer, boardid, chatter, width, height }) => {
   const [ logs, setLogs ] = useState([]);
   const [ chats, setChats ] = useState([]);
   const [isActiveButton, setIsActiveButton] = useState(false);
@@ -76,7 +76,7 @@ export const CustomerChat = ({ seller, customer, boardid, chatter, width, height
 
   return (
       <CustomerChatWrap width={width} height={height}>
-        <ChatterCard onClick={()=>{}} chatter={chatter}></ChatterCard>
+        <ChatterCard onClick={()=>{setIsOpen(false)}} chatter={chatter}></ChatterCard>
         <ChatLogWrap ref={chatheight}>
           {logs ? (
             <ChatLogs>

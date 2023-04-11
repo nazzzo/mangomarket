@@ -283,7 +283,8 @@ export const RightMessageWrap = styled.div`
     align-items: center;
 `
 const ChatUserImgWrap = styled.div`
-  width: 13%;
+  width: 45px;
+  height: 45px;
   padding: 1%;
 
   & img {
