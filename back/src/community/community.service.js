@@ -8,7 +8,12 @@ class CommunityService {
 
     async postComment({ id, content, email, parentId }) {
         try {
-            const commentList = await this.communityRepository.create({ id, content, email, parentId })
+            const commentList = await this.communityRepository.create({
+                id,
+                content,
+                email,
+                parentId,
+            })
             console.log('commentList::', commentList)
             return commentList
         } catch (e) {
@@ -28,6 +33,16 @@ class CommunityService {
         }
     }
 
+    async getTempInfo({ email }) {
+        try {
+            const tempData = await this.communityRepository.findTemp({ email })
+
+            return tempData
+        } catch (e) {
+            throw new this.BadRequest(e)
+        }
+    }
+
     async getProfileList({ email }) {
         try {
             console.log('getProfileList ::: ', email)
@@ -40,7 +55,18 @@ class CommunityService {
         }
     }
 
-    async getList({ count }) {
+    async postTempWrite({ id, content, subject }) {
+        try {
+            console.log('community Service Temp data :', id, content, subject)
+            const temp = await this.communityRepository.tempDataCreate({ id, content, subject })
+            console.log('community Service Temp data temp:', temp)
+            return temp
+        } catch (e) {
+            throw new this.BadRequest(e)
+        }
+    }
+
+    async getCommunityList({ count }) {
         try {
             console.log('count service ::: ', count)
 
@@ -91,7 +117,12 @@ class CommunityService {
 
     async putComment(id, idx, content, isDeleted) {
         try {
-            const comment = await this.communityRepository.updateComment({ id, idx, content, isDeleted })
+            const comment = await this.communityRepository.updateComment({
+                id,
+                idx,
+                content,
+                isDeleted,
+            })
             if (comment < 1) throw '수정할 댓글이 없습니다'
             return comment
         } catch (e) {

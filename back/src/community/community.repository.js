@@ -1,9 +1,10 @@
 class CommunityRepository {
-    constructor({ Community, Comment, sequelize, User }) {
+    constructor({ Community, Comment, sequelize, User, Temp }) {
         this.Community = Community
         this.Comment = Comment
         this.sequelize = sequelize
         this.User = User
+        this.Temp = Temp
     }
 
     async findOne({ id }) {
@@ -17,8 +18,7 @@ class CommunityRepository {
             WHERE A.id = ${id};
         `
             const [[boardView]] = await this.sequelize.query(sql)
-            console.log('boardView::' , boardView)
-            
+
             // const commentSql = `
             // select A.id,A.content,A.createdAt,A.email,A.parentId,B.username,B.userImg from Comment as A join User as B on A.email = B.email
             // `
@@ -37,7 +37,7 @@ class CommunityRepository {
             // const email = commentList.map((comment) => comment.email)
             // const username = email.map((email)=>{
             //     return this.User.findOne({raw: true, where: {email}})
-            // }) 
+            // })
             // const nickname = ( await Promise.all(username)).map((user) => user.username)
             // commentList = commentList.map((comment, index)=> {
             //     comment.username = nickname[index]
@@ -52,6 +52,11 @@ class CommunityRepository {
     async createWriting({ email, subject, content, category }) {
         try {
             const create = await this.Community.create({ email, subject, content, category })
+            // const sql = `UPDATE Community SET tempContent = '' , tempSubject = '' WHERE email='${email}';`
+            const destorySql = `DELETE FROM temp WHERE email = '${email}'`
+            // const updateTemp = await this.sequelize.query(sql)
+            const deleteTemp = await this.sequelize.query(destorySql)
+            // console.log('updateTemp ::: ', updateTemp)
             return create
         } catch (e) {
             throw new Error(e)
@@ -88,7 +93,6 @@ class CommunityRepository {
              */
 
             const findComment = await this.sequelize.query(sql)
-            console.log('findComment ::: ', findComment)
 
             return findComment
         } catch (e) {
@@ -103,6 +107,30 @@ class CommunityRepository {
             console.log('comu repository :: ', findAll)
 
             return findAll
+        } catch (e) {
+            throw new Error(e)
+        }
+    }
+
+    async findTemp({ email }) {
+        try {
+            const sql = `SELECT tempContent,tempSubject,updatedAt FROM Community WHERE email = '${email}'`
+            const tempData = await this.sequelize.query(sql)
+            return tempData
+        } catch (e) {
+            throw new Error(e)
+        }
+    }
+
+    async tempDataCreate({ id, content, subject }) {
+        try {
+            const sql = `
+            UPDATE Community SET tempContent = "${content}" , tempSubject = "${subject}" WHERE email = "${id}";
+            `
+            const tempData = await this.sequelize.query(sql)
+            console.log(tempData)
+
+            return tempData
         } catch (e) {
             throw new Error(e)
         }
@@ -131,7 +159,7 @@ class CommunityRepository {
             // const email = findAll.map((comment) => comment.email)
             // const username = email.map((email)=>{
             //     return this.User.findOne({raw: true, where: {email}})
-            // }) 
+            // })
             // const nickname = ( await Promise.all(username)).map((user) => user.username)
             // const commentList = findAll.map((comment, index)=> {
             //     comment.username = nickname[index]
@@ -167,8 +195,7 @@ class CommunityRepository {
     async updateComment({ id, idx, content, isDeleted }) {
         try {
             const [updateComment] = await this.Comment.update(
-                { content , isDeleted
-                },
+                { content, isDeleted },
                 { where: { communityid: id, id: idx } }
             )
             return updateComment

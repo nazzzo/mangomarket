@@ -48,7 +48,7 @@ export const HelpDeskBoard = ({ user }) => {
         navigate(`/helpdesk/board/${boardId}`)
     }
 
-    return (
+    return user.level === 'admin' ? (
         <Wrapper>
             <Table>
                 <thead>
@@ -115,5 +115,7 @@ export const HelpDeskBoard = ({ user }) => {
                 </tbody>
             </Table>
         </Wrapper>
+    ) : (
+        <></>
     )
 }

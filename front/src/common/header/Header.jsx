@@ -1,3 +1,4 @@
+export const Header = ({ categories, isLogin, user, keywords, isAlarm }) => {
 import { useState, useEffect } from "react"
 import { useInput } from "../../hooks"
 import { useDispatch } from "react-redux"
@@ -17,23 +18,24 @@ export const Header = (({ categories, isLogin, user, keywords, isAlarm }) => {
     const dispatch = useDispatch()
     const [searchBox, setSearchBox] = useState(false)
     const [menuBox, setMenuBox] = useState(false)
-    const [isActive, setIsActive] = useState(false);
+    const [isActive, setIsActive] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
     const [isOpenAlert, setIsOpenAlert] = useState(false)
     const [alarmData, setAlarmData] = useState([])
 
-
     const getAlarm = async () => {
-        const query = keywords.map(v => v.id).join(',');
-        const response = await request.get(`boards/keywords?id=${query}&email=${user.email}`);
-        if (!response.data.isError) setAlarmData(response.data);
-    };
+        const query = keywords.map((v) => v.id).join(',')
+        const response = await request.get(`boards/keywords?id=${query}&email=${user.email}`)
+        if (!response.data.isError) setAlarmData(response.data)
+    }
 
     useEffect(() => {
-        getAlarm();
-        const interval = setInterval(() => { getAlarm();}, 3 * 60 * 1000);
-        return () => clearInterval(interval);
-    }, []);
+        getAlarm()
+        const interval = setInterval(() => {
+            getAlarm()
+        }, 3 * 60 * 1000)
+        return () => clearInterval(interval)
+    }, [])
 
     useEffect(() => {
         if (alarmData.length > 0) dispatch(userSetAlarm(true))
@@ -46,7 +48,8 @@ export const Header = (({ categories, isLogin, user, keywords, isAlarm }) => {
 
     const navigate = useNavigate()
 
-    const loginFilter = categories.filter( v => v.isLogin === null || v.isLogin === isLogin )
+    const loginFilter = categories.filter((v) => v.isLogin === null || v.isLogin === isLogin)
+
 
     const navigation = (styledComponent) => loginFilter.map( v => {
         const Component = styledComponent
@@ -70,9 +73,7 @@ export const Header = (({ categories, isLogin, user, keywords, isAlarm }) => {
         }
         return(
                 <Component key={v.id}>
-                    <NavLink to={v.path}>
-                        {v.name}
-                    </NavLink>
+                    <NavLink to={v.path}>{v.name}</NavLink>
                 </Component>
         )}
     )
@@ -83,20 +84,20 @@ export const Header = (({ categories, isLogin, user, keywords, isAlarm }) => {
         e.preventDefault();
         if(menuBox) {
             setMenuBox(!menuBox)
-            setSearchBox(!searchBox)}
-        else {
-            setSearchBox(!searchBox) 
+            setSearchBox(!searchBox)
+        } else {
+            setSearchBox(!searchBox)
         }
         dispatch(userSetSearch(search.value))
         search.clear()
     }
 
     const handleMenuClick = () => {
-        if(searchBox) {
+        if (searchBox) {
             setSearchBox(!searchBox)
-            setMenuBox(!menuBox)}
-        else {
-            setMenuBox(!menuBox) 
+            setMenuBox(!menuBox)
+        } else {
+            setMenuBox(!menuBox)
         }
     }
 
@@ -152,3 +153,4 @@ export const Header = (({ categories, isLogin, user, keywords, isAlarm }) => {
         )
     }
 );
+
