@@ -21,6 +21,7 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
   const { user, reservation } = useSelector((state) => state.user)
   const content = useInput("")
   const chatheight = useRef()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const getSellerChat = async () => {
@@ -55,9 +56,14 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
     };
   }, [chats]);
 
+
   useEffect(() => {
-    socket.emit("reservation", reservation)
+    socket.emit("reservation", { data: reservation })
+    setIsReserved(false)
+    dispatch(userSetReservation({}))
   }, [isReserved])
+
+  console.log(`reservation:::`, isReserved, reservation)
 
   const handleSendMessage = async (e) => {
     e.preventDefault()

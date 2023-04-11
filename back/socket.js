@@ -30,6 +30,7 @@ module.exports = (server, app) => {
       })
 
       socket.on("reservation", ({ data }) => {
+        console.log(`reservation:::`, data)
         io.to(roomname).emit("reserve", {
           // boardid: data.boardid,
           // seller: data.seller,
