@@ -10,6 +10,7 @@ import {
     USER_KEYWORD_ADD,
     USER_KEYWORD_REMOVE,
     USER_SET_ALARM,
+    USER_SET_RESERVATION,
 } from './types'
 
 const initialState = {
@@ -33,6 +34,7 @@ const initialState = {
         boardid: '',
     },
     keyword: [],
+    reservation: {},
 }
 
 export const user = (state = initialState, action) => {
@@ -106,6 +108,11 @@ export const user = (state = initialState, action) => {
                 ...state,
                 isAlarm: action.payload,
             }
+        case USER_SET_RESERVATION:
+          return {
+              ...state,
+              reservation: action.payload,
+          }
         default:
             return state
     }
