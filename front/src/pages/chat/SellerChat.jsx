@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback, useMemo, memo } from 'react';
 import { useSelector } from "react-redux";
 import { useInput } from "../../hooks"
-import { ChatForm, ChatInput, ChatButton} from "./styled"
+import { ChatForm, ChatInput, ChatButton, ChatOption, ChatMenu, ChatLogWrap, ChatLogs, LiveChats, LeftMessageWrap, RightMessageWrap, ChatUserImg, ChatMessage, ChatTime } from "./styled"
 import request from "../../utils/request"
 import io from "socket.io-client"
 import config from "../../config"
@@ -9,9 +9,10 @@ import config from "../../config"
 const ENDPOINT = `${config.PT}://${config.HOST}:${config.BACKEND_PORT}/`;
 let socket
 
-export const SellerChat = ({ seller, customer, boardid }) => {
+export const SellerChat = ({ seller, customer, boardid, chatter }) => {
     const [logs, setLogs] = useState([])
     const [chats, setChats] = useState([])
+    const [isActiveButton, setIsActiveButton] = useState(false);
     const { user } = useSelector((state) => state.user)
     const content = useInput("")
 
@@ -68,36 +69,52 @@ export const SellerChat = ({ seller, customer, boardid }) => {
 
     return (
         <>
-            <div>
-                {logs ? (
-                    <ul>
-                        {logs.map((v) => (
-                            <div key={v.id}>
-                                <li>{v.email}</li>
-                                <li>{v.content}</li>
-                            </div>
-                        ))}
-                    </ul>
+        <ChatLogWrap>
+          {logs ? (
+            <ChatLogs>
+              {logs.map((v) => (
+                v.position === "left" ? (
+                  <LeftMessageWrap key={v.id}>
+                    <ChatUserImg src={chatter.userImg} />
+                    <ChatMessage color="yellow" content={v.content}/>
+                    <ChatTime date={v.createdAt} />
+                  </LeftMessageWrap>
                 ) : (
-                    <></>
-                )}
-                {chats ? (
-                    <ul>
-                        {chats.map((v, idx) => {
-                            return (
-                            <div key={idx}>
-                                <h3>{v.username}</h3>
-                                {/* <img src={v.userImg}/> */}
-                                <li>{v.address}</li>
-                                <li>{v.content}</li>
-                            </div>
-                        )})}
-                    </ul>
+                  <RightMessageWrap>
+                    <ChatTime date={v.createdAt} />
+                    <ChatMessage color="green" content={v.content}/>
+                  </RightMessageWrap>
+                )
+              ))}
+            </ChatLogs>
+          ) : (
+            <></>
+          )}
+          {chats ? (
+            <LiveChats>
+              {chats.map((v, idx) => (
+                v.position === "left" ? (
+                  <LeftMessageWrap key={v.id}>
+                    <ChatUserImg src={chatter.userImg} />
+                    <ChatMessage color="yellow" content={v.content}/>
+                    <ChatTime date={v.createdAt} />
+                  </LeftMessageWrap>
                 ) : (
-                    <></>
-                )}
-            </div>
+                  <RightMessageWrap>
+                    <ChatTime date={v.createdAt} />
+                    <ChatMessage color="green" content={v.content}/>
+                  </RightMessageWrap>
+                )
+              ))}
+            </LiveChats>
+          ) : (
+            <></>
+          )}
+        </ChatLogWrap>
             <ChatForm onSubmit={handleSendMessage}>
+                <ChatOption onClick={()=>{setIsActiveButton(!isActiveButton)}} className={isActiveButton ? 'on' : ''}>
+                  <ChatMenu className="chatMenu" onClick={()=>{}} />
+                </ChatOption>  
                 <ChatInput type="text" value={content.value} onChange={content.onChange} placeholder="메세지를 입력해주세요" />
                 <ChatButton type="submit" />
             </ChatForm>

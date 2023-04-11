@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { ChatterCard, CustomerChatWrap, ChatForm, ChatOption, ChatInput, ChatButton, ChatMenu } from "./styled"
+import { ChatterCard, CustomerChatWrap, ChatForm, ChatOption, ChatInput, ChatButton, ChatMenu, ChatLogWrap, ChatLogs, LiveChats, LeftMessageWrap, RightMessageWrap, ChatUserImg, ChatMessage, ChatTime } from "./styled"
 import { useInput } from "../../hooks";
 import io from "socket.io-client";
 import config from "../../config";
@@ -49,6 +49,8 @@ export const CustomerChat = ({ seller, customer, boardid, chatter, width, height
     };
   }, [chats]);
 
+  console.log(logs)
+
   const handleSendMessage = async (e) => {
     e.preventDefault();
     let data = {
@@ -72,34 +74,48 @@ export const CustomerChat = ({ seller, customer, boardid, chatter, width, height
   return (
       <CustomerChatWrap width={width} height={height}>
         <ChatterCard onClick={()=>{}} chatter={chatter}></ChatterCard>
-        <div>
+        <ChatLogWrap>
           {logs ? (
-            <ul>
-              {logs.map((v) => (
-                <div key={v.id}>
-                  <li>{v.email}</li>
-                  <li>{v.content}</li>
-                </div>
-              ))}
-            </ul>
+            <ChatLogs>
+            {logs.map((v) => (
+              v.position === "left" ? (
+                <LeftMessageWrap key={v.id}>
+                  <ChatUserImg src={chatter.userImg} />
+                  <ChatMessage color="yellow" content={v.content}/>
+                  <ChatTime date={v.createdAt} />
+                </LeftMessageWrap>
+              ) : (
+                <RightMessageWrap>
+                  <ChatTime date={v.createdAt} />
+                  <ChatMessage color="green" content={v.content}/>
+                </RightMessageWrap>
+              )
+            ))}
+          </ChatLogs>
+        ) : (
+          <></>
+        )}
+        {chats ? (
+          <LiveChats>
+            {chats.map((v, idx) => (
+              v.position === "left" ? (
+                <LeftMessageWrap key={v.id}>
+                  <ChatUserImg src={chatter.userImg} />
+                  <ChatMessage color="yellow" content={v.content}/>
+                  <ChatTime date={v.createdAt} />
+                </LeftMessageWrap>
+              ) : (
+                <RightMessageWrap>
+                  <ChatTime date={v.createdAt} />
+                  <ChatMessage color="green" content={v.content}/>
+                </RightMessageWrap>
+              )
+            ))}
+          </LiveChats>
           ) : (
             <></>
           )}
-          {chats ? (
-            <ul>
-              {chats.map((v, idx) => (
-                <div key={idx}>
-                  <h3>{v.username}</h3>
-                  {/* <img src={v.userImg}/> */}
-                  <li>{v.address}</li>
-                  <li>{v.content}</li>
-                </div>
-              ))}
-            </ul>
-          ) : (
-            <></>
-          )}
-        </div>
+        </ChatLogWrap>
         <ChatForm onSubmit={handleSendMessage}>
                 <ChatOption onClick={()=>{setIsActiveButton(!isActiveButton)}} className={isActiveButton ? 'on' : ''}>
                   <ChatMenu className="chatMenu" onClick={()=>{}} />

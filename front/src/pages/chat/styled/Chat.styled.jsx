@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
+import { useTimeStamp } from "../../../hooks";
 
 
 
@@ -116,6 +117,7 @@ const ChatFormWrap = styled.div`
   bottom: 0;
   height: 60px;
   width: 100%;
+  background-color: #fff;
   border-top: 1px solid #ececec;
   display: flex;
   align-items: center;
@@ -245,3 +247,79 @@ export const ChatForm = ({ onSubmit, children }) => {
     </ChatFormWrap>
   );
 };
+
+
+
+
+
+
+
+export const ChatLogWrap = styled.div`
+    width: 100%;
+    height: 74%;
+    padding-bottom: 8%;
+    background-color: #ececec;
+    overflow-y: scroll;
+`
+
+export const ChatLogs = styled.div``
+
+export const LiveChats = styled.div``
+
+
+export const LeftMessageWrap = styled.div`
+    width: 100%;
+    padding: 2%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+`
+
+export const RightMessageWrap = styled.div`
+    width: 100%;
+    padding: 2%;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+`
+const ChatUserImgWrap = styled.div`
+  width: 13%;
+  padding: 1%;
+
+  & img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 1.5px solid #fff;
+  }
+`
+
+export const ChatUserImg = ({src}) => {
+    return <ChatUserImgWrap><img src={src} /></ChatUserImgWrap>
+}
+
+const ChatMessageStyled = styled.div`
+    font-size: 0.9rem;
+    color: #fff;
+    background: ${({color, theme}) => theme[color]?.color};
+    padding: 2%;
+    margin: 1.5%;
+    border-radius: 6px;
+    max-width: 70%;
+`
+
+
+export const ChatMessage = ({ color , content}) => {
+    console.log(color)
+    return <ChatMessageStyled color={color}>{content}</ChatMessageStyled>
+}
+
+
+const ChatTimeStyped = styled.div`
+    color: #666;
+    font-size: 0.7rem;
+`
+
+export const ChatTime = ({date}) => {
+    return <ChatTimeStyped>{useTimeStamp(date)}</ChatTimeStyped>
+}
