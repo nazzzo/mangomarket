@@ -61,5 +61,5 @@ export const AddressInfo = styled.div`
 export const TimeInfo = styled.div`
     padding: 3% 0;
     font-size: 0.85rem;
-    color: #666;
+    color: #198b34;
 `

@@ -44,7 +44,7 @@ export const ReserveInfo = ({ address, time, chatid, boardid, customer, seller }
 
   const handleReject = async () => {
     try {
-      const response = await request.put(`chat/${chatid}`, {
+      const response = await request.put(`chats/${chatid}`, {
         content: "예약이 거절되었습니다"
       });
       console.log(`response.data:::`, response.data)
