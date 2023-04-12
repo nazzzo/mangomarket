@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
-import { ChatterCard, CustomerChatWrap, ChatForm, ChatOption, ChatInput, ChatButton, ChatMenu, ChatLogWrap, ChatLogs, LiveChats, LeftMessageWrap, RightMessageWrap, ChatUserImg, ChatMessage, ChatTime } from "./styled"
+import { useSelector, useDispatch } from "react-redux";
+import { userSetReservation } from "../../store"
+import { ChatterCard, CustomerChatWrap, ChatForm, ChatOption, ChatInput, ChatButton, ChatMenu, ChatLogWrap, ChatLogs, LiveChats, LeftMessageWrap, RightMessageWrap, CenterMessageWrap, ChatUserImg, ChatMessage, ChatTime } from "./styled"
 import { useInput } from "../../hooks";
 import { Modal } from "../../common/modal"
-import { ChatterMap } from "../../pages/map"
+import { ChatterMap, MapMessage } from "../../pages/map"
 import io from "socket.io-client";
 import config from "../../config";
 import request from "../../utils/request";
@@ -17,10 +18,10 @@ export const CustomerChat = ({ seller, customer, boardid, chatter, width, height
   const [ isOpen, setIsOpen ] = useState(false)
   const [ isReserved, setIsReserved ] = useState(false)
   const [isActiveButton, setIsActiveButton] = useState(false);
-  const { user } = useSelector((state) => state.user)
+  const { user, reservation } = useSelector((state) => state.user)
   const content = useInput("");
   const chatheight = useRef()
-
+  const dispatch = useDispatch()
 
   console.log(`isOpen::`, isOpen)
 
@@ -45,9 +46,6 @@ export const CustomerChat = ({ seller, customer, boardid, chatter, width, height
     socket.emit("joinRoom", { room: `${boardid}-${customer.email}`});
 
     socket.on("receiveMessage", (newMessage) => {
-      // if( newMessage.content.indexOf("latitude") && newMessage.content.indexOf("longitude") ){
-      //   // 맵을 띄우는 로직
-      // }
       let position
       newMessage.email === user.email ? position = "right" : position = "left"
       newMessage.position = position
@@ -55,12 +53,35 @@ export const CustomerChat = ({ seller, customer, boardid, chatter, width, height
       chatheight.current.scrollTop = chatheight.current.scrollHeight
     });
 
-    //{boardid: '5', seller: 'seller@naver.com', customer: 'customer@naver.com', content: 'hi', type: 'sender'}
-
     return () => {
       socket.disconnect();
     };
   }, [chats]);
+
+  useEffect(()=> {
+    socket.emit("reservation", { data: reservation })
+    setIsReserved(false)
+    dispatch(userSetReservation({}))
+
+    const postReservation = async ( data ) => {
+      await request.post(`/chats`, { data })
+    }
+
+    socket.on("reserveMessage", (newMessage) => {
+      const { content, boardid, customer } = newMessage 
+      const data = {
+        content,
+        boardid,
+        customer,
+        seller: seller.email,
+      }
+      console.log(`data:::`, data)
+      postReservation(data)
+    newMessage.position = "center"
+    setChats([...chats, newMessage])
+    chatheight.current.scrollTop = chatheight.current.scrollHeight
+    })
+  }, [isReserved])
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -85,42 +106,62 @@ export const CustomerChat = ({ seller, customer, boardid, chatter, width, height
         <ChatterCard onClick={()=>{setIsOpen(false)}} chatter={chatter}></ChatterCard>
         <ChatLogWrap ref={chatheight}>
           {logs ? (
-            <ChatLogs>
-            {logs.map((v) => (
-              v.position === "left" ? (
-                <LeftMessageWrap key={v.id}>
+          <ChatLogs>
+          {logs.map((v) => {
+          switch(v.position) {
+              case "center":
+                const { address, lat, lng, time } = JSON.parse(v.content)
+              return (<CenterMessageWrap key={v.id}>
+                          <MapMessage address={address} lat={lat} lng={lng} time={time}/>
+                      </CenterMessageWrap>);
+              case "left":
+              return (
+                  <LeftMessageWrap key={v.id}>
                   <ChatUserImg src={chatter.userImg} />
-                  <ChatMessage color="yellow" content={v.content}/>
+                  <ChatMessage color="yellow" content={v.content} />
                   <ChatTime date={v.createdAt} />
-                </LeftMessageWrap>
-              ) : (
-                <RightMessageWrap>
+                  </LeftMessageWrap>
+              );
+              case "right":
+              return (
+                  <RightMessageWrap key={v.id}>
                   <ChatTime date={v.createdAt} />
-                  <ChatMessage color="green" content={v.content}/>
-                </RightMessageWrap>
-              )
-            ))}
-          </ChatLogs>
-        ) : (
-          <></>
-        )}
-        {chats ? (
-          <LiveChats>
-            {chats.map((v, idx) => (
-              v.position === "left" ? (
-                <LeftMessageWrap key={v.id}>
+                  <ChatMessage color="green" content={v.content} />
+                  </RightMessageWrap>
+              );
+          }
+          })}
+        </ChatLogs>
+      ) : (
+        <></>
+      )}
+      {chats ? (
+        <LiveChats>
+          {chats.map((v, idx) => {
+          switch(v.position) {
+              case "center":
+                const { address, lat, lng, time } = JSON.parse(v.content)
+              return (<CenterMessageWrap key={v.id}>
+                          <MapMessage address={address} lat={lat} lng={lng} time={time}/>
+                      </CenterMessageWrap>);
+              case "left":
+              return (
+                  <LeftMessageWrap key={v.id}>
                   <ChatUserImg src={chatter.userImg} />
-                  <ChatMessage color="yellow" content={v.content}/>
+                  <ChatMessage color="yellow" content={v.content} />
                   <ChatTime date={v.createdAt} />
-                </LeftMessageWrap>
-              ) : (
-                <RightMessageWrap>
+                  </LeftMessageWrap>
+              );
+              case "right":
+              return (
+                  <RightMessageWrap key={v.id}>
                   <ChatTime date={v.createdAt} />
-                  <ChatMessage color="green" content={v.content}/>
-                </RightMessageWrap>
-              )
-            ))}
-          </LiveChats>
+                  <ChatMessage color="green" content={v.content} />
+                  </RightMessageWrap>
+              );
+          }
+          })}
+        </LiveChats>
           ) : (
             <></>
           )}
@@ -133,7 +174,7 @@ export const CustomerChat = ({ seller, customer, boardid, chatter, width, height
                 <ChatButton type="submit" />
         </ChatForm>
         <Modal isOpen={isOpen} setIsOpen={setIsOpen} height="37rem">
-          <ChatterMap setIsOpen={setIsOpen} setIsReserved={setIsReserved} boardid={boardid} customer={customer} />
+          <ChatterMap setIsOpen={setIsOpen} setIsReserved={setIsReserved} boardid={boardid} customer={customer.email} />
         </Modal>
       </CustomerChatWrap>
   );
