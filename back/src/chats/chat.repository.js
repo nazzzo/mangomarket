@@ -46,6 +46,14 @@ class ChatRepository {
 
   async postChat(data) {
     try {
+      const duplicateCheck = await this.Chat.findOne({
+        where: {
+          content: data.content,
+          email: NULL,
+        }
+      })
+      console.log(`duplictae:::`, duplicateCheck)
+      if (duplicateCheck) return duplicateCheck
       const result = await this.Chat.create(data);
       return result;
     } catch (e) {
