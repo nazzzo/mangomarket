@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { userSetReservation } from "../../store"
 import { useInput } from "../../hooks"
 import { Modal } from "../../common/modal"
-import { ChatterMap } from "../../pages/map"
-import { ChatForm, ChatInput, ChatButton, ChatOption, ChatMenu, ChatLogWrap, ChatLogs, LiveChats, LeftMessageWrap, RightMessageWrap, ChatUserImg, ChatMessage, ChatTime } from "./styled"
+import { ChatterMap, MapMessage } from "../../pages/map"
+import { ChatForm, ChatInput, ChatButton, ChatOption, ChatMenu, ChatLogWrap, ChatLogs, LiveChats, LeftMessageWrap, RightMessageWrap, CenterMessageWrap, ChatUserImg, ChatMessage, ChatTime } from "./styled"
 import request from "../../utils/request"
 import io from "socket.io-client"
 import config from "../../config"
@@ -57,13 +57,18 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
   }, [chats]);
 
 
-  useEffect(() => {
+  useEffect(()=> {
     socket.emit("reservation", { data: reservation })
     setIsReserved(false)
     dispatch(userSetReservation({}))
-  }, [isReserved])
 
-  console.log(`reservation:::`, isReserved, reservation)
+    socket.on("reserveMessage", (newMessage) => {
+    newMessage.position = "center"
+    console.log("reserveMessage:::", newMessage)
+    setChats([...chats, newMessage])
+    chatheight.current.scrollTop = chatheight.current.scrollHeight
+    })
+  }, [isReserved])
 
   const handleSendMessage = async (e) => {
     e.preventDefault()
@@ -112,20 +117,30 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
         )}
         {chats ? (
           <LiveChats>
-            {chats.map((v, idx) => (
-              v.position === "left" ? (
-                <LeftMessageWrap key={v.id}>
-                  <ChatUserImg src={chatter.userImg} />
-                  <ChatMessage color="yellow" content={v.content} />
-                  <ChatTime date={v.createdAt} />
-                </LeftMessageWrap>
-              ) : (
-                <RightMessageWrap>
-                  <ChatTime date={v.createdAt} />
-                  <ChatMessage color="green" content={v.content} />
-                </RightMessageWrap>
-              )
-            ))}
+            {chats.map((v, idx) => {
+            switch(v.position) {
+                case "center":
+                return (<CenterMessageWrap key={v.id}>
+                            {v.content}
+                            <MapMessage />
+                        </CenterMessageWrap>);
+                case "left":
+                return (
+                    <LeftMessageWrap key={v.id}>
+                    <ChatUserImg src={chatter.userImg} />
+                    <ChatMessage color="yellow" content={v.content} />
+                    <ChatTime date={v.createdAt} />
+                    </LeftMessageWrap>
+                );
+                case "right":
+                return (
+                    <RightMessageWrap key={v.id}>
+                    <ChatTime date={v.createdAt} />
+                    <ChatMessage color="green" content={v.content} />
+                    </RightMessageWrap>
+                );
+            }
+            })}
           </LiveChats>
         ) : (
           <></>
