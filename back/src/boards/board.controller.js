@@ -77,6 +77,16 @@ class BoardController {
             next(e);
         }
     }
+    async getState(req, res, next) {
+        console.log(`req:::`, req)
+        try {
+            const result = await this.boardService.getState(req.params.id);
+            console.log(result);
+            res.status(201).json(result);
+        } catch (e) {
+            next(e);
+        }
+    }
     async putState(req, res, next) {
         try {
             const result = await this.boardService.putState(req.params.id, req.body);

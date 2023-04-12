@@ -113,7 +113,7 @@ export const CustomerChat = ({ seller, customer, boardid, chatter, width, height
               case "center":
                 const { address, lat, lng, time } = JSON.parse(v.content)
               return (<CenterMessageWrap key={v.id}>
-                          <MapMessage address={address} lat={lat} lng={lng} time={time} boardid={boardid} customer={customer.email} seller={seller.email} />
+                          <MapMessage address={address} lat={lat} lng={lng} time={time} chatid={v.id} boardid={boardid} customer={customer.email} seller={seller.email} />
                       </CenterMessageWrap>);
               case "left":
               return (
@@ -143,7 +143,7 @@ export const CustomerChat = ({ seller, customer, boardid, chatter, width, height
               case "center":
                 const { address, lat, lng, time } = JSON.parse(v.content)
               return (<CenterMessageWrap key={v.id}>
-                          <MapMessage address={address} lat={lat} lng={lng} time={time} boardid={boardid} customer={customer.email} seller={seller.email} />
+                          <MapMessage address={address} lat={lat} lng={lng} time={time} chatid={v.id} boardid={boardid} customer={customer.email} seller={seller.email} />
                       </CenterMessageWrap>);
               case "left":
               return (
