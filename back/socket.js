@@ -30,10 +30,12 @@ module.exports = (server, app) => {
       })
 
       socket.on("reservation", ({ data }) => {
-        console.log(`reservation:::`, data)
+        // console.log(`reservation:::`, data)
         if (data.email) {
         io.to(roomname).emit("reserveMessage", {
-          content: `{"address": "${data.address}", "lat": ${data.latitude}, "lng": ${data.longitude}, "time": "${data.reservation}"}`
+          content: `{"address": "${data.address}", "lat": ${data.latitude}, "lng": ${data.longitude}, "time": "${data.reservation}"}`,
+          boardid: data.boardid,
+          customer: data.email,
         })}
       })
 

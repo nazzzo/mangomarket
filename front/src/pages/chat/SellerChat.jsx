@@ -59,12 +59,24 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
 
   useEffect(()=> {
     socket.emit("reservation", { data: reservation })
+    console.log(reservation.email)
     setIsReserved(false)
     dispatch(userSetReservation({}))
 
+    const postReservation = async ( data ) => {
+      await request.post(`/chats`, { data })
+    }
+
     socket.on("reserveMessage", (newMessage) => {
+      const { content, boardid, customer } = newMessage 
+      const data = {
+        content,
+        boardid,
+        customer,
+        seller,
+      }
+      postReservation(data)
     newMessage.position = "center"
-    console.log("reserveMessage:::", newMessage)
     setChats([...chats, newMessage])
     chatheight.current.scrollTop = chatheight.current.scrollHeight
     })
@@ -73,7 +85,6 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
   const handleSendMessage = async (e) => {
     e.preventDefault()
     let email
-
     seller === user.email ? email = seller : email = customer
 
     let data = {
@@ -88,7 +99,6 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
     }
     socket.emit("sendMessage", { data })
     const response = await request.post(`/chats`, { data })
-    console.log(response.data)
     if (response.status === 201) content.clear()
   }
 

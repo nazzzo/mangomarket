@@ -33,7 +33,6 @@ export const GlobalChat = () => {
   };
 
   const handleClick = (data) => {
-    console.log(data)
     setSelectedChatter(data);
   };
 
@@ -59,7 +58,6 @@ export const GlobalChat = () => {
         <ChatterWrap>
           <ChatterList>
             {chatterList.map((v, index) => {
-              console.log(chatterList);
               return (
                 <ChatterItem onClick={() => handleClick(v)} key={index}>
                   <ChatterImgWrap>
