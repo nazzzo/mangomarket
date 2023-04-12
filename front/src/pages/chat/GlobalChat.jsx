@@ -81,6 +81,7 @@ export const GlobalChat = () => {
           <SellerChat
             seller={!isSeller ? user.email : selectedChatter.seller}
             customer={!isSeller ? selectedChatter.customer : user.email}
+            isSeller={isSeller}
             boardid={selectedChatter.boardid}
             chatter={selectedChatter}
           />

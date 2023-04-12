@@ -12,7 +12,7 @@ import config from "../../config"
 const ENDPOINT = `${config.PT}://${config.HOST}:${config.BACKEND_PORT}/`;
 let socket
 
-export const SellerChat = ({ seller, customer, boardid, chatter }) => {
+export const SellerChat = ({ seller, customer, boardid, chatter, isSeller }) => {
   const [logs, setLogs] = useState([])
   const [chats, setChats] = useState([])
   const [ isOpen, setIsOpen ] = useState(false)
@@ -112,7 +112,7 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
                 case "center":
                   const { address, lat, lng, time } = JSON.parse(v.content)
                 return (<CenterMessageWrap key={v.id}>
-                            <MapMessage address={address} lat={lat} lng={lng} time={time} boardid={boardid} customer={customer} seller={seller} />
+                            <MapMessage address={address} lat={lat} lng={lng} time={time} chatid={v.id} boardid={boardid} customer={customer} seller={seller} />
                         </CenterMessageWrap>);
                 case "left":
                 return (
@@ -142,7 +142,7 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
                 case "center":
                   const { address, lat, lng, time } = JSON.parse(v.content)
                 return (<CenterMessageWrap key={v.id}>
-                            <MapMessage address={address} lat={lat} lng={lng} time={time} boardid={boardid} customer={customer} seller={seller} />
+                            <MapMessage address={address} lat={lat} lng={lng} time={time} chatid={v.id} boardid={boardid} customer={customer} seller={seller} />
                         </CenterMessageWrap>);
                 case "left":
                 return (
@@ -167,9 +167,9 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
         )}
       </ChatLogWrap>
       <ChatForm onSubmit={handleSendMessage}>
-        <ChatOption onClick={() => { setIsActiveButton(!isActiveButton) }} className={isActiveButton ? 'on' : ''}>
+        {isSeller && <ChatOption onClick={() => { setIsActiveButton(!isActiveButton) }} className={isActiveButton ? 'on' : ''}>
           <ChatMenu className="chatMenu" onClick={() => {setIsOpen(true)}} />
-        </ChatOption>
+        </ChatOption>}
         <ChatInput type="text" value={content.value} onChange={content.onChange} placeholder="메세지를 입력해주세요" />
         <ChatButton type="submit" />
       </ChatForm>

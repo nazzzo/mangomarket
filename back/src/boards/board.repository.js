@@ -151,7 +151,6 @@ class BoardRepository {
         E.thumbnail = 1
         GROUP BY A.id, E.image`;
         const [[findOne]] = await this.sequelize.query(query);
-        console.log("asdfasdf",findOne);
         return findOne
         } catch (e) {
             throw new Error(e);
@@ -211,8 +210,7 @@ class BoardRepository {
             throw new Error(e)
         }
     }
-
-    async getState(id) {
+    async findState(id) {
         try {
             const board = await this.Board.findOne({ where: { id: id } });
             return board.state;
