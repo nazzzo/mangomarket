@@ -23,6 +23,11 @@ module.exports = (sequelize, Sequelize) => {
               key: "email",
             },
           },
+          notification: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
+          },
         },
         {
           sequelize,

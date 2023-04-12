@@ -267,6 +267,17 @@ export const ChatLogs = styled.div``
 export const LiveChats = styled.div``
 
 
+
+export const CenterMessageWrap = styled.div`
+    width: 100%;
+    padding: 2%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+
+
+
 export const LeftMessageWrap = styled.div`
     width: 100%;
     padding: 2%;

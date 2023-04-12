@@ -60,7 +60,6 @@ export const Header = ({ categories, isLogin, user, keywords, isAlarm }) => {
     useEffect(() => {
         if (isOpen) dispatch(userSetAlarm(false))
     }, [isOpen])
-    console.log(user)
 
     const navigate = useNavigate()
 
