@@ -31,7 +31,7 @@ export const CustomerChat = ({ seller, customer, boardid, chatter, width, height
       const messageList = data.map((v) => {
         let position
         v.email === user.email ? position = "right" : position = "left"
-        if (!v.email) position = "center"
+        if (!v.email && v.content.indexOf("{",0)===0) position = "center"
         v.position = position
         return v
       })
@@ -76,9 +76,8 @@ export const CustomerChat = ({ seller, customer, boardid, chatter, width, height
         customer,
         seller: seller.email,
       }
-      console.log(`data:::`, data)
       postReservation(data)
-    newMessage.position = "center"
+      if (newMessage.content.indexOf("{",0)===0) newMessage.position = "center"
     setChats([...chats, newMessage])
     chatheight.current.scrollTop = chatheight.current.scrollHeight
     })
@@ -111,10 +110,10 @@ export const CustomerChat = ({ seller, customer, boardid, chatter, width, height
           {logs.map((v) => {
           switch(v.position) {
               case "center":
-                const { address, lat, lng, time } = JSON.parse(v.content)
+              const { address, lat, lng, time } = JSON.parse(v.content)
               return (<CenterMessageWrap key={v.id}>
-                          <MapMessage address={address} lat={lat} lng={lng} time={time} chatid={v.id} boardid={boardid} customer={customer.email} seller={seller.email} />
-                      </CenterMessageWrap>);
+                        <MapMessage address={address} lat={lat} lng={lng} time={time} chatid={v.id} boardid={boardid} customer={customer.email} seller={seller.email} />
+                    </CenterMessageWrap>);
               case "left":
               return (
                   <LeftMessageWrap key={v.id}>
