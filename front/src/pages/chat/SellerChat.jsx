@@ -57,11 +57,12 @@ export const SellerChat = ({ seller, customer, boardid, chatter, isSeller }) => 
     };
   }, [chats]);
 
+  console.log(isReserved)
 
   useEffect(()=> {
     socket.emit("reservation", { data: reservation })
     setIsReserved(false)
-    dispatch(userSetReservation({}))
+    // dispatch(userSetReservation({}))
 
     const postReservation = async ( data ) => {
       await request.post(`/chats`, { data })
@@ -99,7 +100,8 @@ export const SellerChat = ({ seller, customer, boardid, chatter, isSeller }) => 
     }
     socket.emit("sendMessage", { data })
     const response = await request.post(`/chats`, { data })
-    if (response.status === 201) content.clear()
+    // if (response.status === 201) 
+    content.clear()
   }
 
   return (

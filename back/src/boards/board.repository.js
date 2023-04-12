@@ -121,6 +121,7 @@ class BoardRepository {
             throw new Error(e);
         }
     }
+    
     async findOne(id) {
         try {
             const query = `SELECT 

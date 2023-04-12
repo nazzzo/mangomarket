@@ -76,7 +76,8 @@ class BoardService {
             throw new this.BadRequest(e);
         }
     }
-    async getView(id, email) {
+    // async getView(id, email) {
+    async getView(id) {
         try {
             // const currentState = await this.boardRepository.findState(id);
             // // console.log("current state:::", currentState);
@@ -84,8 +85,9 @@ class BoardService {
             //     throw new Error("차단된 게시글입니다");
             // }
             const view = await this.boardRepository.findOne(id)
-            if (email !== "guest") await this.boardRepository.updatehit(id, email)
-            console.log(view)
+            // const view = await this.boardRepository.findOne(id)
+            // if (email !== "guest") await this.boardRepository.updatehit(id, email)
+            // console.log(view)
             return view
         } catch (e) {
             console.error(e);

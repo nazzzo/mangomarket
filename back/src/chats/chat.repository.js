@@ -46,13 +46,18 @@ class ChatRepository {
 
   async postChat(data) {
     try {
-      const duplicateCheck = await this.Chat.findOne({ where: { content: data.content, email: null }})
-      if( duplicateCheck ){
-        return duplicateCheck
-      } else {
         const result = await this.Chat.create(data);
-        return result;
-      }
+        const result2 = await this.Chat.findAll({ where: {content: data.content}, raw: true, nest: true });
+        console.log(result2.length)
+        if(result2.length >= 2){
+          // for(let i = 0; i <= result2.length - 1; i++){
+          //   console.log("제발", result2[result2.length - 1 -i])
+          // }
+          const result3 = await this.Chat.destory({ where: { id: result2[result2.length - 1].id }})
+          return result3
+        } else {
+          return result;
+        }
     } catch (e) {
       throw new Error(e);
     }
@@ -71,7 +76,7 @@ class ChatRepository {
     try {
       let opponent;
       type === "seller" ? (opponent = `customer`) : (opponent = `seller`);
-
+      
       const sql = `SELECT 
       A.${opponent}, 
       A.boardid,

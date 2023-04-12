@@ -43,7 +43,7 @@ export const GlobalChat = () => {
   const chatterList = isSeller ? sellerList : customerList;
 
   return (
-    <GlobalChatWrap width="27rem" height="37rem">
+    <>
       {!selectedChatter && (
         <SwitchBox height="3.5rem">
           <Switch onClick={handleSwitch} isActive={!isSeller} fontSize="1rem">
@@ -83,10 +83,11 @@ export const GlobalChat = () => {
             customer={!isSeller ? selectedChatter.customer : user.email}
             isSeller={isSeller}
             boardid={selectedChatter.boardid}
+
             chatter={selectedChatter}
           />
         </>
       )}
-    </GlobalChatWrap>
+    </>
   );
 };

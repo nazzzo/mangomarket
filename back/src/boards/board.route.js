@@ -4,8 +4,9 @@ const { controller } = require("./board.module");
 const upload = require("../../middlewares/boardUpload");
 
 router.get("/", (req, res, next) => controller.getList(req, res, next));
+router.get("/view/:id", (req, res, next) => controller.getView(req, res, next));
 router.get("/profile/:userid", (req, res, next) => controller.attention(req, res, next));
-router.get("/:id/:idx", (req, res, next) => controller.getView(req, res, next));
+// router.get("/:id/:idx", (req, res, next) => controller.getView(req, res, next));
 router.get("/:id/favorites", (req, res, next) => controller.getFavor(req, res, next));
 router.get("/:id/histories", (req, res, next) => controller.getHistory(req, res, next));
 router.get("/keywords", (req, res, next) => controller.getKeywords(req, res, next));
