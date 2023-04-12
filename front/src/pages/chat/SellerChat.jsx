@@ -29,7 +29,7 @@ export const SellerChat = ({ seller, customer, boardid, chatter, isSeller }) => 
       const messageList = data.map((v) => {
         let position
         v.email === user.email ? position = "right" : position = "left"
-        if (!v.email) position = "center"
+        if (!v.email && v.content.indexOf("{",0)===0) position = "center"
         v.position = position
         return v
       })
@@ -76,7 +76,7 @@ export const SellerChat = ({ seller, customer, boardid, chatter, isSeller }) => 
         seller,
       }
       postReservation(data)
-    newMessage.position = "center"
+      if (newMessage.content.indexOf("{",0)===0) newMessage.position = "center"
     setChats([...chats, newMessage])
     chatheight.current.scrollTop = chatheight.current.scrollHeight
     })
