@@ -78,11 +78,11 @@ class BoardService {
     }
     async getView(id, email) {
         try {
-            const currentState = await this.boardRepository.findState(id);
-            // console.log("current state:::", currentState);
-            if (currentState === "blind") {
-                throw new Error("차단된 게시글입니다");
-            }
+            // const currentState = await this.boardRepository.findState(id);
+            // // console.log("current state:::", currentState);
+            // if (currentState === "blind") {
+            //     throw new Error("차단된 게시글입니다");
+            // }
             const view = await this.boardRepository.findOne(id)
             if (email !== "guest") await this.boardRepository.updatehit(id, email)
             console.log(view)
@@ -120,22 +120,6 @@ class BoardService {
             await this.boardRepository.uploadImage(arr)
             if (write) await this.boardRepository.createPoint({email: write.email, boardid: write.id});
             return write;
-        } catch (e) {
-            throw new this.BadRequest(e);
-        }
-    }
-    async getState(id) {
-        try {
-            const result = await this.boardRepository.findState(id);
-            return result;
-        } catch (e) {
-            throw new this.BadRequest(e);
-        }
-    }
-    async putState(id , {state}) {
-        try {
-            await this.boardRepository.updateState(id, state);
-            return state;
         } catch (e) {
             throw new this.BadRequest(e);
         }

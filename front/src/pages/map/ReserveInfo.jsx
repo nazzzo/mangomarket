@@ -19,9 +19,9 @@ export const ReserveInfo = ({ address, time, chatid, boardid, customer, seller }
   useEffect(() => {
     const checkReserved = async () => {
       try {
-        const response = await request.get(`/boards/${boardid}/state`);
+        const response = await request.get(`reservations/${boardid}/state`);
         console.log(`response.data:::`, response)
-        setIsReserved(response.data.state === 'reserved')
+        setIsReserved(response.data === 'reserved')
       } catch (e) {
         console.error(e)
       }
@@ -29,9 +29,10 @@ export const ReserveInfo = ({ address, time, chatid, boardid, customer, seller }
     checkReserved()
   }, [boardid])
 
-  const handleAccept = async () => {
+  const handleAccept = async (e) => {
+    e.preventDefault()
     try {
-      const response = await request.put(`/boards/${boardid}/state`, {
+      const response = await request.put(`reservations/${boardid}/state`, {
         state: "reserved"
       });
       console.log(`response.data:::`, response.data)
@@ -43,7 +44,7 @@ export const ReserveInfo = ({ address, time, chatid, boardid, customer, seller }
 
   const handleReject = async () => {
     try {
-      const response = await request.put(`/chat/${chatid}`, {
+      const response = await request.put(`chat/${chatid}`, {
         content: "예약이 거절되었습니다"
       });
       console.log(`response.data:::`, response.data)
@@ -56,6 +57,7 @@ export const ReserveInfo = ({ address, time, chatid, boardid, customer, seller }
     setIsOpenAlert(false)
   }
 
+
   return (
     <>
       <ReserveInfoForm onSubmit={handleAccept}>
@@ -64,7 +66,7 @@ export const ReserveInfo = ({ address, time, chatid, boardid, customer, seller }
         {user.email === seller && !isReserved && (
           <>
             <Button color="green" type="submit">수락</Button>
-            <Button color="grey" onClick={handleReject}>거절</Button>
+            <Button color="grey" type="button" onClick={handleReject}>거절</Button>
           </>
         )}
         {isReserved && (
