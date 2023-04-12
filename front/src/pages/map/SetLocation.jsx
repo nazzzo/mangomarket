@@ -19,7 +19,6 @@ export const SetLocation = ({ setIsOpen, setIsReserved, lat, lng, boardid, custo
         const coord = new window.kakao.maps.LatLng(lat, lng); // 주소로 변환할 좌표 입력
         const callback = function (result, status) {
           if (status === window.kakao.maps.services.Status.OK) {
-            console.log(result[0].address)
             setAddress(result[0].address['address_name']);
           }
         };

@@ -95,7 +95,6 @@ const ChatterAddress = styled.span`
 `;
 
 export const ChatterCard = ({ onClick, chatter }) => {
-    console.log(chatter)
   return (
     <ChatterCardWrap>
       <ChatterImgWrap>
