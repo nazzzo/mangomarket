@@ -31,17 +31,10 @@ module.exports = (server, app) => {
 
       socket.on("reservation", ({ data }) => {
         console.log(`reservation:::`, data)
-        io.to(roomname).emit("reserve", {
-          // boardid: data.boardid,
-          // seller: data.seller,
-          // customer: data.customer,
-          // content: data.content,
-          // email: data.email,
-          // username: data.username,
-          // userImg: data.userImg,
-          // address: data.address,
-          // createdAt: date.toISOString(),
-        })
+        if (data.email) {
+        io.to(roomname).emit("reserveMessage", {
+          content: `address:${data.address}, lat:${data.latitude}, lng:${data.longitude}, time: ${data.reservation}`
+        })}
       })
 
       socket.on("disconnect", () => {
