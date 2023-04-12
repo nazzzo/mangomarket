@@ -21,6 +21,17 @@ class ChatController {
     }
   }
 
+  async putChat(req, res, next) {
+    try {
+      const { id } = req.params
+      const { content } = req.body
+      const result = await this.chatService.putChat(id, content)
+      res.status(201).json(result)
+    } catch (e) { 
+      next(e)
+    }
+  }
+
   async getCustomers (req, res, next) {
     try {
       const result = await this.chatService.getUsers(req.query)

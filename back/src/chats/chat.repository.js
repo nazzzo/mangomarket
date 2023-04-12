@@ -58,6 +58,15 @@ class ChatRepository {
     }
   }
 
+  async putChat(id, content) {
+    try {
+      const result = await this.Chat.update({ content }, { where: { id } })
+      return result
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
   async getUsers({ type, useremail }) {
     try {
       let opponent;
