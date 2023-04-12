@@ -121,6 +121,7 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
             switch(v.position) {
                 case "center":
                 return (<CenterMessageWrap key={v.id}>
+                    {console.log(JSON.parse(v.content))}
                             {v.content}
                             <MapMessage />
                         </CenterMessageWrap>);
