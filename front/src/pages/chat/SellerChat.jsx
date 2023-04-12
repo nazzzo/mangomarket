@@ -120,10 +120,9 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
             {chats.map((v, idx) => {
             switch(v.position) {
                 case "center":
+                  const { address, lat, lng, time } = JSON.parse(v.content)
                 return (<CenterMessageWrap key={v.id}>
-                    {console.log(JSON.parse(v.content))}
-                            {v.content}
-                            <MapMessage />
+                            <MapMessage address={address} lat={lat} lng={lng} time={time}/>
                         </CenterMessageWrap>);
                 case "left":
                 return (
