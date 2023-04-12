@@ -28,6 +28,15 @@ class ChatService {
           }        
     }
 
+    async putChat(id, content) {
+        try {
+          const result = await this.chatRepository.putChat(id, content)
+          return result
+          } catch (e) {
+            throw new this.BadRequest(e);
+          }        
+    }
+
     async getUsers( data ) {
       try {
         const type = Object.keys(data)[0]
