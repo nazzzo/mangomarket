@@ -59,7 +59,6 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
 
   useEffect(()=> {
     socket.emit("reservation", { data: reservation })
-    console.log(reservation.email)
     setIsReserved(false)
     dispatch(userSetReservation({}))
 
@@ -107,20 +106,30 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
       <ChatLogWrap ref={chatheight}>
         {logs ? (
           <ChatLogs>
-            {logs.map((v) => (
-              v.position === "left" ? (
-                <LeftMessageWrap key={v.id}>
-                  <ChatUserImg src={chatter.userImg} />
-                  <ChatMessage color="yellow" content={v.content} />
-                  <ChatTime date={v.createdAt} />
-                </LeftMessageWrap>
-              ) : (
-                <RightMessageWrap>
-                  <ChatTime date={v.createdAt} />
-                  <ChatMessage color="green" content={v.content} />
-                </RightMessageWrap>
-              )
-            ))}
+            {logs.map((v) => {
+            switch(v.position) {
+                case "center":
+                  const { address, lat, lng, time } = JSON.parse(v.content)
+                return (<CenterMessageWrap key={v.id}>
+                            <MapMessage address={address} lat={lat} lng={lng} time={time}/>
+                        </CenterMessageWrap>);
+                case "left":
+                return (
+                    <LeftMessageWrap key={v.id}>
+                    <ChatUserImg src={chatter.userImg} />
+                    <ChatMessage color="yellow" content={v.content} />
+                    <ChatTime date={v.createdAt} />
+                    </LeftMessageWrap>
+                );
+                case "right":
+                return (
+                    <RightMessageWrap key={v.id}>
+                    <ChatTime date={v.createdAt} />
+                    <ChatMessage color="green" content={v.content} />
+                    </RightMessageWrap>
+                );
+            }
+            })}
           </ChatLogs>
         ) : (
           <></>
