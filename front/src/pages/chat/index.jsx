@@ -1,5 +1,5 @@
 export * from "./CustomerChat"
-export * from "./SellerChat"
-export * from "./Chat"
 export * from "./GlobalChat"
+export * from "./Chat"
+export * from "./GlobalChatter"
 export * from "./ChatMessages"

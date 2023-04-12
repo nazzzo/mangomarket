@@ -3,14 +3,13 @@ import request from '../../utils/request'
 import { ChatLogWrap, ChatLogs, LeftMessageWrap, RightMessageWrap, CenterMessageWrap, ChatUserImg, ChatMessage, ChatTime } from "./styled"
 import { MapMessage } from "../../pages/map"
 
-export const ChatMessages = ({ messages, setMessages, seller, customer, chatheight }) => {
+export const ChatMessages = ({ messages, setMessages, seller, customer, chatheight }) => {    
     const { id, email: sellerMail } = seller
     const { email: customerMail } = customer
 
     const getCustomerChat = async () => {
         try {
             const { data } = await request.get(`/chats?customer=${customerMail}&opponent=${sellerMail}&boardid=${id}`);
-            console.log(data)
             const messageList = data.map((v) => {
                 let position
                 v.email === customerMail ? position = "right" : position = "left"

@@ -7,7 +7,7 @@ import { TimerBtn } from "../../common/button"
 import { Alert } from "../../common/alert"
 import request from "../../utils/request"
 
-export const SetLocation = ({ setIsOpen, setIsReserved, lat, lng, boardid, customer }) => {
+export const SetLocation = ({ setIsOpen, lat, lng, boardid, customer }) => {
     const [address, setAddress] = useState(null);
     const [isOpenAlert, setIsOpenAlert] = useState(false);
     const [selectedTime, setSelectedTime] = useState('')
@@ -36,7 +36,7 @@ export const SetLocation = ({ setIsOpen, setIsReserved, lat, lng, boardid, custo
                 boardid : boardid,
                 email : customer,
               });
-              
+              console.log(response.data)
               if (response.data.email) {
                 dispatch(
                     userSetReservation({
@@ -49,7 +49,6 @@ export const SetLocation = ({ setIsOpen, setIsReserved, lat, lng, boardid, custo
                     })
                   );
                   setIsOpenAlert(true)
-                  setIsReserved(true)
                 }
         } catch (e) {
             console.error(e)

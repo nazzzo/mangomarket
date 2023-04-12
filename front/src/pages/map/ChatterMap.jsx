@@ -96,7 +96,7 @@ export const ChatterMap = ({ setIsOpen, setIsReserved, boardid, customer }) => {
           </MapMarker>
         )}
       </Map>
-      { state.center && <SetLocation lat={state.center.lat} lng={state.center.lng} setIsOpen={setIsOpen} setIsReserved={setIsReserved} boardid={boardid} customer={customer} />}
+      { state.center && <SetLocation lat={state.center.lat} lng={state.center.lng} setIsOpen={setIsOpen} boardid={boardid} customer={customer} />}
     </>
   );
 };

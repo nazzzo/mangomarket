@@ -1,12 +1,5 @@
-import { CustomerChat, GlobalChat } from "./index"
-import { CustomerChatWrap, GlobalChatWrap } from './styled'
-// seller={seller} customer={user} boardid={boardId} chatter={chatter} width="27rem" height="37rem"
-
-// seller={!isSeller ? user.email : selectedChatter.seller}
-// customer={!isSeller ? selectedChatter.customer : user.email}
-// boardid={selectedChatter.boardid}
-// chatter={selectedChatter}
-// isSeller={isSeller}
+import { CustomerChat, GlobalChatter } from "./index"
+import { GlobalChatWrap } from './styled'
 
 export const Chat = ({ boardid }) => {
     return(
@@ -14,7 +7,7 @@ export const Chat = ({ boardid }) => {
             {
                 boardid
                 ? <CustomerChat boardid={boardid} />
-                : <GlobalChat></GlobalChat>
+                : <GlobalChatter></GlobalChatter>
             }
         </GlobalChatWrap>
     )
