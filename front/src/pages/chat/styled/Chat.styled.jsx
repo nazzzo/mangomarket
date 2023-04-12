@@ -269,11 +269,15 @@ export const LiveChats = styled.div``
 
 
 export const CenterMessageWrap = styled.div`
-    width: 100%;
+    margin: 0 auto;
+    width: 63%;
     padding: 2%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: #fff;
+    border-radius: 6px;
 `
 
 

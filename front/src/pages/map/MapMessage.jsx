@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Map, MapMarker, ZoomControl } from "react-kakao-maps-sdk";
-import { GetAddress } from "./GetAddress"
-import { GuideText, MarkerImg } from "./styled"
+import { ReserveInfo } from "./ReserveInfo"
 
 export const MapMessage = ({lat, lng, address, time}) => {
   const [state, setState] = useState({
@@ -70,6 +69,7 @@ export const MapMessage = ({lat, lng, address, time}) => {
           </MapMarker>
         )}
       </Map>
+      <ReserveInfo address={address} time={time} />
     </>
   );
 };
