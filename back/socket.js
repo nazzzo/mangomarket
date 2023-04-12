@@ -33,7 +33,7 @@ module.exports = (server, app) => {
         console.log(`reservation:::`, data)
         if (data.email) {
         io.to(roomname).emit("reserveMessage", {
-          content: `address:${data.address}, lat:${data.latitude}, lng:${data.longitude}, time: ${data.reservation}`
+          content: `{"address": "${data.address}", "lat": ${data.latitude}, "lng": ${data.longitude}, "time": "${data.reservation}"}`
         })}
       })
 
