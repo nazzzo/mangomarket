@@ -16,12 +16,19 @@ export const CommunityView = () => {
     const [deleteMode, setDeleteMode] = useState(false)
     const [comments, setComments] = useState([])
     const navigate = useNavigate()
-    console.log('view', view)
-
+    const [totalComments, setTotalComments] = useState('')
+    const [currentPage, setCurrentPage] = useState(1)
+    const [pageNumbers, setPageNumbers] = useState([])
+    const [totalCount, setTotalCount] = useState(0)
+    const datasize = 10
+    const limitnum = 5
+    const stnum = totalCount/datasize - (totalCount/datasize % limitnum) + 1 
+    let endnum = totalCount/datasize - (totalCount/datasize % limitnum) + limitnum 
+    
     useEffect(() => {
         const getWriting = async () => {
             try {
-                const response = await request.get(`/community/${id}`)
+                const response = await request.get(`/community/${id}?page=${currentPage}`)
                 console.log('response::', response.data)
                 if(response.data.isError === true){
                     alert('잘못된 요청입니다.')
@@ -29,6 +36,14 @@ export const CommunityView = () => {
                 }
                 setView(response.data.boardView)
                 setComments(response.data.commentList)
+                setTotalComments(response.data.boardView.CommentCount)
+                setComments(response.data.commentList)
+                setTotalCount(response.data.boardView.CommentCount)
+                const maxPage = Math.ceil(response.data.boardView.CommentCount / datasize)
+                setCurrentPage(maxPage) // 10
+                if(endnum > maxPage) endnum = maxPage
+                const pages = Array.from({length: endnum - stnum + 1},(v, i) => stnum+i )
+                setPageNumbers(pages)                                     
             } catch (e) {
                 throw new Error(e)
             }
@@ -92,7 +107,12 @@ export const CommunityView = () => {
             ) : (
                 <></>
             )}
-            <Comment comments={comments} setComments={setComments}/>
+            <Comment totalComments={totalComments} setTotalComments={setTotalComments}
+            comments={comments} setComments={setComments} 
+            currentPage={currentPage} setCurrentPage={setCurrentPage}
+                pageNumbers={pageNumbers}  
+                setPageNumbers={setPageNumbers}
+            />
         </ViewWrapper>
     )
 }

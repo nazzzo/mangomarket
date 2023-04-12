@@ -5,13 +5,12 @@ class CommunityController {
 
     async postComment(req, res, next) {
         try {
-            console.log('body::', req.body)
+            // console.log('body::', req.body)
             const { id } = req.params
-            const { content, email, parentId } = req.body
+            const { content, email, parentId, currentPage } = req.body
             if (!email) throw new Error('로그인이 필요합니다.')
             if (!content) throw new Error('내용을 입력해주세요')
-
-            const response = await this.communityService.postComment({ id, content, email, parentId })
+            const response = await this.communityService.postComment({ id, content, email, parentId, currentPage })
             res.json(response)
         } catch (e) {
             next(e)
@@ -21,9 +20,10 @@ class CommunityController {
     async getWriting(req, res, next) {
         try {
             const { id } = req.params
+            const { page } = req.query
             console.log('req.query getWrite :: ', req.query)
             console.log('req.query getWrite :: ', id)
-            const response = await this.communityService.getWriting({ id })
+            const response = await this.communityService.getWriting({ id, page })
             res.json(response)
         } catch (e) {
             next(e)

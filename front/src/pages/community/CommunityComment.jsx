@@ -1,4 +1,4 @@
-import { CommentForm, CommentInput, ContentInput, CommentButton, CommentWrapper, Txt, TotalComments, ButtonMD, Img, MDButtons, ModifyInput, ReplyButton } from './styled'
+import { CommentForm, CommentInput, ContentInput, CommentButton, CommentWrapper, Txt, TotalComments, ButtonMD, Img, MDButtons, ModifyInput, ReplyButton, PageWrap, PageNum } from './styled'
 import { useParams,NavLink } from 'react-router-dom'
 import { useTimeStamp, useInput } from '../../hooks'
 import { useEffect, useState } from 'react'
@@ -7,7 +7,7 @@ import { Icon } from '@iconify/react'
 import { useRef } from 'react'
 import { useSelector } from 'react-redux'
 
-const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, username, img, parentId, isDeleted}) => {
+const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, username, img, parentId, isDeleted, currentPage}) => {
     const [isInput, setIsInput] = useState(false)
     const [modified, setModified] = useState()
     const [reply, setReply] = useState(false)
@@ -18,6 +18,7 @@ const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, use
     const {user} = useSelector(state => state.user)
     const isAuthor = (user.email === email)
     const [deleteRender, setDeleteRender] = useState(0)
+    const modifyValue = comment.value.replace(/@.+?\s/, '')
 
     const submitReply = async () => {
         let parentIdx;
@@ -35,15 +36,12 @@ const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, use
         }
 
         try {
-            console.log(parentIdx)
             const response = await request.post(`/community/${id}`, {
-                // content: toUser + " " + replyComment,
-                // content: `${toUser.outerHTML} ${replyComment}`
                 content: toReply,
                 email:user.email,
-                parentId: parentIdx                                                                            
+                parentId: parentIdx,
+                currentPage                                                                            
             })
-            console.log(response.data)
             if (response.status >= 400 || response.data.isError) {
                 alert(response.data.message)
             } else {
@@ -77,28 +75,55 @@ const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, use
     }
 
     const handleModify = async () => {
+
         if (content === comment.value) setIsInput(false)
+        let toUser = `@${username}`
         try {
-            let toUser
-            if (content.indexOf('@') === 0) toUser = content.split(" ")[0]
+            if(content.indexOf('@') === 0) {
                 const response = await request.put(`/community/comment/${id}/${idx}`, {
-                content: toUser + " " + comment.value,
-            })
-            if (response.data === 1) {
-                setModified(comment.value)
-                setIsInput(false) // 글을 수정후에 2번쨰 글을 수정할때 내용변화가 없었으면 db에서 수정했다고는 했으나 화면으로는 그려주질못했음 이걸로해결..
+                    content: toUser + ' ' + modifyValue,
+                })
+                if (response.data === 1) {
+                    setModified(comment.value)
+                    setComments(comments.map(comment => {
+                        if(idx === comment.id){
+                            return {
+                                ...comment, content: toUser + ' ' + modifyValue
+                            }
+                        }
+                        return comment
+                    }))
+                    setIsInput(false) // 글을 수정후에 2번쨰 글을 수정할때 내용변화가 없었으면 db에서 수정했다고는 했으나 화면으로는 그려주질못했음 이걸로해결..
+                }
+            } else {
+                const response = await request.put(`/community/comment/${id}/${idx}`, {
+                    content: comment.value,
+                })
+                if (response.data === 1) {
+                    setModified(comment.value)
+                    setComments(comments.map(comment => {
+                        if(idx === comment.id){
+                            return {
+                                ...comment, content: modifyValue
+                            }
+                        }
+                        return comment
+                    }))
+                    setIsInput(false) // 글을 수정후에 2번쨰 글을 수정할때 내용변화가 없었으면 db에서 수정했다고는 했으나 화면으로는 그려주질못했음 이걸로해결..
+                }
             }
         } catch (error) {
             console.error(error)
         }
     }
+    
 
     useEffect(() => {
-        if (modified) {
-            setIsInput(false)
-        }
+    if (modified) {
+        setIsInput(false)
+    }
     }, [modified])
-
+    
     return (
         <CommentWrapper parentId={parentId} isDeleted={isDeleted} deleteRender={deleteRender}>
             {createdAt && !isInput ? (
@@ -114,7 +139,9 @@ const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, use
                                 {/* {comment.value.replace(/@.+?\s/, '')}                                 */}
                             </span> 
                             : 
-                            <span>{comment.value}</span>
+                            <span>
+                                {!content.indexOf('@') ? <><NavLink>{content.split(" ")[0]}</NavLink> {content.split(" ")[1]}</> : <>{content}</>}
+                            </span>
                         }
                     </div>
                 </Txt>
@@ -159,7 +186,7 @@ const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, use
                         <div>{username}</div>
                         <div>{timeAgo}</div>
                     </Txt>
-                    <ModifyInput idx={idx} value={comment.value} onChange={comment.onChange} />
+                    <ModifyInput idx={idx} value={modifyValue} onChange={comment.onChange} />
                 </>
             )}
 
@@ -192,31 +219,117 @@ const CommentTxT = ({ idx, content, createdAt, comments, setComments, email, use
     )
 }
 
-export const Comment = ({ comments, setComments}) => {
+const Pagination = ({id, setComments, currentPage, setCurrentPage, pageNumbers, setPageNumbers}) => {
+    const [selectedPage, setSelectPage] = useState(currentPage)
+    const limitPage = 5
+    const onPageChange = async (page) => {
+        setSelectPage(page)
+        setCurrentPage(page)
+        const response = await request.get(`/community/${id}?page=${page}`)
+        setComments(response.data.commentList)
+    }
+
+    const prevPage = async () => {
+        if(pageNumbers[0] !== 1){
+            const page = pageNumbers[0]-1
+            const response = await request.get(`/community/${id}?page=${page}`)
+            setComments(response.data.commentList)
+            const stnum = page - 4
+            const pages = Array.from({length: limitPage},(v, i) => stnum + i )
+            setPageNumbers(pages)
+            setSelectPage(page)
+        } else {
+            return
+        }
+    }
+
+    const nextPage = async () => {
+        const page = pageNumbers[4]+1 // 현재 페이지 배열의 마지막 숫자 + 1
+        const currentComment = 10
+        const response = await request.get(`/community/${id}?page=${page}`)
+        setComments(response.data.commentList)
+        const totalComment = response.data.boardView.CommentCount
+        const maxPage = Math.ceil(totalComment / currentComment)
+        if(pageNumbers[4] > maxPage){
+            return
+        } else {
+            const pages = Array.from({length: limitPage},(v, i) => page + i ) 
+            setPageNumbers(pages) 
+            setSelectPage(page)
+        }
+
+        // for(let i = 0; i<pageNumbers.length; i++){
+        //     if(pageNumbers[i] === maxPage){
+        //         const pages = Array.from({length: maxPage - page + 1}, (v, j) => page + j)
+        //         setPageNumbers(pages)
+        //         setSelectPage(page)
+        //     } else {
+        //         const pages = Array.from({length: 5},(v, j) => page + j ) 
+        //     setPageNumbers(pages) 
+        //     setSelectPage(page)
+        //     }
+        // }
+    }
+
+    return (
+        <PageWrap> 
+            <button type='button' onClick={()=>{prevPage()}}> prev </button>
+                {pageNumbers.map(page => {
+                    return (
+                        <li key={page}>
+                            <PageNum key={page} type="button" onClick={()=>onPageChange(page)} style={{background: page === selectedPage ? 'pink' : 'white'}}>
+                                {page}
+                            </PageNum>
+                        </li>
+                    )
+                })}
+            <button type='button' onClick={()=>{nextPage()}}> next </button>
+        </PageWrap>
+    )
+}
+
+export const Comment = ({ totalComments, setTotalComments, comments, setComments,
+    currentPage, setCurrentPage, pageNumbers, setPageNumbers
+}) => {
+    const current = Math.ceil(totalComments/10)
     const { id } = useParams()
     const [commentValue, setCommentValue] = useState()
     const inputRef = useRef()
     const {user} = useSelector(state => state.user)
-    console.log('user', user)
+
 
     const submitHandler = async (e) => {
         e.preventDefault()
         const response = await request.post(`/community/${id}`, {
             content: commentValue,
             email: user.email,
+            currentPage
         })
         if (response.status >= 400 || response.data.isError) {
             alert(response.data.message)
         } else {
             const newCommmentList = response.data
+            console.log('new',newCommmentList)
             setComments(newCommmentList)
             setCommentValue("")
+            setTotalComments((prev)=> prev + 1)
         }
     }
 
+    useEffect(()=>{
+        const datasize = 10
+        const limitnum = 5
+        const maxPage = Math.ceil(totalComments / 10)
+        const stnum = totalComments/datasize - (totalComments/datasize % limitnum) + 1 
+        let endnum = totalComments/datasize - (totalComments/datasize % limitnum) + limitnum 
+        if(endnum > maxPage) endnum = maxPage
+        const pages = Array.from({length: endnum - stnum + 1},(v, i) => stnum+i )
+        setPageNumbers(pages)
+    },[totalComments])
+    
     return (
         <CommentForm onSubmit={submitHandler}>
-            {comments ? <TotalComments><Icon icon="mdi:comment-outline" /> 댓글 {comments.length}</TotalComments> : 
+            {comments ? <TotalComments><Icon icon="mdi:comment-outline" /> 댓글 {totalComments}</TotalComments> : 
             <TotalComments><Icon icon="mdi:comment-outline" /> 댓글 </TotalComments>}
             {comments ? (
                 comments.map((comment) => (
@@ -232,6 +345,7 @@ export const Comment = ({ comments, setComments}) => {
                         img={comment.userImg}
                         parentId={comment.parentId}
                         isDeleted={comment.isDeleted}
+                        currentPage={currentPage}
                     />
                 ))
             ) : (
@@ -241,15 +355,21 @@ export const Comment = ({ comments, setComments}) => {
                 <ContentInput
                     value={commentValue}
                     onChange={(e) => {
-                        setCommentValue(e.target.value)
+                        if(e.target.value.indexOf('@') === 0){
+                            return 
+                        } else {
+                            setCommentValue(e.target.value)
+                        }
                     }}
                     placeholder="댓글을 입력해주세요."
                     ref={inputRef}
                 />
-                <CommentButton onClick={()=>{inputRef.current.focus();}}>
+                <CommentButton onClick={()=>{inputRef.current.focus()}}>
                     <Icon icon="material-symbols:arrow-circle-up" width="3rem" border="none" />
                 </CommentButton>
             </CommentInput>
+            <Pagination id={id} setComments={setComments} currentPage={currentPage} setCurrentPage={setCurrentPage} pageNumbers={pageNumbers} 
+                setPageNumbers={setPageNumbers}/>
         </CommentForm>
     )
 }

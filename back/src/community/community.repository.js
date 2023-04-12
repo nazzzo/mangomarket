@@ -6,7 +6,7 @@ class CommunityRepository {
         this.User = User
     }
 
-    async findOne({ id }) {
+    async findOne({ id, limit }) {
         try {
             // const boardView = await this.Community.findOne({ raw: true, where: { id } })
             const sql = `
@@ -19,15 +19,15 @@ class CommunityRepository {
             const [[boardView]] = await this.sequelize.query(sql)
             console.log('boardView::' , boardView)
             
-            // const commentSql = `
-            // select A.id,A.content,A.createdAt,A.email,A.parentId,B.username,B.userImg from Comment as A join User as B on A.email = B.email
-            // `
             const commentSql = `
                 SELECT A.id, A.content, A.createdAt, A.email, A.parentId, A.isDeleted, B.username, B.userImg
                 FROM Comment AS A
                 JOIN User AS B ON A.email = B.email
                 WHERE A.communityid = ${id}
-                ORDER BY CASE WHEN parentId = 0 THEN id ELSE parentId END, A.createdAt ASC;`
+                ORDER BY CASE WHEN parentId = 0 THEN id ELSE parentId END, A.createdAt ASC
+                LIMIT ${limit}, 10
+                ;
+                `
             const [commentList] = await this.sequelize.query(commentSql)
             console.log('commentinfo::', commentList)
             // let commentList = await this.Comment.findAll({
@@ -143,7 +143,9 @@ class CommunityRepository {
                 FROM Comment AS A
                 JOIN User AS B ON A.email = B.email
                 WHERE A.communityid = ${commentData.id}
-                ORDER BY CASE WHEN parentId = 0 THEN id ELSE parentId END, A.createdAt ASC;
+                ORDER BY CASE WHEN parentId = 0 THEN id ELSE parentId END, A.createdAt ASC
+                LIMIT ${commentData.limit}, 10
+                ;
             `
             const [commentList] = await this.sequelize.query(commentSql)
             return commentList
