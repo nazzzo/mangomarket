@@ -29,6 +29,7 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
       const messageList = data.map((v) => {
         let position
         v.email === user.email ? position = "right" : position = "left"
+        if (!v.email) position = "center"
         v.position = position
         return v
       })
@@ -111,7 +112,7 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
                 case "center":
                   const { address, lat, lng, time } = JSON.parse(v.content)
                 return (<CenterMessageWrap key={v.id}>
-                            <MapMessage address={address} lat={lat} lng={lng} time={time}/>
+                            <MapMessage address={address} lat={lat} lng={lng} time={time} boardid={boardid} customer={customer} seller={seller} />
                         </CenterMessageWrap>);
                 case "left":
                 return (
@@ -141,7 +142,7 @@ export const SellerChat = ({ seller, customer, boardid, chatter }) => {
                 case "center":
                   const { address, lat, lng, time } = JSON.parse(v.content)
                 return (<CenterMessageWrap key={v.id}>
-                            <MapMessage address={address} lat={lat} lng={lng} time={time}/>
+                            <MapMessage address={address} lat={lat} lng={lng} time={time} boardid={boardid} customer={customer} seller={seller} />
                         </CenterMessageWrap>);
                 case "left":
                 return (
