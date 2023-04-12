@@ -21,6 +21,24 @@ class ReservationController {
       next(e)
     }
   }
+  async getState(req, res, next) {
+    try {
+        const result = await this.reservationService.getState(req.params.id);
+        console.log(result);
+        res.status(201).json(result);
+    } catch (e) {
+        next(e);
+    }
+}
+async putState(req, res, next) {
+    try {
+        const result = await this.reservationService.putState(req.params.id, req.body);
+        console.log(result);
+        res.status(201).json(result);
+    } catch (e) {
+        next(e);
+    }
+}
 }
 
 module.exports = ReservationController;

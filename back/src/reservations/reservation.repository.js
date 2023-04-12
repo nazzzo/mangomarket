@@ -6,12 +6,12 @@ class ReservationRepository {
     this.sequelize = sequelize;
   }
 
-  async getReservation(){
+  async getReservation() {
     try {
-      const result = await this.Reservation.findAll()
-      return result
+      const result = await this.Reservation.findAll();
+      return result;
     } catch (e) {
-      throw new Error(e)
+      throw new Error(e);
     }
   }
 
@@ -21,15 +21,34 @@ class ReservationRepository {
         where: { boardid: data.boardid, email: data.email },
         defaults: data,
       });
-  
+
       if (created) {
-        console.log('New reservation created!');
+        console.log("New reservation created!");
       } else {
-        console.log('Reservation already exists!');
+        console.log("Reservation already exists!");
         await reservation.update(data);
       }
-  
+
       return reservation;
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+  async findState(id) {
+    try {
+      const board = await this.Board.findOne({ where: { id: id } });
+      return board.state;
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+  async updateState(id, state) {
+    try {
+      let result = await this.Board.update(
+        { state: state },
+        { where: { id: id } }
+      );
+      return result;
     } catch (e) {
       throw new Error(e);
     }

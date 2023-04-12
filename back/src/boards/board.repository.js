@@ -210,25 +210,6 @@ class BoardRepository {
             throw new Error(e)
         }
     }
-    async findState(id) {
-        try {
-            const board = await this.Board.findOne({ where: { id: id } });
-            return board.state;
-        } catch (e) {
-            throw new Error(e);
-        }
-    }
-    async updateState(id, state) {
-        try {
-            let result = await this.Board.update(
-                { state: state },
-                { where: { id: id } }
-            );
-            return result;
-        } catch (e) {
-            throw new Error(e);
-        }
-    }
     async updateBoard({ id, subject, content, hashtag, category }) {
         // console.log("update :", id, subject, content, hashtag, category );
         try {

@@ -42,7 +42,7 @@ export const BoardView = () => {
   useEffect(() => {
     const putState = async () => {
       try {
-        const response = await request.put(`boards/${id}/state`, {
+        const response = await request.put(`reservations/${id}/state`, {
           state: selectedOption?.value
         })
         // console.log(response.data)

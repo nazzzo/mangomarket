@@ -77,25 +77,6 @@ class BoardController {
             next(e);
         }
     }
-    async getState(req, res, next) {
-        console.log(`req:::`, req)
-        try {
-            const result = await this.boardService.getState(req.params.id);
-            console.log(result);
-            res.status(201).json(result);
-        } catch (e) {
-            next(e);
-        }
-    }
-    async putState(req, res, next) {
-        try {
-            const result = await this.boardService.putState(req.params.id, req.body);
-            console.log(result);
-            res.status(201).json(result);
-        } catch (e) {
-            next(e);
-        }
-    }
     async putView(req, res, next) {
         // console.log(`putCon:`, req.params.idx, req.body.subject, req.body.content, req.body.hashtag, req.body.category, req.body.introduce);
         try {

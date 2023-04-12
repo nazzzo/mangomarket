@@ -20,6 +20,22 @@ class ReservationService {
             throw new Error()
           }        
     }
+    async getState(id) {
+      try {
+          const result = await this.reservationRepository.findState(id);
+          return result;
+      } catch (e) {
+          throw new this.BadRequest(e);
+      }
+  }
+  async putState(id , {state}) {
+      try {
+          await this.reservationRepository.updateState(id, state);
+          return state;
+      } catch (e) {
+          throw new this.BadRequest(e);
+      }
+  }
 }
   
 module.exports = ReservationService;
