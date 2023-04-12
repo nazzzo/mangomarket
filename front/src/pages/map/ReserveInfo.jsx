@@ -14,7 +14,7 @@ export const ReserveInfo = ({ address, time }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-        const response = await request.put("/board", {
+        const response = await request.put("/board/${id}", {
           });
         if (response.data === 1) setIsOpenAlert(true)
     } catch (e) { console.error(e)}
