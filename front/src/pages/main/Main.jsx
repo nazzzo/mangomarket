@@ -21,8 +21,6 @@ export const Main = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    console.log(`search:::`, search)
-
     useEffect(() => {
         const fetchData = async () => {
             try {

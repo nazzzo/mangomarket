@@ -8,9 +8,8 @@ import request from "../../utils/request"
 
 export const ReserveInfo = ({ isReserved, socket, address, time, chatid, boardid, customer, seller }) => {
   const [isOpenAlert, setIsOpenAlert] = useState(false);
+  const [chatState, setChatState] = useState();
   const { user } = useSelector((state) => state.user)
-  console.log(isReserved)
-  console.log(seller, user.email)
   const date = new Date(time);
   const formattedTime = date.toLocaleDateString('en-US', {hour: 'numeric', minute: 'numeric'});
 
@@ -34,6 +33,14 @@ export const ReserveInfo = ({ isReserved, socket, address, time, chatid, boardid
       console.error(e)
     }
   }
+  const getChatState = async (e) => {
+    const { data } = await request.get(`/chats/state/${chatid}`)
+    console.log(data)
+  }
+
+  useEffect(() => {
+    getChatState()
+  },[])
 
   const handleCloseAlert = () => {
     setIsOpenAlert(false)

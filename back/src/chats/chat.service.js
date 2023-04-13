@@ -56,6 +56,15 @@ class ChatService {
         throw new Error(e)
       }
     }
+    async getState(params) {
+      try {
+        const { id } = params;
+        const result = await this.chatRepository.findState(id)
+        return result
+      } catch (e) {
+        throw new Error(e)
+      }
+    }
 }
   
 module.exports = ChatService;

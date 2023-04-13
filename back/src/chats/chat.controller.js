@@ -57,6 +57,14 @@ class ChatController {
       throw new this.BadRequest(e)
     }
   }
+  async getState (req, res, next) {
+    try {
+      const result = await this.chatService.getState(req.params)
+      res.status(201).json(result)
+    } catch (e) {
+      throw new this.BadRequest(e)
+    }
+  }
 }
 
 module.exports = ChatController;

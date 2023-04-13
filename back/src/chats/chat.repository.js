@@ -128,6 +128,20 @@ class ChatRepository {
       throw new Error(e);
     }
   }
+  async findState(id) {
+    try {
+      console.log(id)
+        const findOne = await this.Chat.findOne({
+          where: { id },
+          raw: true,
+          nest: true,
+        });
+        console.log(`findOne:::`, findOne.state)
+        return findOne.state;
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
 }
 
 module.exports = ChatRepository;
