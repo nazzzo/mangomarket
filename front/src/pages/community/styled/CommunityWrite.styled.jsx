@@ -30,15 +30,16 @@ const StyledSelect = styled(Select)`
     width: 15rem;
     margin-left: 0.9rem;
 `
+
 const selectOptions = [
     { value: 'talking', label: '잡담' },
     { value: 'question', label: '질문' },
     { value: 'infomation', label: '정보공유' },
     { value: 'request', label: '요청' },
-    { value: 'notice', label: '공지사항' },
 ]
 
-export const CategorySelect = ({ onChange }) => {
+export const CategorySelect = ({ onChange, level }) => {
+    level === 'admin' && selectOptions.push({ value: 'notice', label: '공지사항' })
     return (
         <StyledSelect
             placeholder="카테고리 선택"
@@ -66,16 +67,16 @@ export const Community = ({ children }) => {
     return <CommunityWrap>{children}</CommunityWrap>
 }
 
-const KakaoMapWrap = styled.div`
+export const TempWrap = styled.div`
     width: 100%;
-    height: 10rem;
-    background: grey;
+    height: 2rem;
     margin: 3rem 0;
 `
 
-export const KakaoMap = () => {
-    return <KakaoMapWrap>KakaoMap</KakaoMapWrap>
-}
+export const ButtonDiv = styled.div`
+    display: flex;
+    justify-content: space-around;
+`
 
 export const CommunityForm = styled.form`
     width: ${({ width }) => width};
@@ -101,9 +102,8 @@ export const CommunityForm = styled.form`
         }
     }
 
-    & > button {
+    & > div > button {
         margin-top: 1.3rem;
         border-radius: 4px;
-        margin-left: 79%;
     }
 `

@@ -3,19 +3,18 @@ import styled from "styled-components";
 export const SwitchBoxStyled = styled.ul`
   display: flex;
   justify-content: space-between;
-  width: ${({width}) => width};
-  height: ${({height}) => height};
+  width: ${({ width }) => width};
+  height: ${({ height }) => height};
 `;
-
 
 export const SwitchStyled = styled.li`
   flex: 1;
   cursor: pointer;
-  font-size:20px;
+  font-size: 20px;
   background-color: ${(props) => (props.isActive ? "#fff" : "#ededed")};
   font-weight: ${(props) => (props.isActive ? "600" : "400")};
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: ${({fontSize}) => fontSize}
+  font-size: ${({ fontSize }) => fontSize};
 `;

@@ -14,8 +14,18 @@ class ChatController {
 
   async postChat(req, res, next) {
     try {
-      console.log(req.body)
       const result = await this.chatService.postChat(req.body.data)
+      res.status(201).json(result)
+    } catch (e) { 
+      next(e)
+    }
+  }
+
+  async putChat(req, res, next) {
+    try {
+      const { id } = req.params
+      const { content } = req.body
+      const result = await this.chatService.putChat(id, content)
       res.status(201).json(result)
     } catch (e) { 
       next(e)
@@ -34,6 +44,14 @@ class ChatController {
   async getSellers (req, res, next) {
     try {
       const result = await this.chatService.getUsers(req.query)
+      res.status(201).json(result)
+    } catch (e) {
+      throw new this.BadRequest(e)
+    }
+  }
+  async getSeller (req, res, next) {
+    try {
+      const result = await this.chatService.getSeller(req.params, req.query)
       res.status(201).json(result)
     } catch (e) {
       throw new this.BadRequest(e)

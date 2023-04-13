@@ -1,84 +1,109 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import { useInput } from "../../hooks"
-import request from "../../utils/request"
-import io from "socket.io-client"
-import config from "../../config"
+import { ChatterCard, ChatForm, ChatOption, ChatInput, ChatButton, ChatMenu } from "./styled"
+import { useInput } from "../../hooks";
+import { Modal } from "../../common/modal"
+import { ChatterMap } from "../../pages/map"
+import io from "socket.io-client";
+import config from "../../config";
+import request from "../../utils/request";
+import { ChatMessages } from './';
+
 
 const ENDPOINT = `${config.PT}://${config.HOST}:${config.BACKEND_PORT}/`;
-let socket
+let socket;
 
-export const SellerChat = () => {
-    const [logs, setLogs] = useState([])
-    const [chats, setChats] = useState([])
-    const [namespace, setNamespace] = useState([])
-    const [customer, setCustomer] = useState([])
-    const content = useInput("")
-    const { user } = useSelector((state) => state.user);
+export const SellerChat = ({ chatter, onClick }) => {
+  const { boardid, customer, seller } = chatter
+  const { user, reservation } = useSelector((state) => state.user)
+  const [messages, setMessages] = useState({ isLoading: true, error: null, data: {} })
+  const [isActiveButton, setIsActiveButton] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
+  const content = useInput("")
+  const chatheight = useRef()
 
-    useEffect(() => {
-        const getSellerChat = async () => {
-            const response = await request.get(`/chats?seller=${user.email}`)
-            if (!response.data.isError) {
-                setLogs(response.data);
-                const customerList = [...new Set(response.data.map(v => v.customer))]
-                const namespaceList = [...new Set(response.data.map(v => v.boardid))]
-                setCustomer(customerList)
-                setNamespace(namespaceList)
-            }
-        }
-        getSellerChat()
-    }, [])
 
-    useEffect(() => {
-        socket = io(ENDPOINT);
-        socket.emit("joinRoom", { room: "5-ckstn410@naver.com" });
-        
-        socket.on("receiveMessage", (newChat) => {
-            console.log(`newChat: ${newChat}`)
-            setChats([...chats, newChat]);
-        });
-
-        return () => {
-            socket.disconnect();
-        };
-    }, [chats]);
-
-    const handleSendMessage = async (e) => {
-        e.preventDefault()
-        let data = {
-            boardid: 5,
-            customer: "ckstn410@naver.com",
-            seller: user.email,
-            type: "sender",
-            content: content.value
-        }
-        socket.emit("sendMessage", { data } )
-        const response = await request.post(`/chats`, {data})
-        console.log(response.data)
-        if (response.status === 201) content.clear()
+  const postReservation = async (data) => {
+    try {
+      await request.post(`/chats`, { data })
+    } catch (e) {
+      console.log(e)
     }
+  }
 
-    return (
-        <form onSubmit={handleSendMessage}>
-            {logs ? <ul>
-                {logs.map((v) => (
-                    <div key={v.id}>
-                        <li>{v.seller || v.customer}</li>
-                        <li>{v.content}</li>
-                    </div>
-                ))}
-            </ul> : <></>}
-            {chats ? <ul>
-                {chats.map((v, idx) => (
-                    <div key={idx}>
-                        <li>{v.seller || v.customer}</li>
-                        <li>{v.content}</li>
-                    </div>
-                ))}
-            </ul> : <></>}
-            <input onChange={content.onChange} value={content.value} type="text" name="content" id="content" />
-            <button type='submit'>채팅</button>
-        </form>
-    )
-}
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    let data = {
+      boardid,
+      seller,
+      customer,
+      content: content.value,
+      email: user.email,
+      username: user.username,
+      userImg: user.userImg,
+      address: user.address,
+    }
+    socket.emit("sendMessage", { data });
+    const response = await request.post(`/chats`, { data })
+    console.log(response.data)
+    content.clear();
+  };
+
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("joinRoom", { room: `${boardid}-${customer}` });
+
+    socket.on("receiveMessage", (newMessage) => {
+      try {
+        let position
+        newMessage.email === user.email ? position = "right" : position = "left"
+        newMessage.position = position
+        setMessages({ ...messages, isLoading: false, error: null, data: [...messages.data, newMessage] })
+        chatheight.current.scrollTop = chatheight.current.scrollHeight
+      } catch (e) {
+        setMessages({ ...messages, isLoading: false, error: e.message, data: null })
+      }
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [messages]);
+
+  useEffect(() => {
+    socket.emit("reservation", { data: reservation })
+    socket.on("reserveMessage", (newMessage) => {
+      try {
+        const { content, boardid, customer } = newMessage
+        const data = {
+          content,
+          boardid,
+          customer,
+          seller,
+        }
+        postReservation(data)
+        if (newMessage.content.indexOf("{", 0) === 0) newMessage.position = "center"
+        setMessages({ ...messages, isLoading: false, error: null, data: [...messages.data, newMessage] })
+        chatheight.current.scrollTop = chatheight.current.scrollHeight
+      } catch (e) {
+        setMessages({ ...messages, isLoading: false, error: e.message, data: null})
+      }
+    })
+  }, [reservation])
+
+  return (
+    <>
+      <ChatterCard onClick={onClick} chatter={chatter} />
+      <ChatMessages messages={messages} setMessages={setMessages} chatter={chatter} chatheight={chatheight} />
+      <ChatForm onSubmit={handleSendMessage}>
+        {(customer === user.email) && <ChatOption onClick={() => { setIsActiveButton(!isActiveButton) }} className={isActiveButton ? 'on' : ''}>
+          <ChatMenu className="chatMenu" onClick={() => { setIsOpen(true) }} />
+        </ChatOption>}
+        <ChatInput type="text" value={content.value} onChange={content.onChange} placeholder="메세지를 입력해주세요" />
+        <ChatButton type="submit" />
+      </ChatForm>
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen} height="37rem">
+        <ChatterMap setIsOpen={setIsOpen} boardid={boardid} customer={customer} />
+      </Modal>
+    </>
+  )}

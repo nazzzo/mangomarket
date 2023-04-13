@@ -1,21 +1,28 @@
 import {
-  // USER_LOGIN,
+  UPDATE_UNREAD_CHAT,
 } from "./types";
 
 const initialState = {
-  isLoading: true,
-  isError: null,
+  chats: [
+    {
+      roomId:"",
+      unreadCount: 0,
+    }
+  ]
 };
 
 export const chat = (state = initialState, action) => {
   switch (action.type) {
-    // case USER_LOGIN:
-    //   return {
-    //     ...state,
-    //     isLoading: false,
-    //     isLogin: action.payload.isLogin,
-    //     user: action.payload.user,
-    //   };
+    case UPDATE_UNREAD_CHAT:
+      return {
+        ...state,
+        chats: [
+          {
+            roomId: action.payload,
+            unreadCount: action.payload,
+          },
+        ]
+      };
     default:
       return state;
   }

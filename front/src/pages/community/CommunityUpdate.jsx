@@ -13,8 +13,6 @@ export const CommunityUpdate = ({ view, setView, setEditMode }) => {
     const subjectInput = useInput(view.subject)
     const contentTextArea = useTextArea(view.content)
 
-    console.log(`view3333:::`, view, setEditMode)
-
     const handleUpdate = async (e) => {
         e.preventDefault()
         const response = await request.put(`/community/${id}`, {

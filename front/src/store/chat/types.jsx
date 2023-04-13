@@ -1,1 +1,2 @@
-export const USER_LOGIN = "USER/LOGIN";
+export const UPDATE_UNREAD_CHAT = "UPDATE/UNREAD_CHAT"
+export const UPDATE_READ_CHAT = "UPDATE/READ_CHAT"

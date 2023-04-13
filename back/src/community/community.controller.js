@@ -30,6 +30,32 @@ class CommunityController {
         }
     }
 
+    async getTempData(req, res, next) {
+        try {
+            console.log('getTempData :::', req.query)
+            const { email } = req.query
+
+            const response = await this.communityService.getTempInfo({ email })
+            console.log(response)
+            res.status(201).json(response)
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async postTempData(req, res, next) {
+        try {
+            const { id } = req.query
+            const { content, subject } = req.body
+
+            const response = await this.communityService.postTempWrite({ id, content, subject })
+            console.log(response)
+            res.status(201).json(response)
+        } catch (e) {
+            next(e)
+        }
+    }
+
     async getCommunityList(req, res, next) {
         try {
             const { email } = req.query
@@ -45,7 +71,8 @@ class CommunityController {
         try {
             console.log('요청?')
             const { count } = req.query
-            const response = await this.communityService.getList({ count })
+            console.log('count', count)
+            const response = await this.communityService.getCommunityList({ count })
             res.json(response)
         } catch (e) {
             next(e)
@@ -53,7 +80,7 @@ class CommunityController {
     }
 
     async postCommunity(req, res, next) {
-        // console.log('req.body:::', req.body)
+        console.log('req.body:::', req.body)
         try {
             if (!req.body.content) throw new Error('내용이 없습니다')
             if (!req.body.category) throw new Error('카테고리를 선택해주세요')

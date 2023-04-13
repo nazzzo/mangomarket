@@ -81,7 +81,7 @@ export const Signup = () => {
           value={username.value}
           onChange={username.onChange}
           onInput={handleInputChange}
-          id="username"s
+          id="username"
           name="username"
           icon="mdi:account"
           placeholder="사용할 닉네임을 입력해주세요"

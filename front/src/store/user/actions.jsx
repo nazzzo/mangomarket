@@ -10,6 +10,8 @@ import {
   USER_KEYWORD_ADD,
   USER_KEYWORD_REMOVE,
   USER_SET_ALARM,
+  USER_SET_SEARCH,
+  USER_SET_RESERVATION,
 } from "./types";
 
 export const userLogin = (isLogin, user) => ({
@@ -69,5 +71,17 @@ export const removeUserInfo = () => ({
 
 export const userSetAlarm = (data) => ({
   type: USER_SET_ALARM,
+  payload: data,
+})
+
+
+export const userSetSearch = (data) => ({
+  type: USER_SET_SEARCH,
+  payload: data,
+})
+
+
+export const userSetReservation = (data) => ({
+  type: USER_SET_RESERVATION,
   payload: data,
 })

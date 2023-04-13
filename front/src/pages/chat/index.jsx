@@ -1,3 +1,6 @@
+export * from "./Chat"
+export * from "./ChatterList"
+export * from "./ChatBox"
 export * from "./CustomerChat"
 export * from "./SellerChat"
-export * from "./GlobalChat"
+export * from "./ChatMessages"
