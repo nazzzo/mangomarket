@@ -55,7 +55,7 @@ export const CustomerChat = ({ boardid }) => {
       address: user.address,
     }
     socket.emit("sendMessage", { data });
-    const response = await request.post(`/chats`, { data })
+    // const response = await request.post(`/chats`, { data })
     content.clear();
   };
 
@@ -120,6 +120,6 @@ export const CustomerChat = ({ boardid }) => {
         <ChatButton type="submit" />
       </ChatForm>
       <Alert isOpenAlert={isOpenAlert} onClose={()=> { setIsOpenAlert(false) }} color="red" width="20rem" height="5rem">이미 예약된 상품입니다</Alert>
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen} height="37rem"><ChatterMap setIsOpen={setIsOpen} boardid={boardid} customer={customer} /></Modal>
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen} height="37rem"><ChatterMap setIsOpen={setIsOpen} boardid={boardid} customer={customer} seller={seller} /></Modal>
     </>
   )}

@@ -6,8 +6,9 @@ class ChatRepository {
     this.sequelize = sequelize;
   }
 
-  async findAll({ seller, customer, boardid}) {
+  async findAll({ seller, customer, boardid }) {
     try {
+      console.log(seller, customer, boardid)
         const findAll = await this.Chat.findAll({
           where: { seller, customer, boardid },
           raw: true,
@@ -21,7 +22,7 @@ class ChatRepository {
 
   async postChat(data) {
     try {
-        const result = await this.Chat.create(data);
+        const result = await this.Chat.create(data, { raw: true, nest: true });
         return result;
     } catch (e) {
       throw new Error(e);

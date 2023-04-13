@@ -6,23 +6,22 @@ import { Alert } from "../../common/alert"
 import request from "../../utils/request"
 
 
-export const ReserveInfo = ({ address, time, chatid, boardid, customer, seller }) => {
+export const ReserveInfo = ({ isReserved, socket, address, time, chatid, boardid, customer, seller }) => {
   const [isOpenAlert, setIsOpenAlert] = useState(false);
-  const [isReserved, setIsReserved] = useState(false);
   const { user } = useSelector((state) => state.user)
-
-
+  console.log(isReserved)
+  console.log(seller, user.email)
   const date = new Date(time);
   const formattedTime = date.toLocaleDateString('en-US', {hour: 'numeric', minute: 'numeric'});
-
 
   const handleAccept = async (e) => {
     e.preventDefault()
     try {
-      const response = await request.put(`reservations/${boardid}/state`, {
-        state: "reserved"
-      });
-      if (response.data === 1) setIsOpenAlert(true)
+      // const response = await request.put(`reservations/${boardid}/state`, {
+      //   state: "reserved"
+      // });
+      socket.current.emit("reserveAccept", { state: "reserved", id: boardid })
+      // if (response.data === 1) setIsOpenAlert(true)
     } catch (e) {
       console.error(e)
     }
@@ -30,9 +29,7 @@ export const ReserveInfo = ({ address, time, chatid, boardid, customer, seller }
 
   const handleReject = async () => {
     try {
-      const response = await request.put(`chats/${chatid}`, {
-        content: "예약이 거절되었습니다"
-      });
+      socket.current.emit("reserveAccept", { state: "public", id: boardid, chatid })
     } catch (e) {
       console.error(e)
     }
@@ -41,18 +38,6 @@ export const ReserveInfo = ({ address, time, chatid, boardid, customer, seller }
   const handleCloseAlert = () => {
     setIsOpenAlert(false)
   }
-
-  useEffect(() => {
-    const checkReserved = async () => {
-      try {
-        const response = await request.get(`reservations/${boardid}/state`);
-        setIsReserved(response.data === 'reserved')
-      } catch (e) {
-        console.error(e)
-      }
-    }
-    checkReserved()
-  }, [boardid])
 
   return (
     <>
@@ -65,9 +50,8 @@ export const ReserveInfo = ({ address, time, chatid, boardid, customer, seller }
             <Button color="grey" type="button" onClick={handleReject}>거절</Button>
           </>
         )}
-        {isReserved && (
-          <span>예약되었습니다</span>
-        )}
+        {isReserved === "reserved" && (<span style={{color: "green"}}>예약되었습니다</span>)}
+        {isReserved === "rejected" && (<span style={{color: "red"}}>예약이 거절되었습니다</span>)}
       </ReserveInfoForm>
       <Alert isOpenAlert={isOpenAlert} onClose={handleCloseAlert} color="green" width="20rem" height="5rem">상품이 예약되었습니다</Alert>
     </>

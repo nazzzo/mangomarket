@@ -4,14 +4,14 @@ import request from '../../utils/request'
 import { ChatLogWrap, ChatLogs, LeftMessageWrap, RightMessageWrap, CenterMessageWrap, ChatUserImg, ChatMessage, ChatTime } from "./styled"
 import { MapMessage } from "../../pages/map"
 
-export const ChatMessages = ({ messages, setMessages, chatter, chatheight }) => {    
+export const ChatMessages = ({ setIsReserved, isReserved, socket, messages, setMessages, chatter, chatheight }) => {    
     const { boardid, seller, customer, userImg } = chatter
     const { user } = useSelector((state) => state.user)
-    const { isReserved } = useSelector((state) => state.chat)
 
     const getCustomerChat = async () => {
         try {
             const { data } = await request.get(`/chats?customer=${customer}&seller=${seller}&email=${user.email}&boardid=${boardid}`);
+            console.log(data)
             let messageList = [];
             if (data.length) {
                 messageList = data.map((v) => {
@@ -29,7 +29,7 @@ export const ChatMessages = ({ messages, setMessages, chatter, chatheight }) => 
     };
     useEffect(() => {
         getCustomerChat()
-    }, [isReserved])
+    }, [])
 
     if (messages.isLoading) return <>Loading...</>
     if (messages.error) return <>{messages.error}</>
@@ -40,9 +40,11 @@ export const ChatMessages = ({ messages, setMessages, chatter, chatheight }) => 
                 {messages.data.map((v) => {
                     switch (v.position) {
                         case "center":
+                            console.log(v)
+                            setIsReserved("rejected")
                             const { address, lat, lng, time } = JSON.parse(v.content)
                             return (<CenterMessageWrap key={v.id}>
-                                <MapMessage address={address} lat={lat} lng={lng} time={time} chatid={v.id} boardid={boardid} customer={customer} seller={seller} />
+                                <MapMessage seller={seller} socket={socket} isReserved={isReserved} address={address} lat={lat} lng={lng} time={time} chatid={v.id} boardid={boardid} customer={customer} />
                             </CenterMessageWrap>);
                         case "left":
                             return (

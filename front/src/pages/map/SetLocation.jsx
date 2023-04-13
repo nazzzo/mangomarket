@@ -7,7 +7,7 @@ import { TimerBtn } from "../../common/button"
 import { Alert } from "../../common/alert"
 import request from "../../utils/request"
 
-export const SetLocation = ({ setIsOpen, lat, lng, boardid, customer }) => {
+export const SetLocation = ({ setIsOpen, lat, lng, boardid, customer, socket }) => {
     const [address, setAddress] = useState(null);
     const [isOpenAlert, setIsOpenAlert] = useState(false);
     const [selectedTime, setSelectedTime] = useState('')
@@ -27,29 +27,17 @@ export const SetLocation = ({ setIsOpen, lat, lng, boardid, customer }) => {
 
       const handleSubmit = async (e) => {
         e.preventDefault()
+        console.log(selectedTime)
         try {
-            const response = await request.post("/reservations", {
-                address: address,
-                latitude : lat, 
-                longitude : lng,
-                reservation : selectedTime.value,
-                boardid : boardid,
-                email : customer,
-              });
-              console.log(response)
-              if (response.data.email) {
-                dispatch(
-                    userSetReservation({
-                        email: customer,
-                        boardid: boardid,
-                        address: address,
-                        latitude : lat, 
-                        longitude : lng,
-                        reservation: response.data.reservation,
-                    })
-                  );
-                  setIsOpenAlert(true)
-                }
+            socket.current.emit("reservation", { data:{
+              address: address,
+              latitude : lat, 
+              longitude : lng,
+              reservation : selectedTime.value,
+              boardid : boardid,
+              email : customer,
+            }});
+            setIsOpenAlert(true)
         } catch (e) {
             console.error(e)
         }
