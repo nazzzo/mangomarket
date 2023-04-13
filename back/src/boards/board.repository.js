@@ -207,41 +207,6 @@ class BoardRepository {
             throw new Error(e);
         }
     }
-
-    // async updateBoard({ id, subject, content, hashtag, category }) {
-    //     try {
-    //         const result = await this.Board.update({ subject: subject, content: content }, { where: { id: id } });
-
-    //         if (hashtag[0]) {
-    //             const addHash = hashtag.map((tagname) => this.Hash.findOrCreate({ where: { tagname } }));
-    //             await this.Hashtag.destroy({ where: { boardid: id } });
-    //             const addHashTag = hashtag.map((tagname) => this.Hashtag.create({ boardid: id, tagname }));
-    //             await Promise.all(addHash, addHashTag);
-    //         }
-
-    //         return result;
-    //     } catch (e) {
-    //         throw new Error(e);
-    //     }
-    // }
-
-    // async tempDestroy(email) {
-    //     try {
-    //         const result = await this.Temp.destroy({ raw: true, where: { email } });
-    //         return result;
-    //     } catch (e) {
-    //         throw new Error(e);
-    //     }
-    // }
-
-    // async destroyBoard(id) {
-    //     try {
-    //         const result = await this.Board.destroy({ where: { id: id } });
-    //         return result;
-    //     } catch (e) {
-    //         throw new Error(e);
-    //     }
-    // }
 }
 
 module.exports = BoardRepository;
