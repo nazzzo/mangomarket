@@ -93,47 +93,6 @@ class BoardService {
             throw new this.BadRequest(e);
         }
     }
-    
-    // async likechecked({ userid, boardid }) {
-    //     try {
-    //         const checkdata = this.boardRepository.likecheck({ userid, boardid });
-    //         return checkdata;
-    //     } catch (e) {
-    //         throw new this.BadRequest(e);
-    //     }
-    // }
-
-    // async putView(putdata) {
-    //     try {
-    //         const { id, subject, content, hashtag, category, userid } = putdata;
-    //         if (id === "temp") {
-    //             if (!userid || !subject || !content) throw "내용이 없습니다";
-    //             const imgs = content.split("img src=").filter((v) => v.indexOf("http") !== -1).map((v) => v.split("&gt")[0]);
-    //             const boarddata = { userid, subject, content, hashtag, category, image: imgs[0] };
-
-    //             if (!imgs[0]) delete boarddata.image;
-    //             const view = await this.boardRepository.createBoard(boarddata);
-    //             await this.boardRepository.tempDestroy(userid);
-    //             return view;
-    //         } else {
-    //             const view = await this.boardRepository.updateBoard({ id, subject, content, hashtag, category });
-    //             if (view < 1) throw "수정할 게시글이 없습니다";
-    //             return view;
-    //         }
-    //     } catch (e) {
-    //         throw new this.BadRequest(e);
-    //     }
-    // }
-
-    // async deleteView(idx) {
-    //     try {
-    //         const view = await this.boardRepository.destroyBoard(idx);
-    //         if (view < 1) throw "삭제할 게시글이 없습니다";
-    //         return view;
-    //     } catch (e) {
-    //         throw new this.BadRequest(e);
-    //     }
-    // }
 }
 
 module.exports = BoardService;
