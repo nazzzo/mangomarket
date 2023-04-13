@@ -74,28 +74,28 @@ class BoardController {
         }
     }
 
-    async putView(req, res, next) {
-        try {
-            const putdata = req.body;
-            const data = { id: req.params.idx, ...putdata };
-            if (!req.body.subject) throw new Error("제목을 입력해주세요");
-            if (!req.body.content) throw new Error("수정할 내용을 입력해주세요");
-            const view = await this.boardService.putView(data);
-            res.status(201).json(view);
-        } catch (e) {
-            next(e);
-        }
-    }
+    // async putView(req, res, next) {
+    //     try {
+    //         const putdata = req.body;
+    //         const data = { id: req.params.idx, ...putdata };
+    //         if (!req.body.subject) throw new Error("제목을 입력해주세요");
+    //         if (!req.body.content) throw new Error("수정할 내용을 입력해주세요");
+    //         const view = await this.boardService.putView(data);
+    //         res.status(201).json(view);
+    //     } catch (e) {
+    //         next(e);
+    //     }
+    // }
     
-    async deleteView(req, res, next) {
-        try {
-            // if (!req.params.id) throw new Error("삭제할 글이 없습니다");
-            const response = await this.boardService.deleteView(req.params.idx);
-            res.status(201).json(response);
-        } catch (e) {
-            next(e);
-        }
-    }
+    // async deleteView(req, res, next) {
+    //     try {
+    //         // if (!req.params.id) throw new Error("삭제할 글이 없습니다");
+    //         const response = await this.boardService.deleteView(req.params.idx);
+    //         res.status(201).json(response);
+    //     } catch (e) {
+    //         next(e);
+    //     }
+    // }
 }
 
 module.exports = BoardController;

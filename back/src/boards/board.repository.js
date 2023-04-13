@@ -17,7 +17,7 @@ class BoardRepository {
         this.BoardKeyword = BoardKeyword;
     }
 
-    async findAll({ searchType, search, sort, email, category, limit, pagingsort, pagingcategory, distance }) {
+    async findAll({ searchType, search, email, category, limit, pagingcategory, distance }) {
         try {
             const check = (post, query) => {
                 if (!post && query) {
@@ -78,9 +78,8 @@ class BoardRepository {
             GROUP BY A.id, D.id
             ${sortKey}
             ${limitquery};`;
-            const [findAll] = await this.sequelize.query(query);
-            // console.log(findAll);
-            return findAll;
+            const [result] = await this.sequelize.query(query);
+            return result;
         } catch (e) {
             throw new Error(e);
         }
@@ -115,8 +114,8 @@ class BoardRepository {
         AND
         E.thumbnail = 1
         GROUP BY A.id, E.image`;
-        const [[findOne]] = await this.sequelize.query(query);
-        return findOne
+            const [[result]] = await this.sequelize.query(query);
+            return result
         } catch (e) {
             throw new Error(e);
         }
@@ -138,32 +137,22 @@ class BoardRepository {
             where email='${email}';`;
 
         const result = await this.sequelize.query(sql);
-        // console.log("result:::::", result);
         return result;
     }
 
     async getKeywordId(keywordIds) {
         try {
-            const boardIds = await this.BoardKeyword.findAll({
-                where: {
-                    keywordId: {
-                        [this.Op.in]: keywordIds.split(',')
-                    }
-                },
-                attributes: ['boardId'],
-                raw: true
-            });
-            return boardIds;
+            const result = await this.BoardKeyword.findAll({ where: { keywordId: { [this.Op.in]: keywordIds.split(',') } }, attributes: ['boardId'], raw: true });
+            return result;
         } catch (e) {
             throw new Error(e);
         }
     }
 
     async createBoard(payload) {
-        console.log(`boarddata:::`, payload)
         try {
             const { email, username, subject, content, hashtag, category } = payload;
-            const createBoard = await this.Board.create(payload, { plain: true });            
+            const createBoard = await this.Board.create(payload, { plain: true });
             const addHash = hashtag.map((tagname) => this.Hash.findOrCreate({ where: { tagname } }));
             const tagResult = await Promise.all(addHash);
             await createBoard.addHashes(tagResult.map((v) => v[0]));
@@ -176,11 +165,9 @@ class BoardRepository {
                     ]
                 }
             });
-            // console.log(`findKeys:::`, findKeys)
             if (findKeys.length > 0) {
-            const boardKeywords = findKeys.map((key) => ({ boardId: createBoard.id, keywordId: key.id }));
-            await this.BoardKeyword.bulkCreate(boardKeywords);
-            // console.log(`boardKeywords:::`, boardKeywords)
+                const boardKeywords = findKeys.map((key) => ({ boardId: createBoard.id, keywordId: key.id }));
+                await this.BoardKeyword.bulkCreate(boardKeywords);
             }
             return createBoard.dataValues;
         } catch (e) {
@@ -189,29 +176,23 @@ class BoardRepository {
     }
 
     async uploadImage(images) {
-        // console.log(`images:::`, images)
         try {
-            const imageData = images.map(img => 
-                this.BoardImage.create(img)
-                )
-            const promise = await Promise.all(imageData)
-            // console.log(promise)
+            const imageData = images.map(img => this.BoardImage.create(img))
+            await Promise.all(imageData)
         } catch (e) {
             throw new Error(e)
         }
     }
-    
+
     async createPoint(data) {
         try {
-             const response = await this.PointUp.create(data);
-            //  console.log(response);
+            await this.PointUp.create(data);
         } catch (e) {
             throw new Error(e);
         }
     }
 
     async createLike({ boardid, email }) {
-        // console.log("repo :", boardid, email);
         try {
             const check = await this.Liked.findOne({ where: { boardid, email } });
             if (check === null) {
@@ -219,26 +200,18 @@ class BoardRepository {
             } else {
                 await this.Liked.destroy({ where: { boardid, email } });
             }
-            const count = await this.Liked.findAndCountAll({
-                where: { boardid },
-            });
+            const count = await this.Liked.findAndCountAll({ where: { boardid } });
             const recheck = await this.Liked.findOne({ raw: true, where: { boardid, email } });
             return [count.count, recheck];
         } catch (e) {
             throw new Error(e);
         }
     }
-    
+
     async updateBoard({ id, subject, content, hashtag, category }) {
-        // console.log("update :", id, subject, content, hashtag, category );
         try {
-            const updateBoard = await this.Board.update(
-                {
-                    subject: subject,
-                    content: content,
-                },
-                { where: { id: id } }
-            );
+            const result = await this.Board.update({ subject: subject, content: content }, { where: { id: id } });
+
             if (hashtag[0]) {
                 const addHash = hashtag.map((tagname) => this.Hash.findOrCreate({ where: { tagname } }));
                 await this.Hashtag.destroy({ where: { boardid: id } });
@@ -246,7 +219,7 @@ class BoardRepository {
                 await Promise.all(addHash, addHashTag);
             }
 
-            return updateBoard;
+            return result;
         } catch (e) {
             throw new Error(e);
         }
@@ -254,20 +227,17 @@ class BoardRepository {
 
     async tempDestroy(email) {
         try {
-            const response = await this.Temp.destroy({ raw: true, where: { email } });
-            return response;
+            const result = await this.Temp.destroy({ raw: true, where: { email } });
+            return result;
         } catch (e) {
             throw new Error(e);
         }
     }
 
     async destroyBoard(id) {
-        // console.log("repo :", id);
         try {
-            const destroy = await this.Board.destroy({
-                where: { id: id },
-            });
-            return destroy;
+            const result = await this.Board.destroy({ where: { id: id } });
+            return result;
         } catch (e) {
             throw new Error(e);
         }

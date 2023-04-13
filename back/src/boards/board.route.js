@@ -18,19 +18,12 @@ router.post("/array", upload.fields([{ name: "images" }, { name: "thumbnail" }])
   console.log(`images:::`, images)
   res.json({ images, thumbnail });
 });
+
 router.post("/:id/:idx/likes", (req, res, next) => controller.postLike(req, res, next));
 
 router.get("/:id/likes", (req, res, next) => controller.getcheck(req, res, next));
-router.put("/:idx", (req, res, next) => controller.putView(req, res, next));
-router.delete("/:idx", (req, res, next) => controller.deleteView(req, res, next));
+
+// router.put("/:idx", (req, res, next) => controller.putView(req, res, next));
+// router.delete("/:idx", (req, res, next) => controller.deleteView(req, res, next));
 
 module.exports = router;
-
-
-// router.get("/:id/favorites", (req, res, next) => controller.getFavor(req, res, next));
-// router.get("/:id/histories", (req, res, next) => controller.getHistory(req, res, next));
-// router.delete("/:id/temp", (req, res, next) => controller.delTemp(req, res, next));
-// router.post("/decode", (req, res, next) => controller.decode(req, res, next));
-// router.post("/:idx/comments", (req, res, next) => controller.postComment(req, res, next));
-// router.put("/:id/comments/:idx", (req, res, next) => controller.putComment(req, res, next));
-// router.delete("/:id/comments/:idx", (req, res, next) => controller.deleteComment(req, res, next));
