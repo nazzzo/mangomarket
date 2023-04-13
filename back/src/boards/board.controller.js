@@ -64,15 +64,15 @@ class BoardController {
         }
     }
     
-    async getcheck(req, res, next) {
-        try {
-            const { id: userid, idx: boardid } = req.params;
-            const data = await this.boardService.likechecked({ userid, boardid });
-            res.json(data);
-        } catch (e) {
-            next(e);
-        }
-    }
+    // async getcheck(req, res, next) {
+    //     try {
+    //         const { id: userid, idx: boardid } = req.params;
+    //         const data = await this.boardService.likechecked({ userid, boardid });
+    //         res.json(data);
+    //     } catch (e) {
+    //         next(e);
+    //     }
+    // }
 
     // async putView(req, res, next) {
     //     try {

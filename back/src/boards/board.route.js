@@ -21,7 +21,7 @@ router.post("/array", upload.fields([{ name: "images" }, { name: "thumbnail" }])
 
 router.post("/:id/:idx/likes", (req, res, next) => controller.postLike(req, res, next));
 
-router.get("/:id/likes", (req, res, next) => controller.getcheck(req, res, next));
+// router.get("/:id/likes", (req, res, next) => controller.getcheck(req, res, next));
 
 // router.put("/:idx", (req, res, next) => controller.putView(req, res, next));
 // router.delete("/:idx", (req, res, next) => controller.deleteView(req, res, next));

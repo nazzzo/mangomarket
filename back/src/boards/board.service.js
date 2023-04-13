@@ -94,14 +94,14 @@ class BoardService {
         }
     }
     
-    async likechecked({ userid, boardid }) {
-        try {
-            const checkdata = this.boardRepository.likecheck({ userid, boardid });
-            return checkdata;
-        } catch (e) {
-            throw new this.BadRequest(e);
-        }
-    }
+    // async likechecked({ userid, boardid }) {
+    //     try {
+    //         const checkdata = this.boardRepository.likecheck({ userid, boardid });
+    //         return checkdata;
+    //     } catch (e) {
+    //         throw new this.BadRequest(e);
+    //     }
+    // }
 
     // async putView(putdata) {
     //     try {
