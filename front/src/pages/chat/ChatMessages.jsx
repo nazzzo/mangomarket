@@ -7,7 +7,7 @@ import { MapMessage } from "../../pages/map"
 export const ChatMessages = ({ messages, setMessages, chatter, chatheight }) => {    
     const { boardid, seller, customer, userImg } = chatter
     const { user } = useSelector((state) => state.user)
-    console.log(messages)
+    const { isReserved } = useSelector((state) => state.chat)
 
     const getCustomerChat = async () => {
         try {
@@ -29,7 +29,7 @@ export const ChatMessages = ({ messages, setMessages, chatter, chatheight }) => 
     };
     useEffect(() => {
         getCustomerChat()
-    }, [])
+    }, [isReserved])
 
     if (messages.isLoading) return <>Loading...</>
     if (messages.error) return <>{messages.error}</>

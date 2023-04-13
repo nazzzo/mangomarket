@@ -10,7 +10,7 @@ const persistConfig = {
   key: 'root',
   // 세션 or 로컬 스토리지
   storage: storage,
-  whitelist:['user']
+  whitelist:['user', 'chat']
 }
 
 // 첫번째 인자는 config 객체, 두번째 인자는 reducer

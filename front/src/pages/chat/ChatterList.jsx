@@ -63,11 +63,7 @@ export const ChatterList = () => {
                       <ChatterImg src={v.userImg}></ChatterImg>
                     </ChatterImgWrap>
                     <ChatterContentWrap>
-                      <ChatterUser
-                        username={v.username}
-                        address={v.address}
-                        date={v.createdAt}
-                      />
+                      <ChatterUser username={v.username} address={v.address} date={v.createdAt} />
                       <ChatterContent>{v.content}</ChatterContent>
                     </ChatterContentWrap>
                     <BoardImgWrap>

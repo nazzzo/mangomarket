@@ -16,7 +16,7 @@ class ReservationRepository {
   }
 
   async postReservation(data) {
-    console.log(data)
+    console.log(`data:::`, data)
     try {
       const [reservation, created] = await this.Reservation.findOrCreate({
         where: { boardid: data.boardid, email: data.email },

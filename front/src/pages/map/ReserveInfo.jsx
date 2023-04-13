@@ -15,17 +15,6 @@ export const ReserveInfo = ({ address, time, chatid, boardid, customer, seller }
   const date = new Date(time);
   const formattedTime = date.toLocaleDateString('en-US', {hour: 'numeric', minute: 'numeric'});
 
-  useEffect(() => {
-    const checkReserved = async () => {
-      try {
-        const response = await request.get(`reservations/${boardid}/state`);
-        setIsReserved(response.data === 'reserved')
-      } catch (e) {
-        console.error(e)
-      }
-    }
-    checkReserved()
-  }, [boardid])
 
   const handleAccept = async (e) => {
     e.preventDefault()
@@ -53,6 +42,17 @@ export const ReserveInfo = ({ address, time, chatid, boardid, customer, seller }
     setIsOpenAlert(false)
   }
 
+  useEffect(() => {
+    const checkReserved = async () => {
+      try {
+        const response = await request.get(`reservations/${boardid}/state`);
+        setIsReserved(response.data === 'reserved')
+      } catch (e) {
+        console.error(e)
+      }
+    }
+    checkReserved()
+  }, [boardid])
 
   return (
     <>
