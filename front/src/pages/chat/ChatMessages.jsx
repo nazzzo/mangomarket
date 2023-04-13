@@ -58,6 +58,8 @@ export const ChatMessages = ({ socket, messages, setMessages, chatter, chatheigh
                                     <ChatMessage color="green" content={v.content} />
                                 </RightMessageWrap>
                             );
+                        default:    
+                        return    
                     }
                 })}
             </ChatLogs>
