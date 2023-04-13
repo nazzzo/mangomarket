@@ -1,43 +1,61 @@
 import request from '../../utils/request'
 import { useRef, useState, useEffect } from 'react'
+import { useSelector, useDispatch } from "react-redux";
+import { userSetSearch } from "../../store"
 import { Modal } from '../../common/modal'
-import { RefreshBtn } from '../../common/button'
+import { RefreshBtn, DistanceBtn } from '../../common/button'
 import { CategoryOpener, CategorySelector } from '../../common/category'
 import { HomeWrapper, BtnBox, List, ItemWrapper, ItemImage, ItemContent, TextBoxA, TextBoxB, TextBoxC, TextBoxD, Count, PageCounter, } from './styled'
 import { Icon } from '@iconify/react'
 import { useNavigate } from 'react-router-dom'
 
 export const Main = () => {
+    const { isLogin, user, search } = useSelector((state) => state.user);
     const pageCountRef = useRef(null)
     const [count, setCount] = useState(0)
     const [isOpen, setIsOpen] = useState(false)
     const [boardList, setBoardList] = useState([])
+    const [selectedDistance, setSelectedDistance] = useState('')
     const [selectedCategory, setSelectedCategory] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    // console.log(`search:::`, search)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await request.get(
-                    `boards/?count=${count}&category=${selectedCategory}`
+                    `boards/?count=${count}&category=${selectedCategory}&distance=${selectedDistance.value}&email=${user.email}&search=${search}`
                 )
-                const newBoardList = response.data
-                if (count === 0 || selectedCategory !== '') {
-                    setBoardList(newBoardList)
-                } else {
-                    setBoardList((prevList) => [...prevList, ...newBoardList])
+                if (!response.data.isError) {
+                    if (selectedCategory) {
+                        const newBoardList = boardList.filter(
+                            (board) => board.category === selectedCategory
+                        ).concat(response.data);
+                        setBoardList(newBoardList);
+                    } else if (search) {
+                        const newBoardList = boardList.filter(
+                            (board) => board.subject.includes(search)
+                        ).concat(response.data);
+                        setBoardList(newBoardList);
+                        dispatch(userSetSearch(""))
+                    } else
+                        setBoardList((prevList) => [...prevList, ...response.data]);
+                    setIsLoading(false);
+                    if (response.data.length === 0) setIsLoading(true)
                 }
-                setIsLoading(false)
-                if (newBoardList.length === 0) setIsLoading(true)
             } catch (error) {
                 console.log(error)
             }
         }
-
-        if (selectedCategory !== '') setCount(0)
         fetchData()
-    }, [count, selectedCategory])
+    }, [count, selectedCategory, selectedDistance, search, dispatch])
+
+    useEffect(() => {
+        setCount(0);
+    }, [selectedCategory]);
 
     useEffect(() => {
         const options = {
@@ -58,6 +76,9 @@ export const Main = () => {
             if (pageCountRef.current) observer.unobserve(pageCountRef.current)
         }
     }, [isLoading])
+
+
+
     const TextList = {
         hidden: {
             opacity: 0,
@@ -75,23 +96,28 @@ export const Main = () => {
         hidden: { opacity: 0, y: 50 },
         visible: { opacity: 1, y: 0 },
     }
-    // console.log(count)
 
     return (
         <HomeWrapper>
             <BtnBox height="2.5rem">
-                <CategoryOpener
-                    width="8.5rem"
-                    height="2.5rem"
-                    onClick={() => {
-                        setIsOpen(true)
-                    }}
-                />
                 <RefreshBtn
                     height="2.5rem"
                     width="3rem"
                     onClick={() => {
                         setSelectedCategory('')
+                    }}
+                />
+                <DistanceBtn
+                    height="2.5rem"
+                    width="7.5rem"
+                    selectedDistance={selectedDistance}
+                    setSelectedDistance={setSelectedDistance}
+                />
+                <CategoryOpener
+                    width="8.5rem"
+                    height="2.5rem"
+                    onClick={() => {
+                        setIsOpen(true)
                     }}
                 />
             </BtnBox>
@@ -106,14 +132,14 @@ export const Main = () => {
             <List variants={TextList} initial="hidden" animate="visible">
                 {boardList.map((board) => (
                     <ItemWrapper
-                        height="220px"
-                        key={board.id}
+                        height="180px"
+                        key={board.id + Math.random()}
                         onClick={() => {
                             navigate(`board/${board.id}`)
                         }}
                         variants={TextItem}
                     >
-                        <ItemImage size="220px" src={board.image} state={board.state} />
+                        <ItemImage size="180px" src={board.image} state={board.state} />
                         <ItemContent key={board.id}>
                             <TextBoxA
                                 category={board.category}
@@ -123,7 +149,7 @@ export const Main = () => {
                             <TextBoxC hashtag={board.tagname} />
                             <TextBoxD>
                                 <Count id="messageCount">
-                                    <Icon icon="ant-design:message-outlined" /> {board.messageCount}
+                                    <Icon icon="mdi:comment-user-outline" /> {board.messageCount}
                                 </Count>
                                 <Count id="likeCount">
                                     <Icon icon="mdi:cards-heart-outline" /> {board.likeCount}

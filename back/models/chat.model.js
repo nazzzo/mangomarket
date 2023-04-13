@@ -7,7 +7,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.TEXT(),
             allowNull: false,
           },
-          sender: {
+          seller: {
             type: Sequelize.STRING(30),
             allowNull: false,
             references: {
@@ -15,13 +15,18 @@ module.exports = (sequelize, Sequelize) => {
               key: "email",
             },
           },
-          receiver: {
+          customer: {
             type: Sequelize.STRING(30),
             allowNull: false,
             references: {
               model: "User",
               key: "email",
             },
+          },
+          notification: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
           },
         },
         {

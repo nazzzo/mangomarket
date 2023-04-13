@@ -16,17 +16,19 @@ export const CommunityView = () => {
     const [deleteMode, setDeleteMode] = useState(false)
     const [comments, setComments] = useState([])
     const navigate = useNavigate()
-    console.log(id)
+    console.log('view', view)
 
     useEffect(() => {
         const getWriting = async () => {
             try {
                 const response = await request.get(`/community/${id}`)
-                console.log(response.data)
-                // setView(response.data)
+                console.log('response::', response.data)
+                if(response.data.isError === true){
+                    alert('잘못된 요청입니다.')
+                    navigate('/')
+                }
                 setView(response.data.boardView)
                 setComments(response.data.commentList)
-                console.log('view:::', view)
             } catch (e) {
                 throw new Error(e)
             }
@@ -47,7 +49,7 @@ export const CommunityView = () => {
         <ViewWrapper>
             {view && !editMode ? (
                 <>
-                    <Profile username={view.username} date={view.createdAt} />
+                    <Profile username={view.username} date={view.createdAt} img={view.userImg} address={view.address}/>
                     <ViewContent subject={view.subject} content={view.content}>
                         {user.email === view.email ? (
                             <Buttons>
@@ -90,7 +92,7 @@ export const CommunityView = () => {
             ) : (
                 <></>
             )}
-            <Comment comments={comments} setComments={setComments} />
+            <Comment comments={comments} setComments={setComments}/>
         </ViewWrapper>
     )
 }

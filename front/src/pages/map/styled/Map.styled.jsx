@@ -34,7 +34,32 @@ export const MyAddress = styled.div`
     font-size: 1.2rem;
 `
 
-export const Result = styled.span`
+export const Result = styled.div`
     color: #00a32b;
-    font-size: 1.6rem;
+    font-size: 1.4rem;
+`
+
+
+export const ReserveInfoForm = styled.form`
+    margin-top: 3%;
+    padding: 3%;
+    text-align: center;
+
+    & button {
+        margin-top: 2%;
+        width: 50%;
+        padding: 3%;
+        color: #fff;
+    }
+`
+
+export const AddressInfo = styled.div`
+    font-size: 0.85rem;
+    color: #000;
+`
+
+export const TimeInfo = styled.div`
+    padding: 3% 0;
+    font-size: 0.85rem;
+    color: #198b34;
 `

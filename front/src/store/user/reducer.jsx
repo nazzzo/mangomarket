@@ -9,17 +9,21 @@ import {
   USER_LIKE_REMOVE,
   USER_KEYWORD_ADD,
   USER_KEYWORD_REMOVE,
+  USER_SET_ALARM,
+  USER_SET_RESERVATION,
 } from "./types";
 
 const initialState = {
   isLoading: true,
   isError: null,
   isLogin: false,
+  isAlarm: false,
   user: {
     email: "",
     username: "",
     userImg: "",
     address: "",
+    level: "",
   },
   auth: {
     email: "",
@@ -30,6 +34,8 @@ const initialState = {
     boardid: "",
   },
   keyword: [],
+  reservation: {},
+  chats: [],
 };
 
 export const user = (state = initialState, action) => {
@@ -52,6 +58,7 @@ export const user = (state = initialState, action) => {
           username: "",
           userImg: "",
           address: "",
+          level: "",
         },
       };
     case USER_REQUEST_ERROR:
@@ -71,6 +78,7 @@ export const user = (state = initialState, action) => {
           userpw: "",
           userImg: "",
           address: "",
+          level: "",
         },
       };
     case USER_LIKE_ADD:
@@ -94,7 +102,17 @@ export const user = (state = initialState, action) => {
     case USER_KEYWORD_REMOVE:
       return {
         ...state,
-        keyword: [...action.payload]
+        keyword: [...action.payload],
+      };
+    case USER_SET_ALARM:
+      return {
+        ...state,
+        isAlarm: action.payload,
+      };
+    case USER_SET_RESERVATION:
+      return {
+        ...state,
+        reservation: action.payload,
       };
     default:
       return state;

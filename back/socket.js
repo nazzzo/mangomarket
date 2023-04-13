@@ -1,27 +1,49 @@
 const SocketIO = require("socket.io")
+const { repository } = require("./src/chats/chat.module")
 
 module.exports = (server, app) => {
+  try {
     const io = SocketIO(server, { cors: { origin: '*' } })
-    
-    io.on('connection', (socket) => {
-        console.log('사용자가 접속했습니다.')
+    io.on("connection", (socket) => {
+      console.log("user connected");
 
-        socket.on('join', (data) => {
-            const { username } = data.user
-            // namespace === sender
-            const namespace = username
-            
-            console.log(namespace)
-            // namespace 생성
-            socket.join(namespace)
+      let roomname
+      socket.on("joinRoom", ({ room }) => {
+        socket.join(room);
+        roomname = room
+        console.log(`room:::`, room);
+      });
 
-            // event === receiver
-            socket.on('chat', (data) => {
-                console.log(data)
-                io.of('/').in(namespace).emit('chat', data.content)
-            })
-
-
+      socket.on("sendMessage", ({ data }) => {
+        const date = new Date()
+        io.to(roomname).emit("receiveMessage", {
+          boardid: data.boardid,
+          seller: data.seller,
+          customer: data.customer,
+          content: data.content,
+          email: data.email,
+          username: data.username,
+          userImg: data.userImg,
+          address: data.address,
+          createdAt: date.toISOString(),
         })
+      })
+
+      socket.on("reservation", ({ data }) => {
+        console.log(`reservation:::`, data)
+        if (data.email) {
+        io.to(roomname).emit("reserveMessage", {
+          content: `{"address": "${data.address}", "lat": ${data.latitude}, "lng": ${data.longitude}, "time": "${data.reservation}"}`,
+          boardid: data.boardid,
+          customer: data.email,
+        })}
+      })
+
+      socket.on("disconnect", () => {
+        console.log(`disconnected`)
+      })
     })
+  } catch (e) {
+    console.log(e)
+  }
 }

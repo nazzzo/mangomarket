@@ -22,7 +22,7 @@ export const duplicateCheck = async (input, setIsDuplicated) => {
     const response = await request.post("/users/usercheck", {
       [`${inputId}`]: input.value,
     });
-    console.log(response.data)
+    // console.log(response.data)
     response.data !== null ? setIsDuplicated(true) : setIsDuplicated(false)
 }
 

@@ -57,14 +57,13 @@ export const Signup = () => {
         userLogin(true, {
           email: response.data.email,
           username: response.data.username,
-          userImg: profileImage,
+          userImg: response.data.userImg,
           address: response.data.address,
         })
       );
       navigate("/");
     }
   };
-
 
   return (
     <>
@@ -74,7 +73,7 @@ export const Signup = () => {
       </ImageBox>
       <FormWrap>
       <SignupForm onSubmit={handleSubmit}>
-        <Label>닉네임{(isValid && !isDuplicated) && <CheckMarker color="green" size="1.2rem" />}</Label>
+        <Label>닉네임{(isFocused === "username" && isValid && !isDuplicated) && <CheckMarker color="green" size="1.2rem" />}</Label>
         <InputCheck id="username" isFocused={isFocused} isValid={isValid} isDuplicated={isDuplicated} duplicated="이미 사용중입니다" invalid="초성 및 특수문자는 사용할 수 없습니다" />
         <Input
           height="3rem"
@@ -82,12 +81,12 @@ export const Signup = () => {
           value={username.value}
           onChange={username.onChange}
           onInput={handleInputChange}
-          id="username"s
+          id="username"
           name="username"
           icon="mdi:account"
           placeholder="사용할 닉네임을 입력해주세요"
         ></Input>
-        <Label>비밀번호{(isValid && !isDuplicated) && <CheckMarker color="green" size="1.2rem" />}</Label>
+        <Label>비밀번호{(isFocused === "userpw" && isValid && !isDuplicated) && <CheckMarker color="green" size="1.2rem" />}</Label>
         <InputCheck id="userpw" isFocused={isFocused} isValid={isValid} invalid="특수문자를 포함한 8자리 이상의 영문 및 숫자" />
         <Input
           height="3rem"
@@ -100,7 +99,7 @@ export const Signup = () => {
           icon="mdi:eye-off"
           placeholder="비밀번호를 입력해주세요"
         ></Input>
-        <Label>비밀번호 확인{(isValid && !isDuplicated) && <CheckMarker color="green" size="1.2rem" />}</Label>
+        <Label>비밀번호 확인{(isFocused === "pwcheck" && isValid) && <CheckMarker color="green" size="1.2rem" />}</Label>
         <InputCheck id="pwcheck" isFocused={isFocused} isValid={isValid} invalid="비밀번호가 일치하지 않습니다" />
         <Input
           height="3rem"
@@ -112,7 +111,7 @@ export const Signup = () => {
           icon="mdi:eye-off"
           placeholder="비밀번호를 다시 한 번 입력해주세요"
         ></Input>
-        <Label>이메일{(isValid && !isDuplicated) && <CheckMarker color="green" size="1.2rem" />}</Label>
+        <Label>이메일{(isFocused === "email" && isValid && !isDuplicated) && <CheckMarker color="green" size="1.2rem" />}</Label>
         <InputCheck id="email" isFocused={isFocused} isValid={isValid} isDuplicated={isDuplicated} duplicated="이미 사용중입니다" invalid="이메일 형식에 맞게 입력해주세요" />
         <Input
           height="3rem"
@@ -125,7 +124,7 @@ export const Signup = () => {
           icon="ic:round-email"
           placeholder="이메일을 입력해주세요"
         ></Input>
-        <Label>전화번호{(isValid && !isDuplicated) && <CheckMarker color="green" size="1.2rem" />}</Label>
+        <Label>전화번호{(isFocused === "phoneNumber" && isValid && !isDuplicated) && <CheckMarker color="green" size="1.2rem" />}</Label>
         <InputCheck id="phoneNumber" isFocused={isFocused} isValid={isValid} isDuplicated={isDuplicated} duplicated="이미 사용중입니다" invalid="'-'를 제외한 11자리 숫자" />
         <Input
           height="3rem"

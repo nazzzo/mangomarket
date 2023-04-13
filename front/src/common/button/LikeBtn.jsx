@@ -24,7 +24,6 @@ export const LikeBtn = ({ isLogin, user, size }) => {
     }
   };
 
-    // console.log(`dddd:::`, user, id)
     // console.log(`eee::`, userLikes)
   return (
     <>

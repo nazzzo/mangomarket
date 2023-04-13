@@ -77,7 +77,7 @@ export const MyInfo = ({ user, width, height, imgSize, fontSize }) => {
           )}
             <ButtonBox>
               {!isEdit && <Button color="yellow" onClick={()=>{setIsOpen(true)}} type="button">동네 인증</Button>}
-              <Button color="gray" onClick={handleMode}>
+              <Button color="grey" onClick={handleMode}>
               {" "}
               {isEdit ? "완료" : "프로필 수정"}
               </Button>

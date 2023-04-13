@@ -7,9 +7,11 @@ class CommunityController {
         try {
             console.log('body::', req.body)
             const { id } = req.params
-            const { content, email } = req.body
+            const { content, email, parentId } = req.body
+            if (!email) throw new Error('로그인이 필요합니다.')
             if (!content) throw new Error('내용을 입력해주세요')
-            const response = await this.communityService.postComment({ id, content, email })
+
+            const response = await this.communityService.postComment({ id, content, email, parentId })
             res.json(response)
         } catch (e) {
             next(e)
@@ -19,6 +21,8 @@ class CommunityController {
     async getWriting(req, res, next) {
         try {
             const { id } = req.params
+            console.log('req.query getWrite :: ', req.query)
+            console.log('req.query getWrite :: ', id)
             const response = await this.communityService.getWriting({ id })
             res.json(response)
         } catch (e) {
@@ -26,10 +30,37 @@ class CommunityController {
         }
     }
 
-    async getWriting(req, res, next) {
+    async getTempData(req, res, next) {
         try {
-            const { id } = req.params
-            const response = await this.communityService.getWriting({ id })
+            console.log('getTempData :::', req.query)
+            const { email } = req.query
+
+            const response = await this.communityService.getTempInfo({ email })
+            console.log(response)
+            res.status(201).json(response)
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async postTempData(req, res, next) {
+        try {
+            const { id } = req.query
+            const { content, subject } = req.body
+
+            const response = await this.communityService.postTempWrite({ id, content, subject })
+            console.log(response)
+            res.status(201).json(response)
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async getCommunityList(req, res, next) {
+        try {
+            const { email } = req.query
+            console.log('email ::: ', email)
+            const response = await this.communityService.getProfileList({ email })
             res.json(response)
         } catch (e) {
             next(e)
@@ -38,7 +69,10 @@ class CommunityController {
 
     async getList(req, res, next) {
         try {
-            const response = await this.communityService.getList()
+            console.log('요청?')
+            const { count } = req.query
+            console.log('count', count)
+            const response = await this.communityService.getCommunityList({ count })
             res.json(response)
         } catch (e) {
             next(e)
@@ -52,6 +86,7 @@ class CommunityController {
             if (!req.body.category) throw new Error('카테고리를 선택해주세요')
             if (!req.body.subject) throw new Error('제목을 입력해주세요')
             const { email, content, subject, category } = req.body
+            console.log('req.body :::', req.body)
             const response = await this.communityService.postCommunity({
                 email,
                 content,
@@ -88,7 +123,8 @@ class CommunityController {
             const response = await this.communityService.putComment(
                 req.params.id,
                 req.params.idx,
-                req.body.content
+                req.body.content,
+                req.body.isDeleted
             )
             res.status(201).json(response)
         } catch (e) {
@@ -110,12 +146,10 @@ class CommunityController {
     async deleteComment(req, res, next) {
         try {
             // if (!req.params.id) throw new Error("삭제할 댓글이 없습니다");
-            console.log(req.params.id, req.params.idx)
             const response = await this.communityService.deleteComment(
                 req.params.id,
                 req.params.idx
             )
-
             res.status(201).json(response)
         } catch (e) {
             next(e)

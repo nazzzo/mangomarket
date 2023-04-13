@@ -12,7 +12,7 @@ module.exports = (sequelize, Sequelize) => {
                         allowNull: false,
                     },
                     category: {
-                        type: Sequelize.ENUM('잡담', '질문', '정보공유', '요청'),
+                        type: Sequelize.ENUM('잡담', '질문', '정보공유', '요청', '공지사항'),
                     },
                 },
                 {
