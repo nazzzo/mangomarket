@@ -138,8 +138,10 @@ class ChatRepository {
         });
         console.log(`findOne:::`, findOne.state)
         return findOne.state;
+      } catch (e) {
+        throw new Error(e);
       }
-  }
+    }
 
   async putChatState(id, state) {
     try {
