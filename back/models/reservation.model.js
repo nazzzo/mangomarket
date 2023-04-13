@@ -5,7 +5,7 @@ module.exports = (sequelize, Sequelize) => {
         {
           reservation: {
             type: Sequelize.TEXT(),
-            allowNull: false,
+            defaultValue: "unset",
           },
           address: {
             type: Sequelize.STRING(50),

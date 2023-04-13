@@ -6,8 +6,9 @@ class ChatRepository {
     this.sequelize = sequelize;
   }
 
-  async findAll({ seller, customer, boardid}) {
+  async findAll({ seller, customer, boardid }) {
     try {
+      console.log(seller, customer, boardid)
         const findAll = await this.Chat.findAll({
           where: { seller, customer, boardid },
           raw: true,
@@ -21,7 +22,7 @@ class ChatRepository {
 
   async postChat(data) {
     try {
-        const result = await this.Chat.create(data);
+        const result = await this.Chat.create(data, { raw: true, nest: true });
         return result;
     } catch (e) {
       throw new Error(e);
@@ -64,7 +65,8 @@ class ChatRepository {
       A.${opponent},
       A.${type},
       A.boardid,
-      E.subject, 
+      E.subject,
+      E.state, 
       B.username, 
       B.userImg,
       B.address,
@@ -102,7 +104,8 @@ class ChatRepository {
       const sql = `SELECT 
       A.id AS boardid,
       A.email AS seller,
-      A.subject, 
+      A.subject,
+      A.state, 
       B.username, 
       B.userImg,
       B.address,
@@ -121,6 +124,29 @@ class ChatRepository {
       `
       const [result] = await this.sequelize.query(sql, { raw: true, nest: true });
       return result;
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+  async findState(id) {
+    try {
+      console.log(id)
+        const findOne = await this.Chat.findOne({
+          where: { id },
+          raw: true,
+          nest: true,
+        });
+        console.log(`findOne:::`, findOne.state)
+        return findOne.state;
+      } catch (e) {
+        throw new Error(e);
+      }
+    }
+
+  async putChatState(id, state) {
+    try {
+      const result = await this.Chat.update({ state }, { where: { id } })
+      return result
     } catch (e) {
       throw new Error(e);
     }

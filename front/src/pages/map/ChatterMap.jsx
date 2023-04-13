@@ -3,7 +3,7 @@ import { Map, MapMarker, ZoomControl } from "react-kakao-maps-sdk";
 import { SetLocation } from "./SetLocation"
 import { GuideText, MarkerImg } from "./styled"
 
-export const ChatterMap = ({ setIsOpen, boardid, customer }) => {
+export const ChatterMap = ({ socket, setIsOpen, boardid, customer, seller }) => {
   const [state, setState] = useState({
     center: {
       lat: 33.450701,
@@ -96,7 +96,7 @@ export const ChatterMap = ({ setIsOpen, boardid, customer }) => {
           </MapMarker>
         )}
       </Map>
-      { state.center && <SetLocation lat={state.center.lat} lng={state.center.lng} setIsOpen={setIsOpen} boardid={boardid} customer={customer} />}
+      { state.center && <SetLocation socket={socket} lat={state.center.lat} lng={state.center.lng} setIsOpen={setIsOpen} boardid={boardid} customer={customer} seller={seller} />}
     </>
   );
 };

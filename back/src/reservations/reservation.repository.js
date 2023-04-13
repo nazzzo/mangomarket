@@ -16,13 +16,12 @@ class ReservationRepository {
   }
 
   async postReservation(data) {
-    console.log(data)
     try {
       const [reservation, created] = await this.Reservation.findOrCreate({
         where: { boardid: data.boardid, email: data.email },
         defaults: data,
       });
-      console.log(`reservation:::`, reservation)
+      
       if (created) {
         console.log("New reservation created!");
       } else {

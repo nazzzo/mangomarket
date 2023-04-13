@@ -14,6 +14,7 @@ const {
   const controller = new ReservationController({ reservationService: service });
   
   module.exports = {
-    controller
+    controller,
+    repository
   }
   

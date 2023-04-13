@@ -3,7 +3,7 @@ import styled from 'styled-components'
 const HamburgerWrap = styled.div`
     display: none;
 
-    @media screen and (max-width: 480px){
+    @media screen and (max-width: 520px){
         cursor: pointer;
         display: block;
         float: right;
@@ -41,9 +41,9 @@ const HamburgerWrap = styled.div`
 const HamburgerStick = styled.span`
     display: none;
 
-    @media screen and (max-width: 480px){        
+    @media screen and (max-width: 520px){        
         display: block;
-        margin: 0.3rem 0;
+        margin: 0.3rem;
         width: 2rem;
         height: 0.25rem;
         border-radius: 0.125rem;

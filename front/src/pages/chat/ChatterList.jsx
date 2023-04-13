@@ -5,7 +5,7 @@ import { ChatterWrap, Chatters, ChatterItem, ChatterImgWrap, ChatterImg, Chatter
 import request from "../../utils/request";
 import { SellerChat, CustomerChat } from ".";
 
-export const ChatterList = () => {
+export const ChatterList = ({ socket }) => {
   const [isSeller, setIsSeller] = useState(false);
   const [customerList, setCustomerList] = useState({ isLoading: true, error: null, data: {}});
   const [sellerList, setSellerList] = useState({ isLoading: true, error: null, data: {} });
@@ -63,11 +63,7 @@ export const ChatterList = () => {
                       <ChatterImg src={v.userImg}></ChatterImg>
                     </ChatterImgWrap>
                     <ChatterContentWrap>
-                      <ChatterUser
-                        username={v.username}
-                        address={v.address}
-                        date={v.createdAt}
-                      />
+                      <ChatterUser username={v.username} address={v.address} date={v.createdAt} />
                       <ChatterContent>{v.content}</ChatterContent>
                     </ChatterContentWrap>
                     <BoardImgWrap>
@@ -79,7 +75,7 @@ export const ChatterList = () => {
             </Chatters>
           </ChatterWrap>
           </>
-          : <SellerChat chatter={selectedChatter} onClick={handleGoBack} />
+          : <SellerChat socket={socket} chatter={selectedChatter} onClick={handleGoBack} />
           // : <CustomerChat boardid={selectedChatter.boardid} onClick={handleGoBack} />
     }
     </>

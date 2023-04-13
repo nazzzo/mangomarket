@@ -3,9 +3,9 @@ import styled from 'styled-components'
 const SearchPopUpWrap = styled.div`
     display: none;
 
-    @media screen and (max-width: 480px){
+    @media screen and (max-width: 550px){
         position: relative;
-        top: ${ props => props.visible ? "0rem" : '-5rem'};
+        top: ${ props => props.visible ? "-2.5rem" : '-10rem'};
         display: flex;
         justify-content: center;
         align-items: center;
@@ -18,7 +18,7 @@ const SearchPopUpWrap = styled.div`
 `
 
 const SearchPopInput = styled.input`
-    @media screen and (max-width: 480px){
+    @media screen and (max-width: 550px){
         width: 80%;
         height: 2rem;
         border: none;
@@ -26,7 +26,8 @@ const SearchPopInput = styled.input`
         background-color: #efefef;
         box-sizing: border-box;
         padding: 0 0.75rem;
-        text-align: center;
+        text-align: center; 
+        outline: none;
     }
 `
 

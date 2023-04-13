@@ -4,8 +4,8 @@ import { motion } from 'framer-motion'
 
 
 export const HomeWrapper = styled.div`
-    padding-top: 5%;
-    background-color: #f3f3f3;
+    padding-top: 2%;
+    background-color: #f6f6f6;
     /* border-bottom: 1px solid #ddd; */
 `
 
