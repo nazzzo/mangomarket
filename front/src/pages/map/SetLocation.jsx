@@ -27,7 +27,6 @@ export const SetLocation = ({ setIsOpen, lat, lng, boardid, customer, socket }) 
 
       const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(selectedTime)
         try {
             socket.current.emit("reservation", { data:{
               address: address,

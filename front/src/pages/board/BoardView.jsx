@@ -45,7 +45,6 @@ export const BoardView = () => {
         const response = await request.put(`reservations/${id}/state`, {
           state: selectedOption?.value
         })
-        // console.log(response.data)
       } catch (error) {
         console.log(error);
       }
@@ -94,12 +93,10 @@ export const BoardView = () => {
           ? <ViewFooter
             isLogin={isLogin}
             user={user}
-            writerEmail={viewData.email}
-            writerName={viewData.username}
-            writerImg={viewData.userImg}
-            chatter={viewData}
-            size="3rem"
+            seller={viewData.email}
+            state={viewData.state}
             boardId={id}
+            size="3rem"
             footerHeight="4.5rem"
             footerWidth="30rem" />
           : <></>}

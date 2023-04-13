@@ -3,9 +3,9 @@ import styled from 'styled-components'
 const MenuPopUpWrap = styled.div`
     display: none;
 
-    @media screen and (max-width: 480px){
+    @media screen and (max-width: 520px){
         position: relative;
-        top: ${ props => props.visible ? "-5rem" : '-10rem'};
+        top: ${ props => props.visible ? "-8rem" : '-18rem'};
         display: flex;
         justify-content: center;
         align-items: center;
@@ -18,7 +18,7 @@ const MenuPopUpWrap = styled.div`
 `
 
 const MenuPopUpListWrap = styled.ul`
-    @media screen and (max-width: 480px) {
+    @media screen and (max-width: 520px) {
         width: 100%;
         display: flex;
         justify-content: space-evenly;
@@ -28,7 +28,7 @@ const MenuPopUpListWrap = styled.ul`
 `
 
 const MenuPopUpList = styled.li`
-    @media screen and (max-width: 480px) {
+    @media screen and (max-width: 520px) {
         padding: 0.5rem;
         border: 1px solid rgba(0, 0, 0, 0.138);
         background-color: rgba(0, 0, 0, 0.138);

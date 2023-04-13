@@ -25,7 +25,7 @@ export const HeaderWrap = styled.div`
     align-items: center;
     justify-content: space-between;
     
-    @media screen and (max-width: 480px){
+    @media screen and (max-width: 0px){
         width: 30rem;
         background-color: #fff;
     }
@@ -39,7 +39,7 @@ export const HeaderLogoWrap = styled.div`
     width: 10%;
     height: inherit;
 
-    @media screen and (max-width: 480px){
+    @media screen and (max-width: 520px){
         width: 5rem;
     }
 `
@@ -58,7 +58,7 @@ export const HeaderMenuWrap = styled.div`
     width: 60%;
     height: inherit;
 
-    @media screen and (max-width: 480px){
+    @media screen and (max-width: 520px){
         display: none;
         width: 0;
     }
@@ -106,8 +106,8 @@ export const HeaderFunctionWrap = styled.div`
     width: 30%;
     height: inherit;
 
-    @media screen and (max-width: 480px){
-        width: 9rem;
+    @media screen and (max-width: 520px){
+        width: 12zrem;
     }
 `
 
@@ -118,7 +118,7 @@ export const HeaderSearchWrap = styled.div`
     min-width: 13rem;
     height: 100%;
 
-    @media screen and (max-width: 480px){
+    @media screen and (max-width: 520px){
         min-width: 0;
     }
 `
@@ -147,7 +147,7 @@ export const HeaderSearchInput = styled.input`
     outline: none;
     padding: 0 0.5rem;
 
-    @media screen and (max-width: 480px){
+    @media screen and (max-width: 520px){
         display: none;
     }
 `
@@ -159,7 +159,7 @@ export const HeaderSearchIcon = styled.img`
     right: 0.5rem;
     height: 75%;
 
-    @media screen and (max-width: 480px){
+    @media screen and (max-width: 520px){
         right: 0; 
     }
 `
@@ -194,8 +194,8 @@ export const HeaderAlarmWrap = styled.div`
         }
     }
 
-    @media screen and (max-width: 480px){
-        width: 5rem; 
+    @media screen and (max-width: 520px){
+        /* width: 5rem;  */
     }
 `
 
@@ -207,7 +207,7 @@ export const HeaderUserWrap = styled.div`
     min-width: 60px;
     height: 60px;
     
-    @media screen and (max-width: 480px){
+    @media screen and (max-width: 520px){
         width: 2.5rem;
     }
 `
@@ -219,8 +219,10 @@ export const HeaderUser = styled.img`
     border-radius: 50%;
     cursor: pointer;
 
-    @media screen and (max-width: 480px){
-        display: none;
+    @media screen and (max-width: 520px){
+        width: 2rem;
+        height: 2rem;
+        margin: 1rem;
     }
 `
 

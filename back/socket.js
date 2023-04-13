@@ -29,8 +29,8 @@ module.exports = (server, app) => {
             username: data.username,
             userImg: data.userImg,
             address: data.address,
-            createdAt: date.toISOString(),
-          })
+            createdAt: new Date(Date.now() + (9 * 60 * 60 * 1000)).toISOString()
+        })
         } catch (e) {
           console.log(e)
         }
@@ -72,10 +72,12 @@ module.exports = (server, app) => {
           if(boardState === "reserved"){
             await chat.putChatState(chatid, "accepted")
             io.to(roomname).emit("reserveAccept", { content: "reserved", chatid, state:"accepted" })
-          } else {
+            io.emit("chatStateChanged", { chatid, chatState: "accepted" });
+        } else {
             await chat.putChatState(chatid, "rejected")
             io.to(roomname).emit("reserveAccept", { content: "rejected", chatid, state: "rejected" })
-          }
+            io.emit("chatStateChanged", { chatid, chatState: "rejected" });
+        }
         } catch (e) {
           console.log(e)
         }

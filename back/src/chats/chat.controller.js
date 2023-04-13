@@ -46,7 +46,7 @@ class ChatController {
       const result = await this.chatService.getUsers(req.query)
       res.status(201).json(result)
     } catch (e) {
-      throw new this.BadRequest(e)
+      next(e);
     }
   }
   async getSeller (req, res, next) {
@@ -54,7 +54,7 @@ class ChatController {
       const result = await this.chatService.getSeller(req.params, req.query)
       res.status(201).json(result)
     } catch (e) {
-      throw new this.BadRequest(e)
+      next(e);
     }
   }
   async getState (req, res, next) {
@@ -62,7 +62,7 @@ class ChatController {
       const result = await this.chatService.getState(req.params)
       res.status(201).json(result)
     } catch (e) {
-      throw new this.BadRequest(e)
+      next(e);
     }
   }
 }

@@ -7,23 +7,20 @@ import { Alert } from '../../common/alert'
 import { ChatterMap } from "../../pages/map"
 import io from "socket.io-client";
 import config from "../../config";
-import request from "../../utils/request";
 import { ChatMessages } from './';
 
 
 const ENDPOINT = `${config.PT}://${config.HOST}:${config.BACKEND_PORT}/`;
 
-export const SellerChat = ({ chatter, onClick }) => {
+export const SellerChat = ({ socket, chatter, onClick }) => {
   const { boardid, customer, seller } = chatter
   const { user } = useSelector((state) => state.user)
   const [messages, setMessages] = useState({ isLoading: true, error: null, data: {} })
   const [isActiveButton, setIsActiveButton] = useState(false);
   const [isOpen, setIsOpen] = useState(false)
   const [isOpenAlert, setIsOpenAlert] = useState(false)
-  const [chatState, setChatState] = useState()
   const content = useInput("")
   const chatheight = useRef()
-  const socket = useRef()
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -68,19 +65,13 @@ export const SellerChat = ({ chatter, onClick }) => {
       }})
 
       socket.current.on("reserveAccept", (newMessage) => {
-        console.log(`aaaa`, newMessage)
         try {
-          if( newMessage.state === "accepted" ){
-            setChatState("accepted")
-          } else if( newMessage.state === "rejected" ){
-            setChatState("rejected")
-          }
-          setMessages((messages) => ({ ...messages, isLoading: false, error: null, data: [...messages.data, newMessage] }))
-          chatheight.current.scrollTop = chatheight.current.scrollHeight
+          setMessages((messages) => ({ ...messages, isLoading: false, error: null, data: [...messages.data, newMessage] }));
+          chatheight.current.scrollTop = chatheight.current.scrollHeight;
         } catch (e) {
-          setMessages((messages) => ({ ...messages, isLoading: false, error: null, data: [...messages.data, newMessage] }))
+          setMessages((messages) => ({ ...messages, isLoading: false, error: null, data: [...messages.data, newMessage] }));
         }
-      })
+      });
 
     return () => {
       socket.current.disconnect();
@@ -90,7 +81,7 @@ export const SellerChat = ({ chatter, onClick }) => {
   return (
     <>
       <ChatterCard onClick={onClick} chatter={chatter} />
-      <ChatMessages setChatState={setChatState} socket={socket} chatState={chatState} messages={messages} setMessages={setMessages} chatter={chatter} chatheight={chatheight} />
+      <ChatMessages socket={socket} messages={messages} setMessages={setMessages} chatter={chatter} chatheight={chatheight} />
       <ChatForm onSubmit={handleSendMessage}>
         {(customer === user.email) && <ChatOption onClick={() => { setIsActiveButton(!isActiveButton) }} className={isActiveButton ? 'on' : ''}>
           <ChatMenu className="chatMenu" onClick={() => { (chatter.state === "reserved") ? setIsOpenAlert(true) : setIsOpen(true) }} />

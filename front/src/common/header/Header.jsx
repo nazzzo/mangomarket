@@ -2,24 +2,8 @@ import { useState, useEffect } from 'react'
 import { useInput } from '../../hooks'
 import { useDispatch } from 'react-redux'
 import { userSetAlarm, userSetSearch } from '../../store'
-import { Navigate, NavLink, useNavigate } from 'react-router-dom'
-import {
-    HeaderWrapper,
-    HeaderWrap,
-    HeaderLogoWrap,
-    HeaderLogoImgWrap,
-    HeaderLogoImg,
-    HeaderMenuWrap,
-    HeaderMenuul,
-    HeaderMenuli,
-    HeaderFunctionWrap,
-    HeaderSearchWrap,
-    HeaderSearchBox,
-    HeaderSearchInput,
-    HeaderAlarmWrap,
-    HeaderUserWrap,
-    HeaderUser,
-    HeaderAlarmMenu,
+import { NavLink, useNavigate } from 'react-router-dom'
+import { HeaderWrapper, HeaderWrap, HeaderLogoWrap, HeaderLogoImgWrap, HeaderLogoImg, HeaderMenuWrap, HeaderMenuul, HeaderMenuli, HeaderFunctionWrap, HeaderSearchWrap, HeaderSearchBox, HeaderSearchInput, HeaderAlarmWrap, HeaderUserWrap, HeaderUser, HeaderAlarmMenu,
 } from './styled'
 import { Hamburger, SearchPopUp, MenuPopUp } from '../index'
 import { Modal } from '../../common/modal'
