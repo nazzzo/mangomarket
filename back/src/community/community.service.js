@@ -6,24 +6,22 @@ class CommunityService {
         this.userRepository = userRepository
     }
 
-    async postComment({ id, content, email, parentId }) {
+    async postComment({ id, content, email, parentId, currentPage }) {
         try {
-            const commentList = await this.communityRepository.create({
-                id,
-                content,
-                email,
-                parentId,
-            })
-            console.log('commentList::', commentList)
+            const limit = !currentPage ? currentPage * 10 : (currentPage -1) * 10
+            console.log(limit)
+            const commentList = await this.communityRepository.create({ id, content, email, parentId, limit })
             return commentList
         } catch (e) {
             throw new this.BadRequest(e)
         }
     }
 
-    async getWriting({ id }) {
+    async getWriting({ id, page }) {
         try {
-            const view = await this.communityRepository.findOne({ id })
+            const limit = (page - 1) * 10
+            console.log('2', limit)
+            const view = await this.communityRepository.findOne({ id, limit })
             const { username } = await this.userRepository.getUserById(view.boardView.email)
             view.boardView.username = username
             console.log('view.commentList', view.commentList)
