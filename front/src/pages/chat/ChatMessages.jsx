@@ -59,7 +59,7 @@ export const ChatMessages = ({ socket, messages, setMessages, chatter, chatheigh
                                 </RightMessageWrap>
                             );
                         default:    
-                        return    
+                        return null;   
                     }
                 })}
             </ChatLogs>
