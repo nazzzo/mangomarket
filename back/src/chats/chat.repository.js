@@ -138,6 +138,13 @@ class ChatRepository {
         });
         console.log(`findOne:::`, findOne.state)
         return findOne.state;
+      }
+  }
+
+  async putChatState(id, state) {
+    try {
+      const result = await this.Chat.update({ state }, { where: { id } })
+      return result
     } catch (e) {
       throw new Error(e);
     }
