@@ -39,7 +39,7 @@ export const ChatterWrap = styled.div`
   overflow-y: scroll;
 `
 
-export const ChatterList = styled.ul``;
+export const Chatters = styled.ul``;
 
 export const ChatterItem = styled.li`
   display: flex;

@@ -11,7 +11,6 @@ export const ReserveInfo = ({ address, time, chatid, boardid, customer, seller }
   const [isReserved, setIsReserved] = useState(false);
   const { user } = useSelector((state) => state.user)
 
-  console.log(`user-customer-seller-boardid-chatid:::`, user.email, customer, seller, boardid, chatid )
 
   const date = new Date(time);
   const formattedTime = date.toLocaleDateString('en-US', {hour: 'numeric', minute: 'numeric'});
@@ -20,7 +19,6 @@ export const ReserveInfo = ({ address, time, chatid, boardid, customer, seller }
     const checkReserved = async () => {
       try {
         const response = await request.get(`reservations/${boardid}/state`);
-        console.log(`response.data:::`, response)
         setIsReserved(response.data === 'reserved')
       } catch (e) {
         console.error(e)
@@ -35,7 +33,6 @@ export const ReserveInfo = ({ address, time, chatid, boardid, customer, seller }
       const response = await request.put(`reservations/${boardid}/state`, {
         state: "reserved"
       });
-      console.log(`response.data:::`, response.data)
       if (response.data === 1) setIsOpenAlert(true)
     } catch (e) {
       console.error(e)
@@ -47,7 +44,6 @@ export const ReserveInfo = ({ address, time, chatid, boardid, customer, seller }
       const response = await request.put(`chats/${chatid}`, {
         content: "예약이 거절되었습니다"
       });
-      console.log(`response.data:::`, response.data)
     } catch (e) {
       console.error(e)
     }

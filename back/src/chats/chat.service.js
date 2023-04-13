@@ -5,11 +5,9 @@ class ChatService {
         this.BadRequest = config.exception.BadRequest;
     }
     
-    async getList(type) {
+    async getList(data) {
         try {
-            const { opponent } = type
-            const list = await this.chatRepository.findAll(type);
-            const userInfo = await this.chatRepository.findUserInfo(opponent)
+            const list = await this.chatRepository.findAll(data);
             if (list.length === 0) throw "내용이 없습니다";
             return list;
           } catch (e) {
@@ -43,6 +41,16 @@ class ChatService {
         const useremail = Object.values(data)[0]
         
         const result = await this.chatRepository.getUsers( { type, useremail } )
+        return result
+      } catch (e) {
+        throw new Error(e)
+      }
+    }
+    async getSeller(params, query) {
+      try {
+        const { id } = params;
+        const { customer } = query;
+        const result = await this.chatRepository.getSeller(id, customer)
         return result
       } catch (e) {
         throw new Error(e)

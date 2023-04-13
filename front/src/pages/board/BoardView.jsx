@@ -27,7 +27,7 @@ export const BoardView = () => {
     const getView = async () => {
       try {
         const idx = (!user.email) ? "guest" : user.email
-        const response = await request.get(`boards/${id}/${idx}`);
+        const response = await request.get(`boards/view/${id}`);
         setViewData(response.data);
         selectOptions.forEach(v => {
           response.data.state === v.value && setSelectedOption(v)

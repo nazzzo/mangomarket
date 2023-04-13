@@ -9,5 +9,6 @@ router.put("/:id", (req, res, next) => controller.putChat(req, res, next))
 
 router.get("/customers", (req, res, next) => controller.getCustomers(req, res, next))
 router.get("/sellers", (req, res, next) => controller.getSellers(req, res, next))
+router.get("/:id", (req, res, next) => controller.getSeller(req, res, next))
 
 module.exports = router
