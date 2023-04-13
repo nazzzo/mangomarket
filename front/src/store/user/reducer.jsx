@@ -10,6 +10,7 @@ import {
   USER_KEYWORD_ADD,
   USER_KEYWORD_REMOVE,
   USER_SET_ALARM,
+  USER_SET_SEARCH,
   USER_SET_RESERVATION,
 } from "./types";
 
@@ -33,6 +34,7 @@ const initialState = {
     email: "",
     boardid: "",
   },
+  search: "",
   keyword: [],
   reservation: {},
   chats: [],
@@ -109,6 +111,11 @@ export const user = (state = initialState, action) => {
         ...state,
         isAlarm: action.payload,
       };
+    case USER_SET_SEARCH:
+      return {
+        ...state,
+        search: action.payload,
+      };  
     case USER_SET_RESERVATION:
       return {
         ...state,
