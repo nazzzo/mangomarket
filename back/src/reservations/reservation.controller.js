@@ -14,7 +14,6 @@ class ReservationController {
 
   async postReservation(req, res, next) {
     try {
-      console.log(req.body)
       const result = await this.reservationService.postReservation(req.body)
       res.status(201).json(result)
     } catch (e) { 

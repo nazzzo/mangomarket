@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import { ChatterCard, ChatForm, ChatOption, ChatInput, ChatButton, ChatMenu, ChatLogWrap, ChatLogs, LiveChats, LeftMessageWrap, RightMessageWrap, CenterMessageWrap, ChatUserImg, ChatMessage, ChatTime } from "./styled"
+import { ChatterCard, ChatForm, ChatOption, ChatInput, ChatButton, ChatMenu } from "./styled"
 import { useInput } from "../../hooks";
 import { Modal } from "../../common/modal"
 import { ChatterMap } from "../../pages/map"
@@ -9,35 +9,26 @@ import config from "../../config";
 import request from "../../utils/request";
 import { ChatMessages } from './';
 
+
 const ENDPOINT = `${config.PT}://${config.HOST}:${config.BACKEND_PORT}/`;
 let socket;
 
 export const CustomerChat = ({ boardid }) => {
-  const [seller, setSeller] = useState({
-    isLoading: true,
-    error: null,
-    data: {}
-  })
-  const [messages, setMessages] = useState({
-    isLoading: true,
-    error: null,
-    data: {}
-  })
+  const [chatter, setChatter] = useState({ isLoading: true, error: null, data: {} })
+  const {customer, seller} = chatter.data
+  const { user, reservation } = useSelector((state) => state.user)
+  const [messages, setMessages] = useState({ isLoading: true, error: null, data: {} })
   const [isActiveButton, setIsActiveButton] = useState(false);
   const [isOpen, setIsOpen] = useState(false)
-  const { user: customer, reservation } = useSelector((state) => state.user)
   const content = useInput("")
   const chatheight = useRef()
 
-  console.log(`seller:::`, seller)
-
-
-  const getSellerData = async () => {
+  const getChatter = async () => {
     try {
-      const { data } = await request.get(`boards/view/${boardid}`);
-      setSeller({ ...seller, isLoading: false, error: null, data })
+      const { data } = await request.get(`chats/${boardid}?customer=${user.email}`);
+      setChatter({ ...chatter, isLoading: false, error: null, data })
     } catch (e) {
-      setSeller({ ...seller, isLoading: false, error: e.message, data: null })
+      setChatter({ ...chatter, isLoading: false, error: e.message, data: null })
     }
   };
 
@@ -53,13 +44,13 @@ export const CustomerChat = ({ boardid }) => {
     e.preventDefault();
     let data = {
       boardid,
-      seller: seller.data.email,
-      customer: customer.email,
+      seller,
+      customer,
       content: content.value,
-      email: customer.email,
-      username: customer.username,
-      userImg: customer.userImg,
-      address: customer.address,
+      email: user.email,
+      username: user.username,
+      userImg: user.userImg,
+      address: user.address,
     }
     socket.emit("sendMessage", { data });
     const response = await request.post(`/chats`, { data })
@@ -68,12 +59,12 @@ export const CustomerChat = ({ boardid }) => {
 
   useEffect(() => {
     socket = io(ENDPOINT);
-    socket.emit("joinRoom", { room: `${boardid}-${customer.email}` });
+    socket.emit("joinRoom", { room: `${boardid}-${customer}` });
 
     socket.on("receiveMessage", (newMessage) => {
       try {
         let position
-        newMessage.email === customer.email ? position = "right" : position = "left"
+        newMessage.email === user.email ? position = "right" : position = "left"
         newMessage.position = position
         setMessages({ ...messages, isLoading: false, error: null, data: [...messages.data, newMessage] })
         chatheight.current.scrollTop = chatheight.current.scrollHeight
@@ -96,7 +87,7 @@ export const CustomerChat = ({ boardid }) => {
           content,
           boardid,
           customer,
-          seller: seller.data.email,
+          seller,
         }
         postReservation(data)
         if (newMessage.content.indexOf("{", 0) === 0) newMessage.position = "center"
@@ -109,25 +100,24 @@ export const CustomerChat = ({ boardid }) => {
   }, [reservation])
 
   useEffect(() => {
-    getSellerData()
+    getChatter()
   }, [])
 
-
-  if (seller.isLoading) return <>Loading...</>
-  if (seller.error) return <>{seller.error}</>
+  if (chatter.isLoading) return <>Loading...</>
+  if (chatter.error) return <>{chatter.error}</>
   return (
     <>
-      <ChatterCard onClick={() => { }} chatter={seller.data}></ChatterCard>
-      <ChatMessages messages={messages} setMessages={setMessages} seller={seller.data} customer={customer} chatheight={chatheight} />
+      <ChatterCard chatter={chatter.data} />
+      <ChatMessages messages={messages} setMessages={setMessages} chatter={chatter.data} chatheight={chatheight} />
       <ChatForm onSubmit={handleSendMessage}>
-        <ChatOption onClick={() => { setIsActiveButton(!isActiveButton) }} className={isActiveButton ? 'on' : ''}>
+        {(customer === user.email) && <ChatOption onClick={() => { setIsActiveButton(!isActiveButton) }} className={isActiveButton ? 'on' : ''}>
           <ChatMenu className="chatMenu" onClick={() => { setIsOpen(true) }} />
-        </ChatOption>
+        </ChatOption>}
         <ChatInput type="text" value={content.value} onChange={content.onChange} placeholder="메세지를 입력해주세요" />
         <ChatButton type="submit" />
       </ChatForm>
       <Modal isOpen={isOpen} setIsOpen={setIsOpen} height="37rem">
-        <ChatterMap setIsOpen={setIsOpen} boardid={boardid} customer={customer.email} />
+        <ChatterMap setIsOpen={setIsOpen} boardid={boardid} customer={customer} />
       </Modal>
     </>
   )}

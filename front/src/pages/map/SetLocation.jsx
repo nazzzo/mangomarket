@@ -36,7 +36,7 @@ export const SetLocation = ({ setIsOpen, lat, lng, boardid, customer }) => {
                 boardid : boardid,
                 email : customer,
               });
-              console.log(response.data)
+              console.log(response)
               if (response.data.email) {
                 dispatch(
                     userSetReservation({

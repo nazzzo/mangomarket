@@ -7,13 +7,6 @@ import { CustomerChat, Chat } from "../../pages/chat"
 
 export const ViewFooter = ({ isLogin, user, writerEmail, writerName, writerImg, size, footerHeight, footerWidth, boardId, chatter }) => {
     const [isOpen, setIsOpen] = useState(false)
-    const seller = {
-        email: writerEmail,
-        username: writerName,
-        userImg: writerImg,
-    }
-
-
 
     return (
         <>
@@ -22,9 +15,7 @@ export const ViewFooter = ({ isLogin, user, writerEmail, writerName, writerImg, 
                 <ChatBtn isLogin={isLogin} user={user.email} size={size} color="yellow" fontSize="1rem" onClick={() => {setIsOpen(true)}}>채팅하기</ChatBtn>
             </Footer>
             <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-                {/* <CustomerChat seller={seller} customer={user} boardid={boardId} chatter={chatter} width="27rem" height="37rem"/> */}
-                {/* <Chat seller={seller} customer={user} boardid={boardId} chatter={chatter} width="27rem" height="37rem"/> */}
-                <Chat boardid={boardId}/>
+                <Chat boardid={boardId} seller={writerEmail} />
             </Modal>
         </>
     )

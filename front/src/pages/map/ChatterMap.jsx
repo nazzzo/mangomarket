@@ -3,7 +3,7 @@ import { Map, MapMarker, ZoomControl } from "react-kakao-maps-sdk";
 import { SetLocation } from "./SetLocation"
 import { GuideText, MarkerImg } from "./styled"
 
-export const ChatterMap = ({ setIsOpen, setIsReserved, boardid, customer }) => {
+export const ChatterMap = ({ setIsOpen, boardid, customer }) => {
   const [state, setState] = useState({
     center: {
       lat: 33.450701,
