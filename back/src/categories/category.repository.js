@@ -5,19 +5,16 @@ class CategoryRepository {
   }
   async findAll() {
     try {
-      const findAll = await this.Category.findAll();
-      return findAll;
+      const result = await this.Category.findAll();
+      return result;
     } catch (e) {
       throw new Error(e);
     }
   }
   async findBoardCategory() {
     try {
-      const findAll = await this.BoardCategory.findAll({ 
-        raw: true,
-        order: [['id', 'ASC']]
-       });
-      return findAll;
+      const result = await this.BoardCategory.findAll({ raw: true, order: [['id', 'ASC']] });
+      return result;
     } catch (e) {
       throw new Error(e);
     }
