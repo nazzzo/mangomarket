@@ -8,6 +8,7 @@ class CommunityService {
 
     async postComment({ id, content, email, parentId, currentPage }) {
         try {
+            console.log('cur', currentPage)
             const limit = !currentPage ? currentPage * 10 : (currentPage -1) * 10
             console.log(limit)
             const commentList = await this.communityRepository.create({ id, content, email, parentId, limit })

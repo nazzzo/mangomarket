@@ -16,14 +16,9 @@ export const CommunityView = () => {
     const [deleteMode, setDeleteMode] = useState(false)
     const [comments, setComments] = useState([])
     const navigate = useNavigate()
-    const [totalComments, setTotalComments] = useState('')
+    const [totalComments, setTotalComments] = useState(0)
     const [currentPage, setCurrentPage] = useState(1)
     const [pageNumbers, setPageNumbers] = useState([])
-    const [totalCount, setTotalCount] = useState(0)
-    const datasize = 10
-    const limitnum = 5
-    const stnum = totalCount/datasize - (totalCount/datasize % limitnum) + 1 
-    let endnum = totalCount/datasize - (totalCount/datasize % limitnum) + limitnum 
     
     useEffect(() => {
         const getWriting = async () => {
@@ -38,18 +33,31 @@ export const CommunityView = () => {
                 setComments(response.data.commentList)
                 setTotalComments(response.data.boardView.CommentCount)
                 setComments(response.data.commentList)
-                setTotalCount(response.data.boardView.CommentCount)
-                const maxPage = Math.ceil(response.data.boardView.CommentCount / datasize)
-                setCurrentPage(maxPage) // 10
-                if(endnum > maxPage) endnum = maxPage
-                const pages = Array.from({length: endnum - stnum + 1},(v, i) => stnum+i )
-                setPageNumbers(pages)                                     
+                if(response.data.boardView.CommentCount === 0){
+                    return
+                } else {
+                    const datasize = 10
+                    const limitnum = 5
+                    let stnum = totalComments/datasize - (totalComments/datasize % limitnum) + 1 
+                    let endnum = totalComments/datasize - (totalComments/datasize % limitnum) + limitnum 
+                    const maxPage = Math.ceil(response.data.boardView.CommentCount / datasize)
+                    setCurrentPage(maxPage)
+                    if(endnum > maxPage) endnum = maxPage
+                    const pages = Array.from({length: endnum - stnum + 1},(v, i) => stnum + i )
+                    setPageNumbers(pages)
+                }                                 
             } catch (e) {
                 throw new Error(e)
             }
         }
         getWriting()
     }, [])
+
+    useEffect(() => {
+        if(totalComments % 10 === 1 && totalComments !== 1){
+            setCurrentPage(currentPage+1)
+        }
+    },[totalComments])
 
     const getDelete = async () => {
         const responseDelete = await request.delete(`/community/${id}`)
