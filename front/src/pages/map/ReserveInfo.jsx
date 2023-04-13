@@ -6,11 +6,10 @@ import { Alert } from "../../common/alert"
 import request from "../../utils/request"
 
 
-export const ReserveInfo = ({ isReserved, socket, address, time, chatid, boardid, customer, seller }) => {
+export const ReserveInfo = ({ chatState, socket, address, time, chatid, boardid, customer, seller }) => {
   const [isOpenAlert, setIsOpenAlert] = useState(false);
   const { user } = useSelector((state) => state.user)
-  console.log(isReserved)
-  console.log(seller, user.email)
+  console.log(chatState)
   const date = new Date(time);
   const formattedTime = date.toLocaleDateString('en-US', {hour: 'numeric', minute: 'numeric'});
 
@@ -20,7 +19,7 @@ export const ReserveInfo = ({ isReserved, socket, address, time, chatid, boardid
       // const response = await request.put(`reservations/${boardid}/state`, {
       //   state: "reserved"
       // });
-      socket.current.emit("reserveAccept", { state: "reserved", id: boardid })
+      socket.current.emit("reserveAccept", { boardState: "reserved", id: boardid, chatid })
       // if (response.data === 1) setIsOpenAlert(true)
     } catch (e) {
       console.error(e)
@@ -29,7 +28,7 @@ export const ReserveInfo = ({ isReserved, socket, address, time, chatid, boardid
 
   const handleReject = async () => {
     try {
-      socket.current.emit("reserveAccept", { state: "public", id: boardid, chatid })
+      socket.current.emit("reserveAccept", { boardState: "public", id: boardid, chatid })
     } catch (e) {
       console.error(e)
     }
@@ -44,14 +43,14 @@ export const ReserveInfo = ({ isReserved, socket, address, time, chatid, boardid
       <ReserveInfoForm onSubmit={handleAccept}>
         <AddressInfo>{address}</AddressInfo>
         <TimeInfo>예약시간: {formattedTime}</TimeInfo>
-        {user.email === seller && !isReserved && (
+        {(chatState === "unread" || chatState === "read") && seller === user.email && (
           <>
             <Button color="green" type="submit">수락</Button>
             <Button color="grey" type="button" onClick={handleReject}>거절</Button>
           </>
         )}
-        {isReserved === "reserved" && (<span style={{color: "green"}}>예약되었습니다</span>)}
-        {isReserved === "rejected" && (<span style={{color: "red"}}>예약이 거절되었습니다</span>)}
+        {chatState === "accepted" && (<span style={{color: "green"}}>예약되었습니다</span>)}
+        {chatState === "rejected" && (<span style={{color: "red"}}>예약이 거절되었습니다</span>)}
       </ReserveInfoForm>
       <Alert isOpenAlert={isOpenAlert} onClose={handleCloseAlert} color="green" width="20rem" height="5rem">상품이 예약되었습니다</Alert>
     </>

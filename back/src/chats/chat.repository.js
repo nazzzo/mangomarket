@@ -128,6 +128,15 @@ class ChatRepository {
       throw new Error(e);
     }
   }
+
+  async putChatState(id, state) {
+    try {
+      const result = await this.Chat.update({ state }, { where: { id } })
+      return result
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
 }
 
 module.exports = ChatRepository;

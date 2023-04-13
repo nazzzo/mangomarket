@@ -4,7 +4,7 @@ import request from '../../utils/request'
 import { ChatLogWrap, ChatLogs, LeftMessageWrap, RightMessageWrap, CenterMessageWrap, ChatUserImg, ChatMessage, ChatTime } from "./styled"
 import { MapMessage } from "../../pages/map"
 
-export const ChatMessages = ({ setIsReserved, isReserved, socket, messages, setMessages, chatter, chatheight }) => {    
+export const ChatMessages = ({ setChatState, chatState, socket, messages, setMessages, chatter, chatheight }) => {    
     const { boardid, seller, customer, userImg } = chatter
     const { user } = useSelector((state) => state.user)
 
@@ -40,11 +40,10 @@ export const ChatMessages = ({ setIsReserved, isReserved, socket, messages, setM
                 {messages.data.map((v) => {
                     switch (v.position) {
                         case "center":
-                            console.log(v)
-                            setIsReserved("rejected")
+                            setChatState(v.state)
                             const { address, lat, lng, time } = JSON.parse(v.content)
                             return (<CenterMessageWrap key={v.id}>
-                                <MapMessage seller={seller} socket={socket} isReserved={isReserved} address={address} lat={lat} lng={lng} time={time} chatid={v.id} boardid={boardid} customer={customer} />
+                                <MapMessage seller={seller} socket={socket} chatState={chatState} address={address} lat={lat} lng={lng} time={time} chatid={v.id} boardid={boardid} customer={customer} />
                             </CenterMessageWrap>);
                         case "left":
                             return (

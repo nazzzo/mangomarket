@@ -66,16 +66,15 @@ module.exports = (server, app) => {
 
       socket.on("reserveAccept", async (data) => {
         try {
-          // console.log(data)
-          const {id, state} = data
-          await reservation.updateState(id, state)
           console.log(data)
-          await chat.putChat()
-          if(state === "reserved"){
-            io.to(roomname).emit("reserveAccept", { content: "reserved" })
+          const {id, boardState, chatid} = data
+          await reservation.updateState(id, boardState)
+          if(boardState === "reserved"){
+            await chat.putChatState(chatid, "accepted")
+            io.to(roomname).emit("reserveAccept", { content: "reserved", chatid, state:"accepted" })
           } else {
-            // await chat.putChat(data.chatid, "예약이 거절되었습니다.")
-            io.to(roomname).emit("reserveAccept", { content: "rejected" })
+            await chat.putChatState(chatid, "rejected")
+            io.to(roomname).emit("reserveAccept", { content: "rejected", chatid, state: "rejected" })
           }
         } catch (e) {
           console.log(e)

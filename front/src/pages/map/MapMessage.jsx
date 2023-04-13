@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Map, MapMarker, ZoomControl } from "react-kakao-maps-sdk";
 import { ReserveInfo } from "./ReserveInfo"
 
-export const MapMessage = ({isReserved, socket, lat, lng, address, time, chatid, boardid, customer, seller}) => {
+export const MapMessage = ({chatState, socket, lat, lng, address, time, chatid, boardid, customer, seller}) => {
   const [state, setState] = useState({
     center: {
       lat: lat,
@@ -69,7 +69,7 @@ export const MapMessage = ({isReserved, socket, lat, lng, address, time, chatid,
           </MapMarker>
         )}
       </Map>
-      <ReserveInfo seller={seller} socket={socket} isReserved={isReserved} address={address} time={time} chatid={chatid} boardid={boardid} customer={customer} />
+      <ReserveInfo seller={seller} socket={socket} chatState={chatState} address={address} time={time} chatid={chatid} boardid={boardid} customer={customer} />
     </>
   );
 };
