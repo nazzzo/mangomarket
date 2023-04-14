@@ -52,7 +52,6 @@ class UserRepository {
               where: { email: userData.email },
               returning: true,
           });
-          console.log(`repo2 : `, result[1]);
           return result[1];
       } catch (e) {
           throw new Error(e);
@@ -103,7 +102,6 @@ class UserRepository {
       }
   }
   async addKeyword(payload) {
-    // console.log(`payload::::`, payload);
     try {
         const user = await this.Keyword.create(payload, { raw: true });
         return user;
