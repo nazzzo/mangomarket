@@ -52,16 +52,9 @@ class UserService {
         try {
             console.log(`userData ::::`, userData);
             if (!userData.userImg) userData.userImg = `http://${this.config.host}:${this.config.imgport}/default-image.png`
-            //   const { userpw, ...rest } = userData;
-
-            //   const hash = this.crypto.createHmac("sha256", this.salt).update(userpw).digest("hex");
-
             const updatedUser = await this.userRepository.updateProfile(userData);
             if (updatedUser === 1) {
-                //   console.log(`user :::::::`, 1);
                 const { email, userImg, username } = await this.userRepository.getUserById(userData.email);
-                //   const token = this.jwt.createToken(modified);
-                //   console.log(`token :::::::`, token);
                 return { email, userImg, username };
             } else {
                 const error = new Error("수정 실패");
