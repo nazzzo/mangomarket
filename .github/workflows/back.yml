@@ -1,6 +1,5 @@
 name: Back
 on:
-  # pull_request:
   push:
     branches:
       - main
@@ -29,17 +28,3 @@ jobs:
         mkdir -p ~/.ssh 
         ssh-keyscan -t rsa ${EC2_HOST} >> ~/.ssh/known_hosts
         scp -i backend_server.pem -r ./back ${EC2_USER}@${EC2_HOST}:/home/ubuntu/www
-    # - name: Upload to EC2
-    #   uses: appleboy/scp-action@master
-    #   env:
-    #     FRONT_PEM: ${{ secrets.FRONT_PEM }}
-    #     FRONT_HOST: ${{ secrets.FRONT_HOST }}
-    #     FRONT_USER: ${{ secrets.FRONT_USER }}
-    #   with:
-    #     local: 'build/'
-    #     remote_path: '/home/ec2-user/react-build/'
-    #     host: ${{ secrets.FRONT_HOST }}
-    #     username: ${{ secrets.FRONT_USER }}
-    #     key: ${{ secrets.FRONT_PEM }}
-    #     source: "build/"
-    #     target: "/home/ubuntu/www/"

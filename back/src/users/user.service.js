@@ -28,7 +28,6 @@ class UserService {
     }
 
     async userCheck(user) {
-        // console.log(`serv :`, user)
         try {
             const userCheck = await this.userRepository.findUser(user);
             return userCheck;
@@ -41,7 +40,6 @@ class UserService {
         try {
             const { userid } = this.jwt.verifyToken(token, this.salt);
             const user = await this.userRepository.getUserById(userid);
-            // console.log(user)
             return user;
         } catch (e) {
             throw new Error(e);
@@ -62,13 +60,12 @@ class UserService {
                 throw error;
             }
         } catch (e) {
-            throw new Error(e);
+            next(e);
         }
     }
     
     async deleteUser(user) {
         try {
-            console.log(`user :::::`, user);
             const drop = await this.userRepository.destroyUser(user);
             return drop;
         } catch (e) {
@@ -84,23 +81,23 @@ class UserService {
             throw new this.BadRequest(e);
         }
     }
-  
+
     async postKeyword(data) {
-      try {
-          const keyword = await this.userRepository.addKeyword(data)
-          return keyword
-      } catch (e) {
-          throw new this.BadRequest(e);
-      }
+        try {
+            const keyword = await this.userRepository.addKeyword(data)
+            return keyword
+        } catch (e) {
+            throw new this.BadRequest(e);
+        }
     }
-  
+
     async deleteKeyword(data) {
-      try {
-          const keyword = await this.userRepository.destroyKeyword(data)
-          return keyword
-      } catch (e) {
-          throw new this.BadRequest(e);
-      }
+        try {
+            const keyword = await this.userRepository.destroyKeyword(data)
+            return keyword
+        } catch (e) {
+            throw new this.BadRequest(e);
+        }
     }
 }
 
