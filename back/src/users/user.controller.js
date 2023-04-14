@@ -35,11 +35,10 @@ class UserController {
 
   async postUserCheck(req, res, next) {
     try {
-      const user = await this.userService.userCheck(req.body);
-      res.status(201).json(user);
-    } catch (e) {
-      next(e);
-    }
+      const user = await this.userService.putProfile(req.body);
+      console.log(`controller`, user)
+      res.json({user});
+    } catch (e) { next(e); }
   }
 
   async postKeyword(req, res, next) {
