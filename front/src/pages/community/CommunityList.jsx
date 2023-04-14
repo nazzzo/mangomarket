@@ -108,7 +108,7 @@ export const CommunityList = () => {
                 <TextBoxSpaceH2>
                     커뮤니티 게시판에서는 상대방을 배려하는 예의 있는 대화를 부탁드립니다.
                 </TextBoxSpaceH2>
-                <TextBoxSpaceH2>함께 즐겁게 활동합시다 :)</TextBoxSpaceH2>
+                <TextBoxSpaceH2>함께 즐겁게 활동합시다 :</TextBoxSpaceH2>
                 <Button
                     color="yellow"
                     fontColor="#fff"

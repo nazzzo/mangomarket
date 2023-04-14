@@ -134,3 +134,24 @@ export const ReplyButton = styled.button`
   border:1px solid;
   padding:0.2rem;
 `
+
+export const PageWrap = styled.ul`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+`
+
+export const PageNum = styled.button`
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  cursor: pointer;
+  border: 1px solid #999;
+  padding: 6px 7px 6px ;
+  font-size: 0.6rem;
+  font-weight: bold;
+  &[aria-current]{
+    background: deeppink;
+  }
+`

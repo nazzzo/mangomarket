@@ -6,6 +6,7 @@ export const useInput = (initialValue) => {
     const onChange = (e) => {
         setValue(e.target.value)
     }
+
     const clear = () => {
         setValue('')
     }

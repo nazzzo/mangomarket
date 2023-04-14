@@ -8,6 +8,7 @@ const config = {
 }
 export default config
 
+
 // const config = {
 //     PT: 'http',
 //     HOST: 'localhost',
@@ -16,4 +17,5 @@ export default config
 //     IMG_PORT: 3005,
 // }
 // export default config
+
 
