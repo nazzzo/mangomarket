@@ -16,12 +16,14 @@ export const CommunityView = () => {
     const [deleteMode, setDeleteMode] = useState(false)
     const [comments, setComments] = useState([])
     const navigate = useNavigate()
-    console.log('view', view)
-
+    const [totalComments, setTotalComments] = useState(0)
+    const [currentPage, setCurrentPage] = useState(1)
+    const [pageNumbers, setPageNumbers] = useState([])
+    
     useEffect(() => {
         const getWriting = async () => {
             try {
-                const response = await request.get(`/community/${id}`)
+                const response = await request.get(`/community/${id}?page=${currentPage}`)
                 console.log('response::', response.data)
                 if(response.data.isError === true){
                     alert('잘못된 요청입니다.')
@@ -29,12 +31,33 @@ export const CommunityView = () => {
                 }
                 setView(response.data.boardView)
                 setComments(response.data.commentList)
+                setTotalComments(response.data.boardView.CommentCount)
+                setComments(response.data.commentList)
+                if(response.data.boardView.CommentCount === 0){
+                    return
+                } else {
+                    const datasize = 10
+                    const limitnum = 5
+                    let stnum = totalComments/datasize - (totalComments/datasize % limitnum) + 1 
+                    let endnum = totalComments/datasize - (totalComments/datasize % limitnum) + limitnum 
+                    const maxPage = Math.ceil(response.data.boardView.CommentCount / datasize)
+                    setCurrentPage(maxPage)
+                    if(endnum > maxPage) endnum = maxPage
+                    const pages = Array.from({length: endnum - stnum + 1},(v, i) => stnum + i )
+                    setPageNumbers(pages)
+                }                                 
             } catch (e) {
                 throw new Error(e)
             }
         }
         getWriting()
     }, [])
+
+    useEffect(() => {
+        if(totalComments % 10 === 1 && totalComments !== 1){
+            setCurrentPage(currentPage+1)
+        }
+    },[totalComments])
 
     const getDelete = async () => {
         const responseDelete = await request.delete(`/community/${id}`)
@@ -92,7 +115,12 @@ export const CommunityView = () => {
             ) : (
                 <></>
             )}
-            <Comment comments={comments} setComments={setComments}/>
+            <Comment totalComments={totalComments} setTotalComments={setTotalComments}
+            comments={comments} setComments={setComments} 
+            currentPage={currentPage} setCurrentPage={setCurrentPage}
+                pageNumbers={pageNumbers}  
+                setPageNumbers={setPageNumbers}
+            />
         </ViewWrapper>
     )
 }

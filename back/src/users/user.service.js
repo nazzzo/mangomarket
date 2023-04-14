@@ -60,13 +60,12 @@ class UserService {
                 throw error;
             }
         } catch (e) {
-            throw new Error(e);
+            next(e);
         }
     }
     
     async deleteUser(user) {
         try {
-            console.log(`user :::::`, user);
             const drop = await this.userRepository.destroyUser(user);
             return drop;
         } catch (e) {
@@ -82,23 +81,23 @@ class UserService {
             throw new this.BadRequest(e);
         }
     }
-  
+
     async postKeyword(data) {
-      try {
-          const keyword = await this.userRepository.addKeyword(data)
-          return keyword
-      } catch (e) {
-          throw new this.BadRequest(e);
-      }
+        try {
+            const keyword = await this.userRepository.addKeyword(data)
+            return keyword
+        } catch (e) {
+            throw new this.BadRequest(e);
+        }
     }
-  
+
     async deleteKeyword(data) {
-      try {
-          const keyword = await this.userRepository.destroyKeyword(data)
-          return keyword
-      } catch (e) {
-          throw new this.BadRequest(e);
-      }
+        try {
+            const keyword = await this.userRepository.destroyKeyword(data)
+            return keyword
+        } catch (e) {
+            throw new this.BadRequest(e);
+        }
     }
 }
 
