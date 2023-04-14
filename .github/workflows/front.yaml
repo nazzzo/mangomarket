@@ -34,3 +34,4 @@
 #           mkdir -p ~/.ssh
 #           ssh-keyscan -t rsa ${EC2_HOST} >> ~/.ssh/known_hosts
 #           scp -i frontend.pem -r ./front/build ${EC2_USER}@${EC2_HOST}:/home/ubuntu/www
+
