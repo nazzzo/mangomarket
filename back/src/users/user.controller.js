@@ -11,9 +11,7 @@ class UserController {
     }
   }
   async postUserCheck(req, res, next) {
-    // console.log(`con :`, req.body);
     try {
-      // const { userid } = req.body;
       const user = await this.userService.userCheck(req.body);
       res.status(201).json(user);
     } catch (e) {
@@ -52,7 +50,6 @@ class UserController {
     try {
         const { email } = req.params;
         const point = await this.userService.findPoint(email);
-        // console.log("point", point);
         res.json(point);
     } catch (e) {
         next(e);
@@ -60,14 +57,12 @@ class UserController {
   }
   async postKeyword(req, res, next) {
     try {
-      // console.log(req.body)
       const result = await this.userService.postKeyword(req.body);
       res.json(result)
     } catch (e) {next(e)}
   }
   async deleteKeyword(req, res, next) {
     try {
-      // console.log(req.body)
       const result = await this.userService.deleteKeyword(req.body);
       res.json(result)
     } catch (e) {next(e)}

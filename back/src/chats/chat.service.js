@@ -39,7 +39,7 @@ class ChatService {
       try {
         const type = Object.keys(data)[0]
         const useremail = Object.values(data)[0]
-        
+        console.log(data)
         const result = await this.chatRepository.getUsers( { type, useremail } )
         return result
       } catch (e) {

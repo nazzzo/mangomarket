@@ -17,7 +17,6 @@ class UserRepository {
   }
   async findUser(user) {
       const key = Object.keys(user);
-      // console.log(user[key]);
       try {
           const userCheck = await this.User.findOne({
               raw: true,
@@ -31,7 +30,6 @@ class UserRepository {
       }
   }
   async getUserById(email) {
-      console.log(`repo:`, email);
       try {
           const user = await this.User.findOne({
               raw: true,

@@ -28,7 +28,6 @@ class UserService {
     }
 
     async userCheck(user) {
-        // console.log(`serv :`, user)
         try {
             const userCheck = await this.userRepository.findUser(user);
             return userCheck;
@@ -41,7 +40,6 @@ class UserService {
         try {
             const { userid } = this.jwt.verifyToken(token, this.salt);
             const user = await this.userRepository.getUserById(userid);
-            // console.log(user)
             return user;
         } catch (e) {
             throw new Error(e);
@@ -50,7 +48,6 @@ class UserService {
 
     async putProfile(userData) {
         try {
-            console.log(`userData ::::`, userData);
             if (!userData.userImg) userData.userImg = `http://${this.config.host}:${this.config.imgport}/default-image.png`
             const updatedUser = await this.userRepository.updateProfile(userData);
             console.log(`service:::`, updatedUser)
