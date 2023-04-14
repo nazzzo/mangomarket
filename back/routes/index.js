@@ -11,6 +11,17 @@ const tempRouter = require('../src/temp/temp.route')
 const reservationRouter = require('../src/reservations/reservation.route')
 
 
+router.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'https://mgmarket.store');
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header(
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept'
+    );
+    next();
+  });
+  
+
 router.use('/categories', categoriesRouter)
 router.use('/users', userRouter)
 router.use('/auths', authRouter)

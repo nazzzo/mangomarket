@@ -35,6 +35,7 @@ class UserController {
   async putProfile(req, res, next) {
     try {
       const user = await this.userService.putProfile(req.body);
+      console.log(`controller`, user)
       res.json({user});
     } catch (e) { next(e); }
   }

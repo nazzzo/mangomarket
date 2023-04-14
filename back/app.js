@@ -11,8 +11,8 @@ const BadRequest = config.exception.BadRequest;
 
 app.use(
     cors({
-        origin: true,
-        credentials: true,
+      origin: ['https://mgmarket.store', 'https://www.mgmarket.store'],
+      credentials: true,
     })
 )
 app.use(cookieParser())
