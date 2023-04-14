@@ -48,7 +48,6 @@ class UserService {
 
     async putProfile(userData) {
         try {
-            console.log(`userData ::::`, userData);
             if (!userData.userImg) userData.userImg = `http://${this.config.host}:${this.config.imgport}/default-image.png`
             const updatedUser = await this.userRepository.updateProfile(userData);
             console.log(`service:::`, updatedUser)

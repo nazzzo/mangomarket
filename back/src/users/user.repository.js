@@ -6,6 +6,42 @@ class UserRepository {
         this.sequelize = sequelize;
     }
 
+  async addUser(payload) {
+      console.log(`payload::::`, payload);
+      try {
+          const user = await this.User.create(payload, { raw: true });
+          return user;
+      } catch (e) {
+          throw new Error(e);
+      }
+  }
+  async findUser(user) {
+      const key = Object.keys(user);
+      try {
+          const userCheck = await this.User.findOne({
+              raw: true,
+              where: {
+                  [key]: user[key],
+              },
+          });
+          return userCheck;
+      } catch (e) {
+          throw new Error(e);
+      }
+  }
+  async getUserById(email) {
+      try {
+          const user = await this.User.findOne({
+              raw: true,
+              where: {
+                  email,
+              },
+          });
+          return user;
+      } catch (e) {
+          throw new Error(e);
+      }
+  }
     async addUser(payload) {
         try {
             const user = await this.User.create(payload, { raw: true });
