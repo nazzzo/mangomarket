@@ -11,7 +11,7 @@ const BadRequest = config.exception.BadRequest;
 
 app.use(
     cors({
-      origin: ['https://mgmarket.store', 'https://www.mgmarket.store'],
+      origin: ['https://mgmarket.store', 'https://www.mgmarket.store', 'http://127.0.0.1:3000', 'http://127.0.0.1:3005', 'http://localhost:3000', 'http://localhost:3005'],
       credentials: true,
     })
 )
