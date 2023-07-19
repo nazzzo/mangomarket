@@ -14,7 +14,7 @@ import { useInput, useTextArea } from '../../hooks'
 import { useNavigate } from 'react-router-dom'
 import request from '../../utils/request'
 import { useSelector } from 'react-redux'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useTimeStamp } from '../../hooks'
 
 export const CommunityWrite = ({ tempContent, tempSubject, updatedAt, tempMode, setTempMode }) => {
@@ -38,6 +38,8 @@ export const CommunityWrite = ({ tempContent, tempSubject, updatedAt, tempMode, 
                     email: user.email,
                     category: categoryState,
                 })
+                const id = response.data.id
+                navigate(`/community/${id}`)
             } else {
                 const responseTemp = await request.post('/community', {
                     subject: tempDataSubject.value,
@@ -45,10 +47,11 @@ export const CommunityWrite = ({ tempContent, tempSubject, updatedAt, tempMode, 
                     email: user.email,
                     category: categoryState,
                 })
+                const id = responseTemp.data.id
+                navigate(`/community/${id}`)
             }
             setIsState(false)
             setTempMode(false)
-            navigate('/')
         } catch (e) {
             console.log(e)
         }

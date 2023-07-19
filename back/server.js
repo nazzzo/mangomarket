@@ -7,7 +7,7 @@ const PORT = config.port
 const http = app.listen(PORT, async () => {
     await sequelize.sync({ force: false })
 
-    // await sequelize.models.Category.create({ path: '/profile', name: '프로필', isLogin: true })
+    // await sequelize.models.Category.ceate({ path: '/profile', name: '프로필', isLogin: true })
     // await sequelize.models.Category.create({ path: '/signup', name: '회원가입', isLogin: false })
     // await sequelize.models.Category.create({ path: '/login', name: '로그인', isLogin: false })
     // await sequelize.models.Category.create({ path: '/community', name: '커뮤니티', isLogin: true })
