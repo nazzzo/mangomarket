@@ -62,7 +62,7 @@ export const Header = ({ categories, isLogin, user, keywords, isAlarm }) => {
     }, [isOpen])
 
     const navigate = useNavigate()
-
+    
     const loginFilter = categories.filter((v) => v.isLogin === null || v.isLogin === isLogin)
 
     const navigation = (styledComponent) =>

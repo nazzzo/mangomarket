@@ -1,6 +1,6 @@
 require("dotenv").config();
 const BadRequest = require("./exceptions/BadRequest");
-
+ 
 const config = {
   exception: {
     BadRequest,
