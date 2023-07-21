@@ -15,6 +15,10 @@ class UserController {
     try {
       const user = await this.userService.userCheck(req.body);
       res.status(201).json(user);
+    } catch(e){
+      next(e)
+    }
+  }
 
   async putProfile(req, res, next) {
     try {

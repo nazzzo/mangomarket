@@ -123,6 +123,8 @@ class UserRepository {
         return user;
     } catch (e) {
         throw new Error(e);
+        }
+    }
 
     async getUserById(email) {
         try {
