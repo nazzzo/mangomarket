@@ -32,26 +32,26 @@ export const Comment = ({
   const [selectedPage, setSelectPage] = useState(currentPage);
 
   const onPageChange = async (page) => {
-    const response = await request.get(
-    `/community/${id}?page=${page}`
-    );
+    console.log("page::", page);
+    const response = await request.get(`/community/${id}?page=${page}`);
+    console.log("commentList;:", response.data.commentList);
     setComments(response.data.commentList);
-    setCurrentPage(page)
-    setSelectPage(page)
-    const totalComment = totalComments
-      const limitPage = 5;
-      const renderComments = 10;
-      const maxPage = Math.ceil(totalComment / renderComments);
-      const pageGroup = Math.ceil(currentPage / limitPage);
-      let lastPage = pageGroup * limitPage;
-      if (lastPage > maxPage) lastPage = maxPage;
-      let firstPage = pageGroup * limitPage - (limitPage - 1);
-      const pages = Array.from(
-        { length: lastPage - firstPage + 1 },
-        (v, i) => firstPage + i
-      );
-      setPageNumbers(pages);
-    } ;
+    setCurrentPage(page);
+    setSelectPage(page);
+    const totalComment = totalComments;
+    const limitPage = 5;
+    const renderComments = 10;
+    const maxPage = Math.ceil(totalComment / renderComments);
+    const pageGroup = Math.ceil(currentPage / limitPage);
+    let lastPage = pageGroup * limitPage;
+    if (lastPage > maxPage) lastPage = maxPage;
+    let firstPage = pageGroup * limitPage - (limitPage - 1);
+    const pages = Array.from(
+      { length: lastPage - firstPage + 1 },
+      (v, i) => firstPage + i
+    );
+    setPageNumbers(pages);
+  };
 
   //댓글 작성
   const submitHandler = async (e) => {
@@ -88,7 +88,7 @@ export const Comment = ({
   };
 
   useEffect(() => {
-    onPageChange(currentPage)
+    onPageChange(currentPage);
   }, [currentPage]);
 
   return (
