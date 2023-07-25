@@ -17,14 +17,14 @@ import {
 const initialState = {
   isLoading: true,
   isError: null,
-  isLogin: false,
+  isLogin: true,
   isAlarm: false,
   user: {
-    email: "",
-    username: "",
-    userImg: "",
-    address: "",
-    level: "",
+    email: "admin@mgmarket.com",
+    username: "admin",
+    userImg: "https://www.mgmarket.store:443/mangomarket_1690261792503.png",
+    address: "강동구 천호동",
+    level: "admin",
   },
   auth: {
     email: "",
@@ -115,7 +115,7 @@ export const user = (state = initialState, action) => {
       return {
         ...state,
         search: action.payload,
-      };  
+      };
     case USER_SET_RESERVATION:
       return {
         ...state,
